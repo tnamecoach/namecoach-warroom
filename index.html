@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NameCoach — 2026 War Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --nc-purple:#762fc4; --nc-purple-dark:#5a1fa0; --nc-purple-light:#9b5fe0;
+  --nc-green:#00d084; --nc-green-dark:#00a066; --nc-teal:#31cdd3;
+  --bg:#0a0c12; --surface:#111318; --surface2:#181b24; --surface3:#1e2230;
+  --border:#252a3a; --border2:#2e3448;
+  --text:#e8ecf6; --muted:#6b7494; --muted2:#8892b0;
+  --gold:#f5a623; --red:#f75f5f; --blue:#4f8ef7; --pink:#f75fa0;
+  --orange:#f7874f; --teal2:#2ecfcf;
+  --gtm:#4f8ef7; --product:#9b5fe0; --ops:#f7874f;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Poppins','Segoe UI',system-ui,sans-serif;font-size:13px;min-width:1200px;}
+
+/* ── TOPBAR ── */
+.topbar{background:linear-gradient(135deg,#0d0f1a,#13162a,#0d0f1a);border-bottom:2px solid var(--nc-purple);padding:0 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;height:62px;}
+.nc-logo{display:flex;align-items:center;gap:10px;}
+.nc-logo-icon{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--nc-purple),var(--nc-purple-light));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;box-shadow:0 0 16px rgba(118,47,196,.5);}
+.nc-logo-text{font-size:16px;font-weight:800;letter-spacing:-.5px;}
+.nc-logo-sub{font-size:9px;color:var(--muted2);margin-top:1px;}
+.topbar-divider{width:1px;height:30px;background:var(--border2);margin:0 16px;}
+.topbar-stats{display:flex;gap:20px;}
+.stat-item{text-align:center;}
+.stat-val{font-size:15px;font-weight:800;}
+.stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.edit-toggle{background:rgba(118,47,196,.15);border:1px solid rgba(118,47,196,.4);border-radius:6px;padding:6px 14px;font-size:11px;font-weight:700;color:var(--nc-purple-light);cursor:pointer;font-family:'Poppins',sans-serif;transition:all .2s;}
+.edit-toggle:hover{background:rgba(118,47,196,.3);}
+.edit-toggle.active{background:var(--nc-purple);color:#fff;border-color:var(--nc-purple);}
+.countdown-badge{background:linear-gradient(135deg,#6b1010,#a01818);border:1px solid #c02020;border-radius:8px;padding:5px 12px;text-align:center;box-shadow:0 0 20px rgba(200,30,30,.3);}
+.countdown-num{font-size:19px;font-weight:900;color:#ff7070;line-height:1;}
+.countdown-lbl{font-size:9px;color:#ffaaaa;text-transform:uppercase;letter-spacing:1px;}
+
+/* ── TABS ── */
+.tabs-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;gap:2px;position:sticky;top:62px;z-index:290;overflow-x:auto;}
+.tab-btn{padding:13px 18px 11px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;font-family:'Poppins',sans-serif;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--nc-purple-light);border-bottom-color:var(--nc-purple);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── WEEK BAR ── */
+.week-bar{display:flex;gap:4px;padding:8px 32px;background:var(--surface2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.wk{flex:1;min-width:100px;background:var(--surface3);border:1px solid var(--border);border-radius:7px;padding:6px 8px;text-align:center;transition:all .2s;}
+.wk.current{border-color:var(--nc-purple);background:rgba(118,47,196,.12);box-shadow:0 0 12px rgba(118,47,196,.2);}
+.wk.past{opacity:.45;}
+.wk.future{}
+.wk-num{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.wk-dates{font-size:10px;font-weight:600;color:var(--text);margin-top:1px;}
+.wk-theme{font-size:9px;color:var(--nc-purple-light);margin-top:2px;font-style:italic;}
+.wk.current .wk-num{color:var(--nc-purple-light);}
+.wk-badge{font-size:8px;background:var(--nc-purple);color:#fff;border-radius:3px;padding:1px 4px;margin-top:2px;display:inline-block;}
+
+/* ── NORTH STAR ── */
+.north-star{background:linear-gradient(90deg,rgba(118,47,196,.1),rgba(0,208,132,.05));border-bottom:1px solid rgba(118,47,196,.2);padding:8px 32px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.ns-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--nc-purple-light);white-space:nowrap;}
+.ns-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.ns-pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:3px 10px;font-size:10px;color:var(--text);}
+.ns-pill.hot{background:linear-gradient(135deg,rgba(245,166,35,.15),rgba(247,95,95,.15));border-color:rgba(245,166,35,.4);color:var(--gold);font-weight:700;}
+
+/* ── MAIN ── */
+.main{padding:20px 32px 80px;}
+
+/* ── POD GROUPS ── */
+.pod-group{margin-bottom:20px;}
+.pod-header{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:10px 10px 0 0;cursor:pointer;user-select:none;}
+.pod-dot{width:10px;height:10px;border-radius:50%;}
+.pod-title{font-size:13px;font-weight:800;flex:1;letter-spacing:.3px;}
+.pod-members{font-size:10px;color:rgba(255,255,255,.5);}
+.pod-kpi{font-size:10px;background:rgba(255,255,255,.08);border-radius:4px;padding:2px 8px;}
+.pod-toggle{font-size:13px;color:rgba(255,255,255,.4);transition:transform .2s;}
+.pod-toggle.open{transform:rotate(90deg);}
+.pod-body{display:block;}
+.pod-body.collapsed{display:none;}
+
+/* GTM pod */
+.pod-gtm .pod-header{background:linear-gradient(90deg,rgba(79,142,247,.18),rgba(79,142,247,.06));}
+.pod-gtm .pod-dot{background:var(--gtm);}
+/* Product pod */
+.pod-product .pod-header{background:linear-gradient(90deg,rgba(155,95,224,.18),rgba(155,95,224,.06));}
+.pod-product .pod-dot{background:var(--product);}
+/* Ops pod */
+.pod-ops .pod-header{background:linear-gradient(90deg,rgba(247,135,79,.18),rgba(247,135,79,.06));}
+.pod-ops .pod-dot{background:var(--ops);}
+
+/* ── SECTION ── */
+.section{margin-bottom:4px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.section-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none;transition:filter .15s;}
+.section-hdr:hover{filter:brightness(1.06);}
+.s-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.s-title{font-size:12px;font-weight:700;flex:1;}
+.s-owner{font-size:10px;color:var(--muted);}
+.s-kpi{font-size:9px;background:rgba(255,255,255,.07);border-radius:4px;padding:2px 6px;color:var(--text);}
+.s-toggle{font-size:12px;color:var(--muted);transition:transform .2s;}
+.s-toggle.open{transform:rotate(90deg);}
+.section-body{display:block;}
+.section-body.collapsed{display:none;}
+
+/* ── GANTT TABLE ── */
+.gantt-wrap{overflow-x:auto;background:var(--surface2);}
+.gantt-table{width:100%;border-collapse:collapse;min-width:1100px;}
+.gantt-table th{background:var(--surface);padding:6px 8px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border);border-right:1px solid var(--border);white-space:nowrap;}
+.gantt-table th.tc{width:210px;text-align:left;}
+.gantt-table th.mc{width:170px;text-align:left;}
+.gantt-table th.sc{width:70px;text-align:center;}
+.gantt-table th.wc{width:82px;text-align:center;}
+.gantt-table th.wc.current-wk{color:var(--nc-purple-light);background:rgba(118,47,196,.08);}
+.gantt-table th.wc.past-wk{color:rgba(107,116,148,.5);}
+.gantt-table td{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.04);border-right:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.gantt-table tr:last-child td{border-bottom:none;}
+.gantt-table td.wc{text-align:center;}
+.gantt-table td.wc.current-wk{background:rgba(118,47,196,.05);}
+.gantt-table td.wc.past-wk{opacity:.5;}
+.t-name{font-size:11px;font-weight:500;color:var(--text);}
+.kpi-cell{font-size:10px;color:var(--muted);line-height:1.4;}
+
+/* Editable fields */
+.editable{outline:none;border-radius:3px;transition:background .15s;}
+body.edit-mode .editable{background:rgba(118,47,196,.12);cursor:text;border:1px dashed rgba(118,47,196,.4);padding:1px 4px;}
+body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(--nc-purple-light);}
+
+/* ── STATUS BADGE ── */
+.status-btn{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;cursor:pointer;border:none;font-family:'Poppins',sans-serif;transition:all .15s;white-space:nowrap;}
+.status-btn:hover{filter:brightness(1.15);}
+.s-ns{background:rgba(107,116,148,.15);color:var(--muted);border:1px solid rgba(107,116,148,.3);}
+.s-ip{background:rgba(79,142,247,.15);color:var(--blue);border:1px solid rgba(79,142,247,.3);}
+.s-done{background:rgba(0,208,132,.15);color:var(--nc-green);border:1px solid rgba(0,208,132,.3);}
+.s-risk{background:rgba(247,95,95,.15);color:var(--red);border:1px solid rgba(247,95,95,.3);}
+
+/* ── GANTT BARS ── */
+.bar{display:inline-block;width:82%;height:18px;border-radius:3px;vertical-align:middle;position:relative;}
+.bar-s{border-radius:3px 0 0 3px;}
+.bar-m{border-radius:0;}
+.bar-e{border-radius:0 3px 3px 0;}
+.bar-solo{border-radius:3px;}
+.milestone{display:inline-block;width:14px;height:14px;transform:rotate(45deg);border-radius:2px;vertical-align:middle;}
+
+/* ── WEEKLY GOAL ROW ── */
+.wg-row td{background:rgba(118,47,196,.05);border-top:1px solid rgba(118,47,196,.15);border-bottom:1px solid rgba(118,47,196,.15);padding:4px 8px;font-size:9px;color:var(--nc-purple-light);font-style:italic;}
+.wg-row td.wg-lbl{font-style:normal;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.8px;}
+
+/* ── TAGS ── */
+.tag{display:inline-block;font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;margin-left:3px;}
+.p1{background:rgba(247,95,95,.18);color:var(--red);border:1px solid rgba(247,95,95,.4);}
+.p2{background:rgba(245,166,35,.18);color:var(--gold);border:1px solid rgba(245,166,35,.4);}
+.p3{background:rgba(79,142,247,.18);color:var(--blue);border:1px solid rgba(79,142,247,.4);}
+
+/* ── SECTION COLORS ── */
+.s-trevor .section-hdr{background:linear-gradient(90deg,rgba(245,166,35,.12),var(--surface2));border-bottom:1px solid rgba(245,166,35,.2);}
+.s-trevor .s-dot{background:var(--gold);}
+.s-trevor .bar{background:linear-gradient(90deg,#b07010,var(--gold));}
+.s-trevor .milestone{background:var(--gold);}
+.s-product .section-hdr{background:linear-gradient(90deg,rgba(155,95,224,.12),var(--surface2));border-bottom:1px solid rgba(155,95,224,.2);}
+.s-product .s-dot{background:var(--nc-purple-light);}
+.s-product .bar{background:linear-gradient(90deg,var(--nc-purple-dark),var(--nc-purple-light));}
+.s-product .milestone{background:var(--nc-purple-light);}
+.s-eng .section-hdr{background:linear-gradient(90deg,rgba(118,47,196,.1),var(--surface2));border-bottom:1px solid rgba(118,47,196,.15);}
+.s-eng .s-dot{background:var(--nc-purple);}
+.s-eng .bar{background:linear-gradient(90deg,#3a1580,var(--nc-purple));}
+.s-eng .milestone{background:var(--nc-purple);}
+.s-cs .section-hdr{background:linear-gradient(90deg,rgba(0,208,132,.12),var(--surface2));border-bottom:1px solid rgba(0,208,132,.2);}
+.s-cs .s-dot{background:var(--nc-green);}
+.s-cs .bar{background:linear-gradient(90deg,var(--nc-green-dark),var(--nc-green));}
+.s-cs .milestone{background:var(--nc-green);}
+.s-sales .section-hdr{background:linear-gradient(90deg,rgba(79,142,247,.12),var(--surface2));border-bottom:1px solid rgba(79,142,247,.2);}
+.s-sales .s-dot{background:var(--blue);}
+.s-sales .bar{background:linear-gradient(90deg,#2a5cb5,var(--blue));}
+.s-sales .milestone{background:var(--blue);}
+.s-marketing .section-hdr{background:linear-gradient(90deg,rgba(247,95,160,.12),var(--surface2));border-bottom:1px solid rgba(247,95,160,.2);}
+.s-marketing .s-dot{background:var(--pink);}
+.s-marketing .bar{background:linear-gradient(90deg,#a02060,var(--pink));}
+.s-marketing .milestone{background:var(--pink);}
+.s-finance .section-hdr{background:linear-gradient(90deg,rgba(49,205,211,.12),var(--surface2));border-bottom:1px solid rgba(49,205,211,.2);}
+.s-finance .s-dot{background:var(--nc-teal);}
+.s-finance .bar{background:linear-gradient(90deg,#158080,var(--nc-teal));}
+.s-finance .milestone{background:var(--nc-teal);}
+.s-ops .section-hdr{background:linear-gradient(90deg,rgba(247,135,79,.12),var(--surface2));border-bottom:1px solid rgba(247,135,79,.2);}
+.s-ops .s-dot{background:var(--orange);}
+.s-ops .bar{background:linear-gradient(90deg,#a04020,var(--orange));}
+.s-ops .milestone{background:var(--orange);}
+.s-legal .section-hdr{background:linear-gradient(90deg,rgba(245,166,35,.08),var(--surface2));border-bottom:1px solid rgba(245,166,35,.15);}
+.s-legal .s-dot{background:#c8a020;}
+.s-legal .bar{background:linear-gradient(90deg,#806010,#c8a020);}
+.s-legal .milestone{background:#c8a020;}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.kc-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.kc-value{font-size:24px;font-weight:900;margin-bottom:3px;}
+.kc-target{font-size:10px;color:var(--muted2);}
+.kc-target span{font-weight:700;}
+.kc-trend{font-size:10px;margin-top:6px;font-weight:600;}
+.trend-up{color:var(--nc-green);}
+.trend-warn{color:var(--gold);}
+.trend-crit{color:var(--red);}
+
+/* ── RAISE BANNER ── */
+.raise-banner{background:linear-gradient(90deg,rgba(245,166,35,.07),rgba(247,95,95,.07));border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;}
+.rb-title{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:3px;}
+.rb-desc{font-size:10px;color:var(--muted2);line-height:1.5;}
+.rb-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.rb-tag{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:5px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--gold);}
+
+/* ── COS PANEL ── */
+.cos-panel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:24px;}
+.cos-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.cos-card-title{font-size:11px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.cos-item{font-size:10px;color:var(--muted2);margin-bottom:6px;line-height:1.5;}
+.cos-item strong{color:var(--text);}
+.deadline{color:var(--gold);font-weight:700;}
+.risk-text{color:var(--red);}
+
+/* ── KPI TABLE ── */
+.kpi-section-title{font-size:13px;font-weight:700;margin:20px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.kpi-table{width:100%;border-collapse:collapse;margin-bottom:24px;background:var(--surface);border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.kpi-table th{background:var(--surface2);padding:9px 12px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border);text-align:left;}
+.kpi-table td{padding:9px 12px;font-size:11px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.kpi-table tr:last-child td{border-bottom:none;}
+.kpi-table tr:hover td{background:rgba(255,255,255,.02);}
+.sb{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.sb-g{background:rgba(0,208,132,.15);color:var(--nc-green);border:1px solid rgba(0,208,132,.3);}
+.sb-y{background:rgba(245,166,35,.15);color:var(--gold);border:1px solid rgba(245,166,35,.3);}
+.sb-r{background:rgba(247,95,95,.15);color:var(--red);border:1px solid rgba(247,95,95,.3);}
+.sb-b{background:rgba(79,142,247,.15);color:var(--blue);border:1px solid rgba(79,142,247,.3);}
+.sb-p{background:rgba(118,47,196,.15);color:var(--nc-purple-light);border:1px solid rgba(118,47,196,.3);}
+
+/* ── DEPT KPI CARDS ── */
+.dept-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.dept-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.dept-card-hdr{padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.dept-card-icon{font-size:18px;}
+.dept-card-name{font-size:13px;font-weight:700;}
+.dept-card-owner{font-size:10px;color:var(--muted);margin-top:1px;}
+.dept-card-body{padding:0 16px 14px;}
+.dept-metric-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.dept-metric-row:last-child{border-bottom:none;}
+.dkpi-name{font-size:10px;color:var(--muted2);flex:1;}
+.dkpi-target{font-size:11px;font-weight:700;text-align:right;min-width:90px;}
+.dkpi-dl{font-size:9px;color:var(--muted);text-align:right;min-width:55px;}
+
+/* ── INDIVIDUAL CARDS ── */
+.ind-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;}
+.ind-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ind-hdr{padding:14px 14px 10px;text-align:center;}
+.ind-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;margin:0 auto 7px;}
+.ind-name{font-size:12px;font-weight:700;}
+.ind-role{font-size:9px;color:var(--muted);margin-top:2px;}
+.ind-body{padding:0 12px 12px;}
+.ind-kpi-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;}
+.ind-kpi-row:last-child{border-bottom:none;}
+.ind-kpi-lbl{color:var(--muted);flex:1;}
+.ind-kpi-val{font-weight:700;text-align:right;}
+
+/* ── COMMISSION ── */
+.comm-hero{background:linear-gradient(135deg,rgba(118,47,196,.12),rgba(0,208,132,.07));border:1px solid rgba(118,47,196,.25);border-radius:12px;padding:20px 24px;margin-bottom:24px;}
+.comm-hero-title{font-size:18px;font-weight:800;margin-bottom:5px;}
+.comm-hero-sub{font-size:11px;color:var(--muted2);line-height:1.6;max-width:800px;}
+.comm-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.cpill{background:rgba(118,47,196,.15);border:1px solid rgba(118,47,196,.35);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:600;color:var(--nc-purple-light);}
+.cpill.green{background:rgba(0,208,132,.12);border-color:rgba(0,208,132,.3);color:var(--nc-green);}
+.cpill.gold{background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.3);color:var(--gold);}
+.comm-section-title{font-size:14px;font-weight:800;margin:24px 0 12px;display:flex;align-items:center;gap:10px;}
+.comm-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.tier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.tier-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.tier-hdr{padding:14px 16px 12px;text-align:center;}
+.tier-icon{font-size:26px;margin-bottom:6px;}
+.tier-name{font-size:13px;font-weight:800;margin-bottom:3px;}
+.tier-desc{font-size:10px;color:var(--muted2);line-height:1.4;}
+.tier-rate{font-size:24px;font-weight:900;margin:10px 0 3px;}
+.tier-rate-lbl{font-size:9px;color:var(--muted);}
+.tier-body{padding:12px 16px;border-top:1px solid var(--border);}
+.tier-row{display:flex;align-items:flex-start;gap:6px;font-size:10px;color:var(--muted2);margin-bottom:6px;line-height:1.4;}
+.tier-row:last-child{margin-bottom:0;}
+.tier-row::before{content:'→';color:var(--nc-purple-light);flex-shrink:0;}
+.deal-table,.spiff-table,.bonus-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px;}
+.deal-table th,.spiff-table th,.bonus-table th{background:var(--surface2);padding:9px 12px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border);text-align:center;}
+.deal-table th:first-child,.spiff-table th:first-child,.bonus-table th:first-child{text-align:left;}
+.deal-table td,.spiff-table td,.bonus-table td{padding:10px 12px;font-size:11px;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;vertical-align:middle;}
+.deal-table td:first-child,.spiff-table td:first-child,.bonus-table td:first-child{text-align:left;}
+.deal-table tr:last-child td,.spiff-table tr:last-child td,.bonus-table tr:last-child td{border-bottom:none;}
+.deal-table tr:hover td,.spiff-table tr:hover td,.bonus-table tr:hover td{background:rgba(255,255,255,.02);}
+.dsb{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:5px;}
+.spiff-amt{font-size:13px;font-weight:800;color:var(--gold);}
+.bonus-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px;}
+.bonus-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.bonus-card-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.bonus-icon{font-size:20px;}
+.bonus-title{font-size:13px;font-weight:700;}
+.bonus-freq{font-size:9px;color:var(--muted);margin-top:1px;}
+.bonus-amount{font-size:22px;font-weight:900;margin-bottom:3px;}
+.bonus-amount-lbl{font-size:9px;color:var(--muted);margin-bottom:10px;}
+.bonus-rule{font-size:10px;color:var(--muted2);margin-bottom:5px;line-height:1.5;}
+.bonus-rule strong{color:var(--text);}
+.research-box{background:rgba(118,47,196,.06);border:1px solid rgba(118,47,196,.2);border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:10px;color:var(--muted2);line-height:1.6;}
+.research-box strong{color:var(--nc-purple-light);}
+.plg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.plg-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.plg-card-title{font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.plg-rule{font-size:10px;color:var(--muted2);margin-bottom:7px;line-height:1.5;padding-left:10px;border-left:2px solid var(--nc-purple);}
+.plg-rule strong{color:var(--text);}
+
+/* ── SETTINGS TAB ── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.settings-card.full{grid-column:1/-1;}
+.settings-title{font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.settings-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.settings-label{font-size:11px;color:var(--muted2);width:160px;flex-shrink:0;}
+.settings-input{background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--text);font-family:'Poppins',sans-serif;flex:1;outline:none;transition:border-color .2s;}
+.settings-input:focus{border-color:var(--nc-purple-light);}
+.settings-input.wide{width:100%;}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.team-member-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;}
+.tm-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.tm-input{background:var(--surface3);border:1px solid var(--border2);border-radius:5px;padding:5px 8px;font-size:11px;color:var(--text);font-family:'Poppins',sans-serif;width:100%;outline:none;margin-bottom:5px;}
+.tm-input:focus{border-color:var(--nc-purple-light);}
+.settings-btn{background:var(--nc-purple);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.settings-btn:hover{background:var(--nc-purple-light);}
+.settings-btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border2);}
+.settings-btn.secondary:hover{background:var(--surface3);}
+.settings-btn.danger{background:rgba(247,95,95,.15);color:var(--red);border:1px solid rgba(247,95,95,.3);}
+.settings-btn.danger:hover{background:rgba(247,95,95,.3);}
+.settings-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.notion-export-area{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px;}
+.notion-export-area textarea{width:100%;background:var(--surface3);border:1px solid var(--border2);border-radius:6px;padding:10px;font-size:10px;color:var(--muted2);font-family:monospace;resize:vertical;min-height:120px;outline:none;}
+.save-indicator{font-size:10px;color:var(--nc-green);display:none;align-items:center;gap:4px;}
+.save-indicator.show{display:flex;}
+
+/* ── FOOTER ── */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted);}
+.footer strong{color:var(--text);}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--muted);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--nc-purple);color:#fff;padding:10px 18px;border-radius:8px;font-size:11px;font-weight:600;z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:0">
+    <div class="nc-logo">
+      <div class="nc-logo-icon">NC</div>
+      <div>
+        <div class="nc-logo-text">NameCoach — 2026 Sprint</div>
+        <div class="nc-logo-sub">War Room · <span id="sprintDates">Feb 23 – Apr 17</span> · Chief of Staff View</div>
+      </div>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-stats">
+      <div class="stat-item"><div class="stat-val" style="color:var(--nc-green)" id="stat-arr">$2.69M</div><div class="stat-lbl">Current ARR</div></div>
+      <div class="stat-item"><div class="stat-val" style="color:var(--blue)" id="stat-pipeline">$1.9M</div><div class="stat-lbl">Pipeline Target</div></div>
+      <div class="stat-item"><div class="stat-val" style="color:var(--gold)" id="stat-funding">$500K–$1M</div><div class="stat-lbl">Funding Goal</div></div>
+      <div class="stat-item"><div class="stat-val" style="color:var(--nc-purple-light)" id="stat-team">15</div><div class="stat-lbl">Team Members</div></div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="save-indicator" id="saveIndicator">✓ Saved</div>
+    <button class="edit-toggle" id="editToggle" onclick="toggleEditMode()">✏️ Edit Mode</button>
+    <div class="countdown-badge">
+      <div class="countdown-num" id="countdown">—</div>
+      <div class="countdown-lbl">Days Left</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TABS ══ -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('gantt',this)">📅 War Room Gantt</button>
+  <button class="tab-btn" onclick="showTab('company-kpi',this)">🏢 Company KPIs</button>
+  <button class="tab-btn" onclick="showTab('dept-kpi',this)">📊 Department KPIs</button>
+  <button class="tab-btn" onclick="showTab('individual-kpi',this)">👤 Individual KPIs</button>
+  <button class="tab-btn" onclick="showTab('commission',this)">💰 Commission</button>
+  <button class="tab-btn" onclick="showTab('settings',this)">⚙️ Settings</button>
+</div>
+
+<!-- ══════════ TAB: GANTT ══════════ -->
+<div id="tab-gantt" class="tab-panel active">
+
+  <!-- North Star -->
+  <div class="north-star">
+    <div class="ns-label">⭐ North Star</div>
+    <div class="ns-pills" id="northStarPills"></div>
+  </div>
+
+  <!-- Week Bar -->
+  <div class="week-bar" id="weekBar"></div>
+
+  <div class="main">
+
+    <!-- Raise Banner -->
+    <div class="raise-banner">
+      <div style="font-size:20px;flex-shrink:0;margin-top:2px">🚨</div>
+      <div>
+        <div class="rb-title">FUNDRAISING IS THE NORTH STAR — Everything feeds the raise</div>
+        <div class="rb-desc">Every team's work this sprint either directly closes the round or de-risks the story for investors. Product ships demos. Sales proves pipeline. CS proves retention. Marketing builds the deck. Finance secures working capital. Ops shows operational maturity.</div>
+        <div class="rb-tags">
+          <div class="rb-tag">WeFunder $500K (Crowd)</div>
+          <div class="rb-tag">Bridge Round (Term Sheet)</div>
+          <div class="rb-tag">LOC $750K–$1M (Working Capital)</div>
+          <div class="rb-tag">Advisors (Workday, Education)</div>
+          <div class="rb-tag">Investor List PHX + SF</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gantt Sections rendered by JS -->
+    <div id="ganttSections"></div>
+
+    <!-- COS Panel -->
+    <div class="cos-panel">
+      <div class="cos-card">
+        <div class="cos-card-title" style="color:var(--red)">🚨 Critical Path (Must-Haves)</div>
+        <div class="cos-item">1. Investor deck &amp; WeFunder live by <span class="deadline">W3 (Mar 9)</span></div>
+        <div class="cos-item">2. Bridge term sheet by <span class="deadline">W4 (Mar 16)</span></div>
+        <div class="cos-item">3. LOC application submitted by <span class="deadline">W1 (Feb 28)</span></div>
+        <div class="cos-item">4. PHX office signed by <span class="deadline">W1 (Feb 28)</span></div>
+        <div class="cos-item">5. Top accounts list &amp; SFDC live by <span class="deadline">W2 (Mar 7)</span></div>
+        <div class="cos-item">6. Roadmap published by <span class="deadline">W1 (Feb 28)</span></div>
+        <div class="cos-item">7. Commission plan signed off by <span class="deadline">W2 (Mar 7)</span></div>
+      </div>
+      <div class="cos-card">
+        <div class="cos-card-title" style="color:var(--gold)">⚠️ Risk Flags</div>
+        <div class="cos-item"><span class="risk-text">LOC process takes 4–6 weeks</span> — start <strong>immediately</strong></div>
+        <div class="cos-item"><span class="risk-text">WeFunder setup requires legal review</span> — begin W1</div>
+        <div class="cos-item">Channel partners need 2–3 week negotiation cycles</div>
+        <div class="cos-item"><span class="risk-text">Churn risk highest in Education segment</span> (seasonal)</div>
+        <div class="cos-item">SFDC migration can stall if not owned by one person</div>
+        <div class="cos-item">PLG signup flow needs Product + Marketing alignment W3</div>
+      </div>
+      <div class="cos-card">
+        <div class="cos-card-title" style="color:var(--nc-green)">✅ Weekly Cadence</div>
+        <div class="cos-item"><strong>Monday:</strong> All-hands standup (30 min) — PHX office</div>
+        <div class="cos-item"><strong>Wednesday:</strong> Trevor 1:1s with each pod lead</div>
+        <div class="cos-item"><strong>Friday:</strong> KPI review — pipeline, churn, burn</div>
+        <div class="cos-item"><strong>Bi-weekly:</strong> Board / investor update</div>
+        <div class="cos-item"><strong>Monthly:</strong> Full financial waterfall review</div>
+        <div class="cos-item"><strong>PHX Office:</strong> Mon / Wed / Fri in-person</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ TAB: COMPANY KPIs ══════════ -->
+<div id="tab-company-kpi" class="tab-panel">
+  <div class="main">
+    <div style="margin-bottom:20px">
+      <div style="font-size:20px;font-weight:800">🏢 Company KPIs — 8-Week Sprint</div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:4px">North star metrics · Feb 23 – Apr 17, 2026 · <span id="currentWeekLabel" style="color:var(--nc-purple-light);font-weight:700"></span></div>
+    </div>
+    <div class="kpi-grid" id="companyKpiCards"></div>
+    <div class="kpi-section-title">📋 Full Company KPI Scorecard</div>
+    <table class="kpi-table" id="companyKpiTable">
+      <thead><tr><th style="width:200px">KPI</th><th>Category</th><th>Current</th><th>8-Week Target</th><th>Deadline</th><th>Owner</th><th>Status</th></tr></thead>
+      <tbody id="companyKpiBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════ TAB: DEPT KPIs ══════════ -->
+<div id="tab-dept-kpi" class="tab-panel">
+  <div class="main">
+    <div style="margin-bottom:20px">
+      <div style="font-size:20px;font-weight:800">📊 Department KPIs — 3 Pods</div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:4px">Team-level targets · Growth/GTM · Product · Ops</div>
+    </div>
+    <div id="deptKpiContent"></div>
+  </div>
+</div>
+
+<!-- ══════════ TAB: INDIVIDUAL KPIs ══════════ -->
+<div id="tab-individual-kpi" class="tab-panel">
+  <div class="main">
+    <div style="margin-bottom:20px">
+      <div style="font-size:20px;font-weight:800">👤 Individual KPIs — 15 Team Members</div>
+      <div style="font-size:11px;color:var(--muted2);margin-top:4px">Personal targets · Tied to commission structure · Everyone accountable to the raise</div>
+    </div>
+    <div class="ind-grid" id="individualKpiCards"></div>
+    <div class="research-box">
+      <strong>Note for Trevor:</strong> Update names and roles in the <strong>Settings tab</strong>. Commission eligibility on each card links directly to the Commission Structure tab — every person has at least one tier they can earn from. This is intentional: it creates a culture where everyone is invested in revenue growth.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB: COMMISSION ══════════ -->
+<div id="tab-commission" class="tab-panel">
+  <div class="main">
+    <div class="comm-hero">
+      <div class="comm-hero-title">💰 NameCoach All-Employee Commission Structure</div>
+      <div class="comm-hero-sub">Every person on the team — regardless of role — is eligible to earn commission. Four tiers: Referral, Sales, Delivery/CS, and Upsell/Expansion. Deal-size accelerators, monthly &amp; quarterly team bonuses, and targeted spiffs to drive urgency. Research-backed for a 15-person early-stage SaaS team running PLG + SLG.</div>
+      <div class="comm-pills">
+        <div class="cpill">15-Person Team</div><div class="cpill">PLG + SLG Hybrid</div>
+        <div class="cpill green">Everyone Eligible</div><div class="cpill gold">Deal-Size Accelerators</div>
+        <div class="cpill">Monthly + Quarterly Bonuses</div><div class="cpill">8 Spiffs</div>
+      </div>
+    </div>
+    <div class="research-box">
+      <strong>Research Foundation:</strong> Based on OpenView Partners PLG compensation benchmarks, Winning by Design SaaS comp frameworks, and Everstage spiff best practices. For early-stage SaaS teams (&lt;$5M ARR), recommended base commission is <strong>8–12% ACV for full-cycle sales reps</strong>, referral tiers at <strong>3–5%</strong>, delivery/CS upsell at <strong>5–8%</strong>. Monthly bonuses outperform annual for small teams (23% more targets hit). Spiffs of $500–$2,500 deliver a <strong>44% performance lift</strong> when tied to a specific goal and time window (BCG research).
+    </div>
+    <div class="comm-section-title">🏆 The Four Commission Tiers</div>
+    <div class="tier-grid">
+      <div class="tier-card" style="border-color:rgba(118,47,196,.4)">
+        <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(118,47,196,.15),transparent)">
+          <div class="tier-icon">🤝</div><div class="tier-name" style="color:var(--nc-purple-light)">Referral Tier</div>
+          <div class="tier-desc">Anyone who makes a warm intro or referral that results in a closed deal</div>
+          <div class="tier-rate" style="color:var(--nc-purple-light)">3%</div>
+          <div class="tier-rate-lbl">of closed ACV · paid on close</div>
+        </div>
+        <div class="tier-body">
+          <div class="tier-row">Eligible: <strong>All 15 employees</strong> — Ops, Finance, Engineering, Legal, Marketing</div>
+          <div class="tier-row">Minimum deal size: <strong>$5K ACV</strong> to qualify</div>
+          <div class="tier-row">Must be logged in SFDC before deal closes</div>
+          <div class="tier-row">$25K deal → <strong>$750 referral bonus</strong></div>
+          <div class="tier-row">$100K deal → <strong>$3,000 referral bonus</strong></div>
+          <div class="tier-row">Channel partners earn 5% (separate agreement)</div>
+        </div>
+      </div>
+      <div class="tier-card" style="border-color:rgba(79,142,247,.4)">
+        <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(79,142,247,.15),transparent)">
+          <div class="tier-icon">💼</div><div class="tier-name" style="color:var(--blue)">Sales Tier</div>
+          <div class="tier-desc">For those who own and manage the full sales process from discovery to close</div>
+          <div class="tier-rate" style="color:var(--blue)">10%</div>
+          <div class="tier-rate-lbl">of closed ACV · paid on close + accelerators</div>
+        </div>
+        <div class="tier-body">
+          <div class="tier-row">Eligible: <strong>AE, BDR/SDR, Sales Lead</strong></div>
+          <div class="tier-row">Base 10% ACV; accelerators above quota</div>
+          <div class="tier-row">Quota: <strong>$150K ACV/quarter</strong> per AE</div>
+          <div class="tier-row">$50K deal → <strong>$5,000 commission</strong></div>
+          <div class="tier-row">$250K deal → <strong>$30,000</strong> (12% accelerator)</div>
+          <div class="tier-row">Multi-year: commission on Year 1 ACV only</div>
+        </div>
+      </div>
+      <div class="tier-card" style="border-color:rgba(0,208,132,.4)">
+        <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(0,208,132,.15),transparent)">
+          <div class="tier-icon">🎓</div><div class="tier-name" style="color:var(--nc-green)">Delivery / CS Tier</div>
+          <div class="tier-desc">CS and delivery team members who manage implementation and ensure customer success</div>
+          <div class="tier-rate" style="color:var(--nc-green)">5%</div>
+          <div class="tier-rate-lbl">of ACV on accounts they onboard · paid quarterly</div>
+        </div>
+        <div class="tier-body">
+          <div class="tier-row">Eligible: <strong>CS Manager, CS Rep, Implementation</strong></div>
+          <div class="tier-row">Earned on new logos onboarded within 90 days</div>
+          <div class="tier-row">Requires: go-live on time (&lt;5 day onboard target)</div>
+          <div class="tier-row">$30K account → <strong>$1,500 delivery bonus</strong></div>
+          <div class="tier-row">+$500 if customer NPS ≥ 8 within 30 days</div>
+          <div class="tier-row">Paid quarterly to smooth cashflow impact</div>
+        </div>
+      </div>
+      <div class="tier-card" style="border-color:rgba(245,166,35,.4)">
+        <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(245,166,35,.15),transparent)">
+          <div class="tier-icon">📈</div><div class="tier-name" style="color:var(--gold)">Upsell / Expansion Tier</div>
+          <div class="tier-desc">For anyone who identifies and closes expansion revenue within existing accounts</div>
+          <div class="tier-rate" style="color:var(--gold)">7%</div>
+          <div class="tier-rate-lbl">of expansion ACV · paid on close</div>
+        </div>
+        <div class="tier-body">
+          <div class="tier-row">Eligible: <strong>CS, Sales, and any employee</strong> who surfaces the upsell</div>
+          <div class="tier-row">Split: 4% CS (owns relationship) + 3% Sales (closes)</div>
+          <div class="tier-row">$20K expansion → CS <strong>$800</strong> + Sales <strong>$600</strong></div>
+          <div class="tier-row">Referral bonus still applies if non-CS surfaces it</div>
+          <div class="tier-row">Minimum expansion: <strong>$3K ACV</strong></div>
+          <div class="tier-row">Seat expansions, module upgrades, multi-year renewals</div>
+        </div>
+      </div>
+    </div>
+    <div class="research-box" style="border-color:rgba(245,166,35,.3)">
+      <strong style="color:var(--gold)">🔥 Combo Tier (All Three):</strong> If one person sources the referral, manages the sales process, AND delivers the implementation, they earn the full combined rate: <strong>3% + 10% + 5% = 18% of ACV</strong>, capped at $15K per deal. Example: $100K deal fully owned → <strong>$15,000 commission</strong>.
+    </div>
+    <div class="comm-section-title">📊 Deal-Size Accelerator Table</div>
+    <table class="deal-table">
+      <thead><tr><th>Deal Size (ACV)</th><th>Referral</th><th>Sales</th><th>Upsell</th><th>Delivery</th><th>Spiff / Bonus</th><th>Sales Payout Example</th></tr></thead>
+      <tbody>
+        <tr><td><div class="dsb" style="background:rgba(255,255,255,.06);color:var(--muted2)">$5K–$10K</div></td><td style="color:var(--nc-purple-light);font-weight:700">3%</td><td style="color:var(--blue);font-weight:700">8%</td><td style="color:var(--gold);font-weight:700">5%</td><td style="color:var(--nc-green);font-weight:700">4%</td><td style="color:var(--muted)">—</td><td style="color:var(--muted2);font-size:10px">$400–$800</td></tr>
+        <tr><td><div class="dsb" style="background:rgba(79,142,247,.1);color:var(--blue)">$10K–$50K</div></td><td style="color:var(--nc-purple-light);font-weight:700">3%</td><td style="color:var(--blue);font-weight:700">10%</td><td style="color:var(--gold);font-weight:700">7%</td><td style="color:var(--nc-green);font-weight:700">5%</td><td style="color:var(--gold);font-size:10px">$500 first deal in tier</td><td style="color:var(--muted2);font-size:10px">$1,000–$5,000</td></tr>
+        <tr><td><div class="dsb" style="background:rgba(0,208,132,.1);color:var(--nc-green)">$50K–$100K</div></td><td style="color:var(--nc-purple-light);font-weight:700">3.5%</td><td style="color:var(--blue);font-weight:700">11%</td><td style="color:var(--gold);font-weight:700">8%</td><td style="color:var(--nc-green);font-weight:700">6%</td><td style="color:var(--gold);font-size:10px">$1,000 spiff + team dinner</td><td style="color:var(--muted2);font-size:10px">$5,500–$11,000</td></tr>
+        <tr><td><div class="dsb" style="background:rgba(245,166,35,.12);color:var(--gold)">$100K–$250K</div></td><td style="color:var(--nc-purple-light);font-weight:700">4%</td><td style="color:var(--blue);font-weight:700">12%</td><td style="color:var(--gold);font-weight:700">9%</td><td style="color:var(--nc-green);font-weight:700">7%</td><td style="color:var(--gold);font-size:10px">$2,500 spiff + announcement</td><td style="color:var(--muted2);font-size:10px">$12,000–$30,000</td></tr>
+        <tr><td><div class="dsb" style="background:rgba(247,95,95,.1);color:var(--red)">$250K–$500K</div></td><td style="color:var(--nc-purple-light);font-weight:700">4%</td><td style="color:var(--blue);font-weight:700">12%</td><td style="color:var(--gold);font-weight:700">10%</td><td style="color:var(--nc-green);font-weight:700">7%</td><td style="color:var(--red);font-size:10px">$5,000 + President's Club</td><td style="color:var(--muted2);font-size:10px">$30,000–$60,000</td></tr>
+        <tr><td><div class="dsb" style="background:rgba(118,47,196,.15);color:var(--nc-purple-light)">$500K–$1M+</div></td><td style="color:var(--nc-purple-light);font-weight:700">5%</td><td style="color:var(--blue);font-weight:700">12%</td><td style="color:var(--gold);font-weight:700">10%</td><td style="color:var(--nc-green);font-weight:700">8%</td><td style="color:var(--nc-purple-light);font-size:10px">$10,000 + equity discussion</td><td style="color:var(--muted2);font-size:10px">$60,000–$120,000</td></tr>
+      </tbody>
+    </table>
+    <div class="comm-section-title">🎯 Team Bonuses</div>
+    <div class="bonus-grid">
+      <div class="bonus-card" style="border-color:rgba(0,208,132,.3)">
+        <div class="bonus-card-hdr"><div class="bonus-icon">📅</div><div><div class="bonus-title" style="color:var(--nc-green)">Monthly Team Bonus</div><div class="bonus-freq">Paid first Friday of each month</div></div></div>
+        <div class="bonus-amount" style="color:var(--nc-green)">$500</div>
+        <div class="bonus-amount-lbl">per person · if team hits monthly revenue target</div>
+        <div class="bonus-rule"><strong>Trigger:</strong> Team closes ≥ $75K new ACV in the calendar month</div>
+        <div class="bonus-rule"><strong>Why monthly?</strong> Monthly bonuses outperform quarterly for small teams — 23% more targets hit. Prevents sandbagging.</div>
+        <div class="bonus-rule"><strong>All 15 employees</strong> receive this — it's a team win.</div>
+      </div>
+      <div class="bonus-card" style="border-color:rgba(118,47,196,.3)">
+        <div class="bonus-card-hdr"><div class="bonus-icon">📆</div><div><div class="bonus-title" style="color:var(--nc-purple-light)">Quarterly Performance Bonus</div><div class="bonus-freq">Paid end of each quarter</div></div></div>
+        <div class="bonus-amount" style="color:var(--nc-purple-light)">$1,500–$3,000</div>
+        <div class="bonus-amount-lbl">per person · tiered by % of quarterly target hit</div>
+        <div class="bonus-rule"><strong>75–89%:</strong> $1,500 · <strong>90–99%:</strong> $2,000 · <strong>100–119%:</strong> $2,500 · <strong>120%+:</strong> $3,000</div>
+        <div class="bonus-rule"><strong>Quarterly target:</strong> $225K new ACV (Q1 2026)</div>
+        <div class="bonus-rule">120%+ also earns <strong>President's Club eligibility</strong></div>
+      </div>
+      <div class="bonus-card" style="border-color:rgba(245,166,35,.3)">
+        <div class="bonus-card-hdr"><div class="bonus-icon">🏆</div><div><div class="bonus-title" style="color:var(--gold)">Fundraising Milestone Bonus</div><div class="bonus-freq">One-time · paid on close of round</div></div></div>
+        <div class="bonus-amount" style="color:var(--gold)">$1,000–$2,500</div>
+        <div class="bonus-amount-lbl">per person · if WeFunder or Bridge closes by Apr 17</div>
+        <div class="bonus-rule"><strong>WeFunder $250K+:</strong> $1,000 · <strong>WeFunder $500K:</strong> $1,500</div>
+        <div class="bonus-rule"><strong>Bridge signed:</strong> $2,000 · <strong>Both by Apr 17:</strong> $2,500</div>
+        <div class="bonus-rule">Aligns the whole team to the fundraising north star.</div>
+      </div>
+    </div>
+    <div class="comm-section-title">⚡ Spiffs — Short-Term Urgency Incentives</div>
+    <table class="spiff-table">
+      <thead><tr><th>Spiff</th><th>Trigger</th><th>Reward</th><th>Eligible</th><th>Window</th></tr></thead>
+      <tbody>
+        <tr><td><strong>🦄 First $50K+ Deal</strong></td><td>First deal over $50K ACV closed</td><td><span class="spiff-amt">$2,500</span> cash</td><td>Sales, BDR</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>🚀 First $100K+ Deal</strong></td><td>First deal over $100K ACV closed</td><td><span class="spiff-amt">$5,000</span> + announcement</td><td>Sales</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>⚡ Speed Close</strong></td><td>Deal closed within 14 days of first contact</td><td><span class="spiff-amt">$750</span> on top of commission</td><td>Sales, BDR</td><td>Ongoing</td></tr>
+        <tr><td><strong>🌱 PLG Convert</strong></td><td>Self-serve signup converts to paid ($5K+ ACV)</td><td><span class="spiff-amt">$500</span> per conversion</td><td>Product, Sales, CS</td><td>W5–W8</td></tr>
+        <tr><td><strong>🤝 Channel Partner Close</strong></td><td>First deal sourced through signed channel partner</td><td><span class="spiff-amt">$1,500</span> + team lunch</td><td>Sales</td><td>W4–W8</td></tr>
+        <tr><td><strong>📣 Referral Blitz</strong></td><td>Any employee submits 3+ qualified referrals in one week</td><td><span class="spiff-amt">$300</span> gift card</td><td>All 15 employees</td><td>W2–W4</td></tr>
+        <tr><td><strong>💚 Upsell Sprint</strong></td><td>CS closes 2+ upsells in a single month</td><td><span class="spiff-amt">$1,000</span> + President's Club point</td><td>CS Manager, CS Rep</td><td>Mar &amp; Apr</td></tr>
+        <tr><td><strong>🏢 Enterprise Logo</strong></td><td>Closes a Fortune 1000 / Workday ecosystem account</td><td><span class="spiff-amt">$3,000</span> + equity discussion</td><td>Sales, CS, Trevor</td><td>Sprint-wide</td></tr>
+      </tbody>
+    </table>
+    <div class="comm-section-title">🌱 PLG + SLG Hybrid Rules</div>
+    <div class="plg-grid">
+      <div class="plg-card" style="border-color:rgba(118,47,196,.3)">
+        <div class="plg-card-title" style="color:var(--nc-purple-light)">🌱 Product-Led Growth (PLG)</div>
+        <div class="plg-rule"><strong>Self-serve signups:</strong> No commission until conversion to paid. Product team earns $200 PLG activation bonus per 10 signups that reach "activated" status.</div>
+        <div class="plg-rule"><strong>PLG → Paid conversion:</strong> Person who nurtures the conversion earns full Referral rate (3%) on top of any Sales commission.</div>
+        <div class="plg-rule"><strong>Attribution:</strong> Must be logged in SFDC within 48 hours of first contact. First-touch attribution wins if disputed.</div>
+      </div>
+      <div class="plg-card" style="border-color:rgba(79,142,247,.3)">
+        <div class="plg-card-title" style="color:var(--blue)">💼 Sales-Led Growth (SLG)</div>
+        <div class="plg-rule"><strong>Outbound / enterprise:</strong> Full Sales tier applies (8–12% ACV). No cap except Combo Tier cap of $15K.</div>
+        <div class="plg-rule"><strong>Inbound leads (marketing-sourced):</strong> Sales earns 8% (base, no accelerator). Marketing earns $250 lead-to-close bonus.</div>
+        <div class="plg-rule"><strong>Channel partner deals:</strong> Sales earns 6% (reduced since partner sourced). Partner earns 5% per their agreement.</div>
+        <div class="plg-rule"><strong>Split deals:</strong> 60/40 primary/secondary unless agreed and logged in SFDC before close.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB: SETTINGS ══════════ -->
+<div id="tab-settings" class="tab-panel">
+  <div class="main">
+    <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:20px;font-weight:800">⚙️ Settings — Configure Your War Room</div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:4px">All data is stored in your browser. Changes auto-save and persist across sessions.</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="settings-btn secondary" onclick="resetToDefaults()">↺ Reset to Defaults</button>
+        <button class="settings-btn" onclick="saveAllSettings()">💾 Save All</button>
+      </div>
+    </div>
+
+    <div class="settings-grid">
+
+      <!-- Company Config -->
+      <div class="settings-card">
+        <div class="settings-title">🏢 Company Configuration</div>
+        <div class="settings-row"><span class="settings-label">Company Name</span><input class="settings-input" id="cfg-companyName" value="NameCoach"/></div>
+        <div class="settings-row"><span class="settings-label">Sprint Start Date</span><input class="settings-input" id="cfg-sprintStart" type="date" value="2026-02-23"/></div>
+        <div class="settings-row"><span class="settings-label">Sprint End Date</span><input class="settings-input" id="cfg-sprintEnd" type="date" value="2026-04-17"/></div>
+        <div class="settings-row"><span class="settings-label">Current ARR</span><input class="settings-input" id="cfg-arr" value="$2.69M"/></div>
+        <div class="settings-row"><span class="settings-label">Pipeline Target</span><input class="settings-input" id="cfg-pipeline" value="$1.9M"/></div>
+        <div class="settings-row"><span class="settings-label">Funding Goal</span><input class="settings-input" id="cfg-funding" value="$500K–$1M"/></div>
+        <div class="settings-row"><span class="settings-label">Team Size</span><input class="settings-input" id="cfg-teamSize" type="number" value="15"/></div>
+      </div>
+
+      <!-- Week Themes -->
+      <div class="settings-card">
+        <div class="settings-title">📅 Week Themes</div>
+        <div id="weekThemeInputs"></div>
+      </div>
+
+      <!-- Team Members -->
+      <div class="settings-card full">
+        <div class="settings-title">👥 Team Members (15 People)</div>
+        <div class="team-grid" id="teamMemberInputs"></div>
+      </div>
+
+      <!-- North Star Pills -->
+      <div class="settings-card full">
+        <div class="settings-title">⭐ North Star Goals</div>
+        <div id="northStarInputs"></div>
+        <button class="settings-btn secondary" style="margin-top:10px" onclick="addNorthStarPill()">+ Add Goal</button>
+      </div>
+
+      <!-- Export / Import -->
+      <div class="settings-card full">
+        <div class="settings-title">📤 Export &amp; Backup</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+          <button class="settings-btn" onclick="exportToNotion()">📋 Export to Notion (Copy Markdown)</button>
+          <button class="settings-btn secondary" onclick="exportJSON()">⬇️ Download Backup (JSON)</button>
+          <button class="settings-btn secondary" onclick="document.getElementById('importFile').click()">⬆️ Import Backup (JSON)</button>
+          <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)"/>
+        </div>
+        <div class="notion-export-area">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:6px">Notion Markdown Preview (click "Export to Notion" to generate)</div>
+          <textarea id="notionPreview" readonly placeholder="Click 'Export to Notion' to generate markdown you can paste directly into Notion..."></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<div class="footer">
+  <div><strong>NameCoach — 2026 Sprint War Room</strong> · <span id="footerDates"></span> · Confidential — Internal Use Only</div>
+  <div>Week <span id="footerWeek" style="color:var(--nc-purple-light);font-weight:700">—</span> of 8 · Built by Chief of Staff · <span id="lastUpdated"></span></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════
+// DEFAULT DATA
+// ════════════════════════════════════════════════
+const DEFAULTS = {
+  config: {
+    companyName: 'NameCoach',
+    sprintStart: '2026-02-23',
+    sprintEnd: '2026-04-17',
+    arr: '$2.69M',
+    pipeline: '$1.9M',
+    funding: '$500K–$1M',
+    teamSize: 15
+  },
+  weekThemes: [
+    {dates:'Feb 23–28', theme:'Foundation'},
+    {dates:'Mar 2–7',   theme:'Activation'},
+    {dates:'Mar 9–14',  theme:'Build'},
+    {dates:'Mar 16–21', theme:'Momentum'},
+    {dates:'Mar 23–28', theme:'Acceleration'},
+    {dates:'Mar 30–Apr 4', theme:'Close'},
+    {dates:'Apr 6–11',  theme:'Final Push'},
+    {dates:'Apr 13–17', theme:'🏁 Deadline'}
+  ],
+  northStar: [
+    {text:'🎯 Close Bridge / WeFunder by Apr 17', hot:true},
+    {text:'🚀 Ship Voice AI Features (Labs)', hot:false},
+    {text:'📉 Hold Churn < 5% / Upsell 3+ Accounts', hot:false},
+    {text:'💰 $900K+ Pipeline by Mar', hot:false},
+    {text:'🌐 Website + Investor Deck Live by W3', hot:false},
+    {text:'🏦 $500K–$1M LOC / Working Capital', hot:false},
+    {text:'🏢 PHX Office Signed & Open', hot:false}
+  ],
+  team: [
+    {name:'Trevor',      role:'CEO / Fundraising Lead',      dept:'Executive',  color:'#f5a623', tiers:['Fundraising']},
+    {name:'Sales Lead',  role:'Account Executive',           dept:'Growth/GTM', color:'#4f8ef7', tiers:['Sales','Referral']},
+    {name:'BDR / SDR',   role:'Business Development',        dept:'Growth/GTM', color:'#4f8ef7', tiers:['Sales','Referral']},
+    {name:'CS Manager',  role:'Customer Success Lead',       dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
+    {name:'CS Rep',      role:'Customer Success',            dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
+    {name:'Marketing Lead', role:'Marketing & Brand',        dept:'Growth/GTM', color:'#f75fa0', tiers:['Referral','Lead Bonus']},
+    {name:'Product Manager', role:'Product Lead',            dept:'Product',    color:'#9b5fe0', tiers:['Referral','PLG Bonus']},
+    {name:'Engineer 1',  role:'Senior Engineer',             dept:'Product',    color:'#762fc4', tiers:['Referral','PLG Bonus']},
+    {name:'Engineer 2',  role:'Full-Stack Engineer',         dept:'Product',    color:'#762fc4', tiers:['Referral','PLG Bonus']},
+    {name:'Designer',    role:'UX / Product Design',         dept:'Product',    color:'#9b5fe0', tiers:['Referral']},
+    {name:'Finance Lead', role:'Finance & FP&A',             dept:'Ops',        color:'#31cdd3', tiers:['Referral']},
+    {name:'Ops Lead',    role:'Operations',                  dept:'Ops',        color:'#f7874f', tiers:['Referral']},
+    {name:'Legal',       role:'Legal / Compliance',          dept:'Ops',        color:'#c8a020', tiers:['Referral']},
+    {name:'Data / Analytics', role:'Data & Reporting',       dept:'Ops',        color:'#f7874f', tiers:['Referral','PLG Bonus']},
+    {name:'Admin / EA',  role:'Executive Assistant',         dept:'Ops',        color:'#f7874f', tiers:['Referral']}
+  ],
+  tasks: [
+    // Trevor
+    {id:'t1', dept:'Trevor', section:'s-trevor', name:'Investor List (PHX/SF)', priority:'p1', metric:'20+ qualified investors mapped with contact info & warm intros', weeks:[1,1,0,0,0,0,0,0], status:'not-started', owner:'Trevor'},
+    {id:'t2', dept:'Trevor', section:'s-trevor', name:'WeFunder Campaign ($500K)', priority:'p1', metric:'Campaign live W3, $500K target, updates every 2 weeks', weeks:[1,1,1,1,1,1,1,1], status:'not-started', owner:'Trevor'},
+    {id:'t3', dept:'Trevor', section:'s-trevor', name:'Bridge Presentation', priority:'p1', metric:'Deck to 10+ investors; term sheet by W4', weeks:[1,1,1,'M',0,0,0,0], status:'not-started', owner:'Trevor'},
+    {id:'t4', dept:'Trevor', section:'s-trevor', name:'Board Updates', priority:'p2', metric:'Board aligned; 2 updates delivered (W2 + W5)', weeks:[0,'S',0,0,'S',0,0,0], status:'not-started', owner:'Trevor'},
+    {id:'t5', dept:'Trevor', section:'s-trevor', name:'Advisors (Workday, Education, etc.)', priority:'p2', metric:'2+ signed advisors with domain credibility', weeks:[1,1,1,0,0,0,0,0], status:'not-started', owner:'Trevor'},
+    {id:'t6', dept:'Trevor', section:'s-trevor', name:'Investor Positioning / SFDC', priority:'p2', metric:'All investor contacts in SFDC with stage, notes, next steps', weeks:[1,1,1,1,0,0,0,0], status:'not-started', owner:'Trevor'},
+    // Product
+    {id:'p1', dept:'Product', section:'s-product', name:'Roadmap Timeline', priority:'p1', metric:'Published & shared with all stakeholders by W1', weeks:['M',0,0,0,0,0,0,0], status:'not-started', owner:'PM'},
+    {id:'p2', dept:'Product', section:'s-product', name:'New Models & Euphonia', priority:'p1', metric:'Euphonia v2 shipped; 98.7% accuracy maintained', weeks:[1,1,1,1,0,0,0,0], status:'not-started', owner:'PM'},
+    {id:'p3', dept:'Product', section:'s-product', name:'Coaching Demo UI/UX', priority:'p1', metric:'Demo-ready by W4; investor-grade polish', weeks:[0,1,1,'M',0,0,0,0], status:'not-started', owner:'PM'},
+    {id:'p4', dept:'Product', section:'s-product', name:'PLG SignUp Flow', priority:'p1', metric:'Self-serve signup live; 50+ organic signups by W6', weeks:[0,0,1,1,'M',0,0,0], status:'not-started', owner:'PM'},
+    {id:'p5', dept:'Product', section:'s-product', name:'New UI/UX Cut Over', priority:'p2', metric:'New UI live in production; zero regression bugs', weeks:[0,0,1,1,1,1,0,0], status:'not-started', owner:'PM'},
+    {id:'p6', dept:'Product', section:'s-product', name:'Documentation & Product Tooltips', priority:'p2', metric:'100% of new features have in-app tooltips & help docs', weeks:[0,1,1,1,1,0,0,0], status:'not-started', owner:'PM'},
+    {id:'p7', dept:'Product', section:'s-product', name:'Support Chatbot', priority:'p2', metric:'Chatbot handles 40%+ of tier-1 support tickets', weeks:[0,0,0,1,1,1,0,0], status:'not-started', owner:'PM'},
+    // Engineering
+    {id:'e1', dept:'Engineering', section:'s-eng', name:'Euphonia v2 Build & QA', priority:'p1', metric:'Shipped W4; 98.7% accuracy; zero P1 regressions', weeks:[1,1,1,1,0,0,0,0], status:'not-started', owner:'Eng'},
+    {id:'e2', dept:'Engineering', section:'s-eng', name:'PLG Signup Flow (Technical)', priority:'p1', metric:'Self-serve flow live W5; conversion tracking in place', weeks:[0,0,1,1,'M',0,0,0], status:'not-started', owner:'Eng'},
+    {id:'e3', dept:'Engineering', section:'s-eng', name:'Support Chatbot Build', priority:'p2', metric:'Chatbot live W6; 40% deflection rate', weeks:[0,0,0,1,1,'M',0,0], status:'not-started', owner:'Eng'},
+    {id:'e4', dept:'Engineering', section:'s-eng', name:'New UI/UX Implementation', priority:'p2', metric:'Zero regression bugs; performance maintained', weeks:[0,0,1,1,1,1,0,0], status:'not-started', owner:'Eng'},
+    // CS
+    {id:'cs1', dept:'CS', section:'s-cs', name:'Top Accounts / Split', priority:'p1', metric:'Accounts segmented by ARR, risk, upsell potential', weeks:['M',0,0,0,0,0,0,0], status:'not-started', owner:'CS Mgr'},
+    {id:'cs2', dept:'CS', section:'s-cs', name:'Onboarding / Playbooks', priority:'p1', metric:'Playbooks for Education & Business segments; <5 day onboard', weeks:[0,1,1,'M',0,0,0,0], status:'not-started', owner:'CS Mgr'},
+    {id:'cs3', dept:'CS', section:'s-cs', name:'Dashboards & Metrics', priority:'p1', metric:'CS dashboard live: churn, NPS, upsell pipeline, health scores', weeks:[1,1,1,0,0,0,0,0], status:'not-started', owner:'CS Mgr'},
+    {id:'cs4', dept:'CS', section:'s-cs', name:'Product Reporting', priority:'p2', metric:'Monthly product usage report to top 20 accounts', weeks:[0,1,1,1,0,0,0,0], status:'not-started', owner:'CS Rep'},
+    {id:'cs5', dept:'CS', section:'s-cs', name:'Support Chatbot / UI Cutover', priority:'p2', metric:'Chatbot deflects 40%+ tickets; CS load reduced 30%', weeks:[0,0,0,1,1,1,0,0], status:'not-started', owner:'CS Rep'},
+    // Sales
+    {id:'sl1', dept:'Sales', section:'s-sales', name:'Top Accounts List', priority:'p1', metric:'50 target accounts with ICP score, contact, ARR potential', weeks:['M',0,0,0,0,0,0,0], status:'not-started', owner:'Sales Lead'},
+    {id:'sl2', dept:'Sales', section:'s-sales', name:'Segments', priority:'p1', metric:'Education vs. Business segments defined with ICP criteria', weeks:[1,1,0,0,0,0,0,0], status:'not-started', owner:'Sales Lead'},
+    {id:'sl3', dept:'Sales', section:'s-sales', name:'Sales Process Flow', priority:'p1', metric:'Documented sales process in SFDC; all stages defined', weeks:[1,1,'M',0,0,0,0,0], status:'not-started', owner:'Sales Lead'},
+    {id:'sl4', dept:'Sales', section:'s-sales', name:'Channel Partners', priority:'p1', metric:'2 signed channel partners; referral agreement in place', weeks:[0,1,1,1,1,'M',0,0], status:'not-started', owner:'Sales Lead'},
+    {id:'sl5', dept:'Sales', section:'s-sales', name:'Quota & Commission Plan', priority:'p1', metric:'Individual quotas set; commission plan communicated to all', weeks:['M',1,0,0,0,0,0,0], status:'not-started', owner:'Sales Lead'},
+    {id:'sl6', dept:'Sales', section:'s-sales', name:'Salesforce as System of Record', priority:'p1', metric:'SFDC is single source of truth: pipeline, investors & CS', weeks:[1,1,'M',0,0,0,0,0], status:'not-started', owner:'Sales Lead'},
+    // Marketing
+    {id:'mk1', dept:'Marketing', section:'s-marketing', name:'Customer Segments', priority:'p1', metric:'Education vs. Business segments with personas & messaging', weeks:['M',0,0,0,0,0,0,0], status:'not-started', owner:'Mktg Lead'},
+    {id:'mk2', dept:'Marketing', section:'s-marketing', name:'Website Update', priority:'p1', metric:'New site live W3; Voice AI pivot messaging; demo CTA prominent', weeks:[1,1,'M',0,0,0,0,0], status:'not-started', owner:'Mktg Lead'},
+    {id:'mk3', dept:'Marketing', section:'s-marketing', name:'Investor Deck', priority:'p1', metric:'Investor-grade deck; delivered to Trevor by W3', weeks:[1,1,'M',0,0,0,0,0], status:'not-started', owner:'Mktg Lead'},
+    {id:'mk4', dept:'Marketing', section:'s-marketing', name:'Content / New Positioning', priority:'p1', metric:'Voice AI pivot messaging live across all channels', weeks:[1,1,1,0,0,0,0,0], status:'not-started', owner:'Mktg Lead'},
+    {id:'mk5', dept:'Marketing', section:'s-marketing', name:'Content Calendar', priority:'p2', metric:'8-week content calendar; 3 posts/week minimum', weeks:[0,1,'M',1,1,1,1,1], status:'not-started', owner:'Mktg Lead'},
+    {id:'mk6', dept:'Marketing', section:'s-marketing', name:'Social / PR', priority:'p2', metric:'2+ PR placements; LinkedIn follower growth 20%', weeks:[0,0,1,1,1,0,0,0], status:'not-started', owner:'Mktg Lead'},
+    // Finance
+    {id:'fn1', dept:'Finance', section:'s-finance', name:'Line of Credit ($750K–$1M)', priority:'p1', metric:'LOC application W1; approval by W6; 3-month runway buffer', weeks:['M',1,1,1,1,'M',0,0], status:'not-started', owner:'Finance Lead'},
+    {id:'fn2', dept:'Finance', section:'s-finance', name:'WeFunder Financial Model', priority:'p1', metric:'Financial model & use of funds ready for WeFunder page', weeks:[1,1,'M',0,0,0,0,0], status:'not-started', owner:'Finance Lead'},
+    {id:'fn3', dept:'Finance', section:'s-finance', name:'Waterfall Report for Expenses', priority:'p1', metric:'Full expense waterfall delivered to Trevor & Finance by W2', weeks:[1,'M',0,0,0,0,0,0], status:'not-started', owner:'Finance Lead'},
+    {id:'fn4', dept:'Finance', section:'s-finance', name:'Bridge Presentation (Financial)', priority:'p1', metric:'18-month runway model included in bridge deck', weeks:[1,1,1,0,1,0,0,0], status:'not-started', owner:'Finance Lead'},
+    {id:'fn5', dept:'Finance', section:'s-finance', name:'Commission Plan Budget Sign-off', priority:'p2', metric:'Commission plan modeled; budget impact <15% of gross margin', weeks:[1,'M',0,0,0,0,0,0], status:'not-started', owner:'Finance Lead'},
+    // Operations
+    {id:'op1', dept:'Operations', section:'s-ops', name:'Phoenix Office ($1.5K/mo)', priority:'p1', metric:'Lease signed W1; team in office 3 days/week from W2', weeks:['M',1,1,1,1,1,1,1], status:'not-started', owner:'Ops Lead'},
+    {id:'op2', dept:'Operations', section:'s-ops', name:'Structured Documentation & AI Tools', priority:'p1', metric:'Every employee provisioned with AI tools ($200ea); docs standardized', weeks:[1,'M',0,0,0,0,0,0], status:'not-started', owner:'Ops Lead'},
+    {id:'op3', dept:'Operations', section:'s-ops', name:'Salesforce — System of Record', priority:'p1', metric:'SFDC is single source of truth: pipeline, investors & CS', weeks:[1,1,'M',0,0,0,0,0], status:'not-started', owner:'Ops Lead'},
+    {id:'op4', dept:'Operations', section:'s-ops', name:'Waterfall Report (Ops)', priority:'p2', metric:'Expense waterfall delivered to Finance & Trevor by W2', weeks:[1,'M',0,0,0,0,0,0], status:'not-started', owner:'Ops Lead'},
+    {id:'op5', dept:'Operations', section:'s-ops', name:'Onboarding / Playbooks (Ops)', priority:'p2', metric:'Ops playbooks for new hires; onboarding checklist <5 days', weeks:[0,1,1,'M',0,0,0,0], status:'not-started', owner:'Ops Lead'},
+    // Legal
+    {id:'lg1', dept:'Legal', section:'s-legal', name:'WeFunder Legal Review', priority:'p1', metric:'Reg CF compliance confirmed; offering docs reviewed', weeks:[1,1,'M',0,0,0,0,0], status:'not-started', owner:'Legal'},
+    {id:'lg2', dept:'Legal', section:'s-legal', name:'Channel Partner Agreements', priority:'p1', metric:'Standard partner agreement template; 2 partners signed', weeks:[0,1,1,1,'M',0,0,0], status:'not-started', owner:'Legal'},
+    {id:'lg3', dept:'Legal', section:'s-legal', name:'Commission Plan Legal Review', priority:'p2', metric:'Commission structure reviewed; no labor law conflicts', weeks:[1,'M',0,0,0,0,0,0], status:'not-started', owner:'Legal'},
+    {id:'lg4', dept:'Legal', section:'s-legal', name:'Bridge Round Docs', priority:'p2', metric:'Term sheet, SAFE/convertible note docs ready', weeks:[0,0,1,1,1,0,0,0], status:'not-started', owner:'Legal'}
+  ],
+  companyKpis: [
+    {kpi:'WeFunder Raise', cat:'Fundraising', current:'$0', target:'$500K closed', deadline:'Apr 17', owner:'Trevor', status:'not-started'},
+    {kpi:'Bridge Term Sheet', cat:'Fundraising', current:'None', target:'Signed by W4', deadline:'Mar 16', owner:'Trevor', status:'not-started'},
+    {kpi:'Line of Credit', cat:'Finance', current:'None', target:'$750K–$1M approved', deadline:'W6 (Apr 4)', owner:'Finance', status:'not-started'},
+    {kpi:'ARR Growth', cat:'Revenue', current:'$2.69M', target:'$3.0M', deadline:'Apr 17', owner:'Sales / CS', status:'on-track'},
+    {kpi:'New Pipeline', cat:'Sales', current:'$0', target:'$1.35M', deadline:'W4 (Mar 21)', owner:'Sales', status:'not-started'},
+    {kpi:'Gross Churn', cat:'CS', current:'~5%', target:'<5%', deadline:'Ongoing', owner:'CS', status:'at-risk'},
+    {kpi:'Upsell Revenue', cat:'CS / Sales', current:'$0', target:'3+ accounts upsold', deadline:'W6', owner:'CS', status:'not-started'},
+    {kpi:'PLG Signups', cat:'Product / Sales', current:'0', target:'50+ signups', deadline:'W6', owner:'Product', status:'not-started'},
+    {kpi:'Channel Partners Signed', cat:'Sales', current:'0', target:'2 partners', deadline:'W6', owner:'Sales', status:'not-started'},
+    {kpi:'Website Live (Voice AI)', cat:'Marketing', current:'Old site', target:'New site live', deadline:'W3 (Mar 14)', owner:'Marketing', status:'in-progress'},
+    {kpi:'Investor Deck Final', cat:'Marketing', current:'Draft', target:'Final delivered', deadline:'W3 (Mar 14)', owner:'Marketing', status:'in-progress'},
+    {kpi:'Features Shipped', cat:'Product', current:'0/3', target:'3/3 shipped', deadline:'W6', owner:'Product', status:'in-progress'},
+    {kpi:'PHX Office Open', cat:'Operations', current:'None', target:'Signed & open', deadline:'W2 (Mar 7)', owner:'Ops', status:'not-started'},
+    {kpi:'AI Tools Adoption', cat:'Operations', current:'0%', target:'100% team', deadline:'W2 (Mar 7)', owner:'Ops', status:'not-started'},
+    {kpi:'SFDC as System of Record', cat:'Operations', current:'Partial', target:'Fully live', deadline:'W3 (Mar 14)', owner:'Ops / Sales', status:'in-progress'},
+    {kpi:'NPS Score', cat:'CS', current:'Unknown', target:'>50', deadline:'W6', owner:'CS', status:'pending'},
+    {kpi:'Commission Plan Live', cat:'Finance / Ops', current:'None', target:'All-employee plan signed', deadline:'W2 (Mar 7)', owner:'Finance', status:'not-started'},
+    {kpi:'Advisors Signed', cat:'Trevor', current:'0', target:'2+ domain advisors', deadline:'W3', owner:'Trevor', status:'not-started'}
+  ]
+};
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+let STATE = {};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('nc_warroom_v3');
+    if (saved) {
+      STATE = JSON.parse(saved);
+    } else {
+      STATE = JSON.parse(JSON.stringify(DEFAULTS));
+    }
+  } catch(e) {
+    STATE = JSON.parse(JSON.stringify(DEFAULTS));
+  }
+}
+
+function saveState() {
+  localStorage.setItem('nc_warroom_v3', JSON.stringify(STATE));
+  const ind = document.getElementById('saveIndicator');
+  if (ind) { ind.classList.add('show'); setTimeout(() => ind.classList.remove('show'), 2000); }
+}
+
+// ════════════════════════════════════════════════
+// DATE INTELLIGENCE
+// ════════════════════════════════════════════════
+function getCurrentWeek() {
+  const start = new Date(STATE.config.sprintStart);
+  const end   = new Date(STATE.config.sprintEnd);
+  const now   = new Date();
+  if (now < start) return 0;
+  if (now > end)   return 9;
+  const diff = Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000));
+  return Math.min(diff + 1, 8);
+}
+
+function getDaysRemaining() {
+  const end = new Date(STATE.config.sprintEnd);
+  end.setHours(23,59,59);
+  const now = new Date();
+  const diff = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
+  return Math.max(0, diff);
+}
+
+function isWeekPast(w) { return w < getCurrentWeek(); }
+function isWeekCurrent(w) { return w === getCurrentWeek(); }
+
+function updateDynamicElements() {
+  const days = getDaysRemaining();
+  const cw   = getCurrentWeek();
+  document.getElementById('countdown').textContent = days;
+  document.getElementById('footerWeek').textContent = cw > 0 && cw <= 8 ? cw : (cw === 0 ? 'Pre' : 'Done');
+  document.getElementById('footerDates').textContent = STATE.config.sprintStart + ' – ' + STATE.config.sprintEnd;
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('sprintDates').textContent = formatDate(STATE.config.sprintStart) + ' – ' + formatDate(STATE.config.sprintEnd);
+  document.getElementById('stat-arr').textContent = STATE.config.arr;
+  document.getElementById('stat-pipeline').textContent = STATE.config.pipeline;
+  document.getElementById('stat-funding').textContent = STATE.config.funding;
+  document.getElementById('stat-team').textContent = STATE.config.teamSize;
+  const cwLabel = document.getElementById('currentWeekLabel');
+  if (cwLabel) {
+    if (cw >= 1 && cw <= 8) {
+      cwLabel.textContent = `Currently in Week ${cw} — ${STATE.weekThemes[cw-1]?.theme || ''}`;
+    } else if (cw === 0) {
+      cwLabel.textContent = 'Sprint has not started yet';
+    } else {
+      cwLabel.textContent = 'Sprint complete';
+    }
+  }
+}
+
+function formatDate(d) {
+  const dt = new Date(d + 'T12:00:00');
+  return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+// ════════════════════════════════════════════════
+// RENDER WEEK BAR
+// ════════════════════════════════════════════════
+function renderWeekBar() {
+  const cw = getCurrentWeek();
+  const bar = document.getElementById('weekBar');
+  bar.innerHTML = STATE.weekThemes.map((w,i) => {
+    const wn = i+1;
+    const cls = wn < cw ? 'past' : wn === cw ? 'current' : 'future';
+    return `<div class="wk ${cls}">
+      <div class="wk-num">Week ${wn}</div>
+      <div class="wk-dates">${w.dates}</div>
+      <div class="wk-theme">${w.theme}</div>
+      ${wn === cw ? '<div class="wk-badge">NOW</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════
+// RENDER NORTH STAR
+// ════════════════════════════════════════════════
+function renderNorthStar() {
+  const el = document.getElementById('northStarPills');
+  el.innerHTML = STATE.northStar.map(p =>
+    `<div class="ns-pill ${p.hot?'hot':''}">${p.text}</div>`
+  ).join('');
+}
+
+// ════════════════════════════════════════════════
+// RENDER GANTT
+// ════════════════════════════════════════════════
+const PODS = [
+  {id:'gtm',     cls:'pod-gtm',     label:'Growth / GTM',    icon:'📈', color:'var(--gtm)',     members:'Marketing · Sales · CS',
+   depts:['Trevor','Sales','Marketing','CS']},
+  {id:'product', cls:'pod-product', label:'Product',          icon:'🚀', color:'var(--product)', members:'Product · Engineering',
+   depts:['Product','Engineering']},
+  {id:'ops',     cls:'pod-ops',     label:'Operations',       icon:'⚙️', color:'var(--ops)',     members:'Finance · Operations · Legal',
+   depts:['Finance','Operations','Legal']}
+];
+
+const DEPT_META = {
+  Trevor:      {cls:'s-trevor',    label:'Trevor — Fundraising & Executive Leadership', kpi:'KPI: $500K+ closed · Bridge term sheet · Board aligned'},
+  Sales:       {cls:'s-sales',     label:'Sales — Pipeline, PLG Growth & Channel Partnerships', kpi:'KPI: $1.35M pipeline W4 · 2 channel partners · PLG 50+ signups'},
+  Marketing:   {cls:'s-marketing', label:'Marketing — Brand, Website, Investor Deck & Positioning', kpi:'KPI: Website live W3 · Investor deck W3 · Content calendar W3'},
+  CS:          {cls:'s-cs',        label:'Customer Success — Retention, Upsell & Onboarding', kpi:'KPI: Churn <5% · 3+ upsells · NPS >50 · Playbooks live W4'},
+  Product:     {cls:'s-product',   label:'Product — Voice AI Features, Labs & Euphonia', kpi:'KPI: 3 features shipped · Roadmap W1 · Demo-ready W4'},
+  Engineering: {cls:'s-eng',       label:'Engineering — Build, Ship & Scale', kpi:'KPI: Euphonia v2 W4 · PLG flow W5 · Chatbot W6 · Zero P1 bugs'},
+  Finance:     {cls:'s-finance',   label:'Finance — Working Capital, LOC & Reporting', kpi:'KPI: $750K–$1M LOC approved · Waterfall W2 · Bridge support'},
+  Operations:  {cls:'s-ops',       label:'Operations — PHX Office, AI Tools & Salesforce', kpi:'KPI: PHX office open W2 · AI tools 100% W2 · SFDC live W3'},
+  Legal:       {cls:'s-legal',     label:'Legal — WeFunder, Contracts & Compliance', kpi:'KPI: WeFunder legal W3 · Partner agreements W5 · Bridge docs W4'}
+};
+
+const WEEK_GOALS = {
+  Trevor:      ['Build investor list & outreach plan','Board update + advisor outreach','Deck finalized; WeFunder live','Bridge term sheet in hand','Board update + follow-ups','WeFunder $250K+ raised','Bridge closing docs','🏁 Close / announce'],
+  Sales:       ['Top accounts list built; SFDC structured','Outreach to top 50 accounts started','$500K pipeline confirmed','$1.35M pipeline; 1 channel LOI','$900K+ qualified; PLG flow live','2 channel partners signed','Deals in final stages','🏁 Closes + pipeline handoff'],
+  Marketing:   ['Segments & ICP defined; website brief','Investor deck v1 drafted; website in dev','Website live; deck final; WeFunder page','Content calendar running; PR outreach','PR coverage; social momentum','Case studies published','Final push content','🏁 Wrap campaign'],
+  CS:          ['Top accounts segmented; at-risk flagged','Playbooks drafted; upsell calls started','1st upsell closed','Playbooks live; NPS survey sent','2nd upsell closed; chatbot live','3rd upsell closed; NPS >50','Renewals confirmed','🏁 Churn <5% confirmed'],
+  Product:     ['Roadmap published; sprint kicked off','Labs alpha internal','Euphonia v2 in QA','Demo-ready build; investor demo rehearsed','PLG signup flow live','All 3 features shipped','Bug fixes & polish','🏁 Stable release'],
+  Engineering: ['Sprint planning; Euphonia v2 started','Euphonia v2 alpha build','Euphonia v2 QA; PLG flow started','Euphonia v2 shipped; PLG in testing','PLG flow live; chatbot started','Chatbot live; UI cutover complete','Hardening & performance','🏁 All features stable'],
+  Finance:     ['LOC application submitted; waterfall started','Waterfall report delivered; bridge model updated','WeFunder financials ready; LOC in review','Bridge term sheet financial model ready','LOC follow-up; 18-month model updated','LOC approved; WeFunder milestone','Final runway model','🏁 Capital secured'],
+  Operations:  ['AI tools provisioned for all','PHX office open (3 days/wk)','SFDC fully structured','All docs in standard format','Ops running autonomously','Quarterly ops review','Investor ops materials ready','🏁 Ops audit complete'],
+  Legal:       ['WeFunder legal review started','WeFunder docs drafted','WeFunder legal complete; partner template ready','Bridge docs started; partner agreements','Partner agreements signed','Bridge docs final','Final legal review','🏁 All docs executed']
+};
+
+function renderGantt() {
+  const cw = getCurrentWeek();
+  const container = document.getElementById('ganttSections');
+  let html = '';
+
+  PODS.forEach(pod => {
+    html += `<div class="pod-group ${pod.cls}">
+      <div class="pod-header" onclick="togglePod(this)">
+        <div class="pod-dot"></div>
+        <div class="pod-title">${pod.icon} ${pod.label} Pod</div>
+        <div class="pod-members">${pod.members}</div>
+        <div class="pod-toggle open">▶</div>
+      </div>
+      <div class="pod-body">`;
+
+    pod.depts.forEach(dept => {
+      const meta = DEPT_META[dept];
+      const tasks = STATE.tasks.filter(t => t.dept === dept);
+      if (!tasks.length) return;
+
+      html += `<div class="section ${meta.cls}">
+        <div class="section-hdr" onclick="toggleSection(this)">
+          <div class="s-dot"></div>
+          <div class="s-title">${meta.label}</div>
+          <div class="s-kpi">${meta.kpi}</div>
+          <div class="s-toggle open">▶</div>
+        </div>
+        <div class="section-body">
+          <div class="gantt-wrap">
+            <table class="gantt-table">
+              <thead><tr>
+                <th class="tc">Task</th>
+                <th class="mc">Success Metric</th>
+                <th class="sc">Status</th>
+                ${[1,2,3,4,5,6,7,8].map(w => {
+                  const cls = w < cw ? 'past-wk' : w === cw ? 'current-wk' : '';
+                  return `<th class="wc ${cls}">W${w}<br/><span style="font-weight:400;color:#444;font-size:8px">${STATE.weekThemes[w-1]?.dates?.split('–')[0]||''}</span></th>`;
+                }).join('')}
+              </tr></thead>
+              <tbody>
+                <tr class="wg-row">
+                  <td class="wg-lbl" colspan="3">Weekly Goal</td>
+                  ${(WEEK_GOALS[dept]||[]).map((g,i) => {
+                    const w = i+1;
+                    const cls = w < cw ? 'past-wk' : w === cw ? 'current-wk' : '';
+                    return `<td class="wc ${cls}">${g}</td>`;
+                  }).join('')}
+                </tr>
+                ${tasks.map(task => renderTaskRow(task, cw)).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function renderTaskRow(task, cw) {
+  const statusMap = {
+    'not-started': {cls:'s-ns', label:'Not Started'},
+    'in-progress':  {cls:'s-ip', label:'In Progress'},
+    'done':         {cls:'s-done', label:'Done'},
+    'at-risk':      {cls:'s-risk', label:'At Risk'}
+  };
+  const s = statusMap[task.status] || statusMap['not-started'];
+
+  let cells = '';
+  for (let w = 1; w <= 8; w++) {
+    const v = task.weeks[w-1];
+    const tdCls = w < cw ? 'past-wk' : w === cw ? 'current-wk' : '';
+    let inner = '';
+    if (v === 'M') {
+      inner = `<div class="milestone"></div>`;
+    } else if (v === 'S') {
+      inner = `<div class="bar bar-solo"></div>`;
+    } else if (v === 1) {
+      // determine bar type
+      const prev = task.weeks[w-2];
+      const next = task.weeks[w];
+      const hasPrev = prev === 1 || prev === 'M';
+      const hasNext = next === 1 || next === 'M';
+      let barCls = 'bar-solo';
+      if (hasPrev && hasNext) barCls = 'bar-m';
+      else if (hasPrev) barCls = 'bar-e';
+      else if (hasNext) barCls = 'bar-s';
+      inner = `<div class="bar ${barCls}"></div>`;
+    }
+    cells += `<td class="wc ${tdCls}">${inner}</td>`;
+  }
+
+  return `<tr>
+    <td><span class="t-name editable" contenteditable="false" data-field="name" data-id="${task.id}">${task.name}</span> <span class="tag ${task.priority}">${task.priority.toUpperCase()}</span></td>
+    <td><span class="kpi-cell editable" contenteditable="false" data-field="metric" data-id="${task.id}">${task.metric}</span></td>
+    <td><button class="status-btn ${s.cls}" onclick="cycleStatus('${task.id}', this)">${s.label}</button></td>
+    ${cells}
+  </tr>`;
+}
+
+// ════════════════════════════════════════════════
+// STATUS CYCLING
+// ════════════════════════════════════════════════
+const STATUS_CYCLE = ['not-started','in-progress','done','at-risk'];
+const STATUS_MAP = {
+  'not-started': {cls:'s-ns', label:'Not Started'},
+  'in-progress':  {cls:'s-ip', label:'In Progress'},
+  'done':         {cls:'s-done', label:'Done'},
+  'at-risk':      {cls:'s-risk', label:'At Risk'}
+};
+
+function cycleStatus(id, btn) {
+  const task = STATE.tasks.find(t => t.id === id);
+  if (!task) return;
+  const idx = STATUS_CYCLE.indexOf(task.status);
+  task.status = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
+  const s = STATUS_MAP[task.status];
+  btn.className = `status-btn ${s.cls}`;
+  btn.textContent = s.label;
+  saveState();
+  showToast('Status updated: ' + task.name.substring(0,30));
+}
+
+// ════════════════════════════════════════════════
+// EDIT MODE
+// ════════════════════════════════════════════════
+let editMode = false;
+
+function toggleEditMode() {
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  const btn = document.getElementById('editToggle');
+  btn.classList.toggle('active', editMode);
+  btn.textContent = editMode ? '✅ Editing...' : '✏️ Edit Mode';
+
+  document.querySelectorAll('.editable').forEach(el => {
+    el.contentEditable = editMode ? 'true' : 'false';
+    if (!editMode) {
+      // save changes back to state
+      const id = el.dataset.id;
+      const field = el.dataset.field;
+      if (id && field) {
+        const task = STATE.tasks.find(t => t.id === id);
+        if (task) task[field] = el.textContent.trim();
+      }
+    }
+  });
+
+  if (!editMode) {
+    saveState();
+    showToast('Changes saved!');
+  }
+}
+
+// ════════════════════════════════════════════════
+// COMPANY KPI TAB
+// ════════════════════════════════════════════════
+function renderCompanyKpis() {
+  // Cards
+  const cards = [
+    {label:'Current ARR', value:STATE.config.arr, target:'Target: $3.0M by Apr 17', trend:'↑ Growing — protect & expand', trendCls:'trend-up', color:'var(--nc-green)'},
+    {label:'New Pipeline (8-Week)', value:'$0', target:'Target: $1.35M by W4', trend:'⚡ Build immediately — W1 priority', trendCls:'trend-warn', color:'var(--blue)'},
+    {label:'Fundraising Closed', value:'$0', target:'Target: '+STATE.config.funding+' by Apr 17', trend:'🚨 North Star — all hands on deck', trendCls:'trend-crit', color:'var(--gold)'},
+    {label:'Gross Churn Rate', value:'<5%', target:'Target: <5% maintained through Apr 17', trend:'⚠️ Education segment at seasonal risk', trendCls:'trend-warn', color:'var(--red)'},
+    {label:'Working Capital Secured', value:'$0', target:'Target: $750K–$1M LOC by W6', trend:'🚨 Apply W1 — 4–6 week process', trendCls:'trend-crit', color:'var(--nc-purple-light)'},
+    {label:'PLG Signups', value:'0', target:'Target: 50+ organic signups by W6', trend:'⚡ PLG flow must launch W5', trendCls:'trend-warn', color:'var(--nc-teal)'},
+    {label:'Team AI Tool Adoption', value:'0%', target:'Target: 100% by W2', trend:'🚨 Provision W1 — ops maturity signal', trendCls:'trend-crit', color:'var(--orange)'},
+    {label:'NPS Score', value:'—', target:'Target: >50 by W6', trend:'⚡ Survey to go out W4', trendCls:'trend-warn', color:'var(--pink)'}
+  ];
+  document.getElementById('companyKpiCards').innerHTML = cards.map(c => `
+    <div class="kpi-card" style="border-color:${c.color}33">
+      <div class="kc-label">${c.label}</div>
+      <div class="kc-value" style="color:${c.color}">${c.value}</div>
+      <div class="kc-target">Target: <span style="color:${c.color}">${c.target.replace('Target: ','')}</span></div>
+      <div class="kc-trend ${c.trendCls}">${c.trend}</div>
+    </div>`).join('');
+
+  // Table
+  const statusMap = {
+    'not-started': '<span class="sb sb-r">Not Started</span>',
+    'in-progress':  '<span class="sb sb-y">In Progress</span>',
+    'on-track':     '<span class="sb sb-g">On Track</span>',
+    'at-risk':      '<span class="sb sb-y">At Risk</span>',
+    'done':         '<span class="sb sb-g">Done</span>',
+    'pending':      '<span class="sb sb-b">Pending</span>'
+  };
+  document.getElementById('companyKpiBody').innerHTML = STATE.companyKpis.map(k => `
+    <tr>
+      <td><strong>${k.kpi}</strong></td>
+      <td>${k.cat}</td>
+      <td>${k.current}</td>
+      <td>${k.target}</td>
+      <td>${k.deadline}</td>
+      <td>${k.owner}</td>
+      <td>${statusMap[k.status] || statusMap['not-started']}</td>
+    </tr>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// DEPT KPI TAB
+// ════════════════════════════════════════════════
+const DEPT_KPIS = {
+  'Growth/GTM': {
+    icon:'📈', color:'var(--gtm)', depts:[
+      {name:'Trevor — Fundraising', color:'var(--gold)', metrics:[
+        {n:'WeFunder Raise',t:'$500K',dl:'Apr 17'},{n:'Bridge Term Sheet',t:'Signed',dl:'W4'},
+        {n:'Investor Meetings',t:'20+',dl:'W2'},{n:'Advisors Signed',t:'2+',dl:'W3'},
+        {n:'Board Updates',t:'2',dl:'W2, W5'}]},
+      {name:'Sales', color:'var(--blue)', metrics:[
+        {n:'Qualified Pipeline',t:'$1.35M',dl:'W4'},{n:'Top Accounts Built',t:'50 accounts',dl:'W1'},
+        {n:'Channel Partners Signed',t:'2 partners',dl:'W6'},{n:'Demos Booked',t:'15+',dl:'W4'},
+        {n:'Win Rate',t:'>25%',dl:'W8'},{n:'SFDC Fully Structured',t:'Live',dl:'W3'}]},
+      {name:'Marketing', color:'var(--pink)', metrics:[
+        {n:'Website Live (Voice AI)',t:'Live',dl:'W3'},{n:'Investor Deck Final',t:'Delivered',dl:'W3'},
+        {n:'Content Calendar Running',t:'3 posts/wk',dl:'W3'},{n:'PR Placements',t:'2+',dl:'W5'},
+        {n:'LinkedIn Growth',t:'+20%',dl:'W8'},{n:'WeFunder Page Live',t:'Live',dl:'W3'}]},
+      {name:'Customer Success', color:'var(--nc-green)', metrics:[
+        {n:'Gross Churn Rate',t:'<5%',dl:'Ongoing'},{n:'Upsell Accounts Closed',t:'3+ accounts',dl:'W6'},
+        {n:'NPS Score',t:'>50',dl:'W6'},{n:'Playbooks Live',t:'Both live',dl:'W4'},
+        {n:'Onboarding Time',t:'<5 days',dl:'W4'},{n:'At-Risk Accounts Flagged',t:'100%',dl:'W1'}]}
+    ]
+  },
+  'Product': {
+    icon:'🚀', color:'var(--product)', depts:[
+      {name:'Product Management', color:'var(--nc-purple-light)', metrics:[
+        {n:'Features Shipped',t:'3/3',dl:'W6'},{n:'Roadmap Published',t:'Live',dl:'W1'},
+        {n:'Investor Demo Ready',t:'Rehearsed',dl:'W4'},{n:'PLG Signups',t:'50+',dl:'W6'},
+        {n:'In-App Tooltips Coverage',t:'100%',dl:'W5'}]},
+      {name:'Engineering', color:'var(--nc-purple)', metrics:[
+        {n:'Euphonia v2 Shipped',t:'W4',dl:'W4'},{n:'PLG Flow Live',t:'W5',dl:'W5'},
+        {n:'Chatbot Live',t:'W6',dl:'W6'},{n:'P1 Bug Resolution',t:'<48hr',dl:'Ongoing'},
+        {n:'Sprint Velocity',t:'On track',dl:'Weekly'}]}
+    ]
+  },
+  'Ops': {
+    icon:'⚙️', color:'var(--ops)', depts:[
+      {name:'Finance', color:'var(--nc-teal)', metrics:[
+        {n:'LOC Application Submitted',t:'Submitted',dl:'W1'},{n:'LOC Approved',t:'$750K–$1M',dl:'W6'},
+        {n:'Waterfall Report Delivered',t:'Delivered',dl:'W2'},{n:'18-Month Financial Model',t:'Complete',dl:'W3'},
+        {n:'Commission Budget Impact',t:'<15% GM',dl:'W2'}]},
+      {name:'Operations', color:'var(--orange)', metrics:[
+        {n:'PHX Office Signed & Open',t:'Open',dl:'W2'},{n:'AI Tools Adoption',t:'100%',dl:'W2'},
+        {n:'SFDC Fully Structured',t:'Live',dl:'W3'},{n:'Documentation Standardized',t:'100%',dl:'W4'},
+        {n:'In-Person Days / Week',t:'3 days/wk',dl:'W2+'}]},
+      {name:'Legal', color:'#c8a020', metrics:[
+        {n:'WeFunder Legal Review',t:'Complete',dl:'W3'},{n:'Partner Agreements',t:'2 signed',dl:'W5'},
+        {n:'Commission Plan Review',t:'Cleared',dl:'W2'},{n:'Bridge Round Docs',t:'Ready',dl:'W4'}]}
+    ]
+  }
+};
+
+function renderDeptKpis() {
+  let html = '';
+  Object.entries(DEPT_KPIS).forEach(([podName, pod]) => {
+    const podColor = pod.color;
+    html += `<div style="margin-bottom:28px">
+      <div class="kpi-section-title" style="color:${podColor}">${pod.icon} ${podName} Pod</div>
+      <div class="dept-grid">`;
+    pod.depts.forEach(dept => {
+      html += `<div class="dept-card" style="border-color:${dept.color}44">
+        <div class="dept-card-hdr" style="background:linear-gradient(90deg,${dept.color}18,transparent)">
+          <div class="dept-card-name" style="color:${dept.color}">${dept.name}</div>
+        </div>
+        <div class="dept-card-body">
+          ${dept.metrics.map(m => `<div class="dept-metric-row">
+            <div class="dkpi-name">${m.n}</div>
+            <div class="dkpi-target" style="color:${dept.color}">${m.t}</div>
+            <div class="dkpi-dl">${m.dl}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  document.getElementById('deptKpiContent').innerHTML = html;
+}
+
+// ════════════════════════════════════════════════
+// INDIVIDUAL KPI TAB
+// ════════════════════════════════════════════════
+function renderIndividualKpis() {
+  const indKpis = {
+    'Executive':  [{l:'Fundraising Closed',v:'$500K+ by Apr 17'},{l:'Board Updates',v:'2 delivered'},{l:'Advisors Signed',v:'2+'},{l:'Commission Tier',v:'Fundraising Bonus'}],
+    'Growth/GTM': {
+      'Sales':    [{l:'Pipeline Built',v:'$1.35M by W4'},{l:'Demos Booked',v:'15+'},{l:'Channel Partners',v:'2 signed'},{l:'Commission Tier',v:'Sales 10% + Referral 3%'}],
+      'CS':       [{l:'Churn Rate',v:'<5%'},{l:'Upsells Closed',v:'3+ accounts'},{l:'NPS Score',v:'>50'},{l:'Commission Tier',v:'Delivery 5% + Upsell 7%'}],
+      'Marketing':[{l:'Website Live',v:'W3'},{l:'Investor Deck',v:'W3 final'},{l:'Content Calendar',v:'3 posts/wk'},{l:'Commission Tier',v:'Referral 3% + Lead Bonus'}]
+    },
+    'Product': [{l:'Features Shipped',v:'3/3 by W6'},{l:'PLG Signups',v:'50+ by W6'},{l:'Roadmap Live',v:'W1'},{l:'Commission Tier',v:'Referral 3% + PLG Bonus'}],
+    'Ops':     [{l:'PHX Office Open',v:'W2'},{l:'AI Tools 100%',v:'W2'},{l:'SFDC Live',v:'W3'},{l:'Commission Tier',v:'Referral 3%'}]
+  };
+
+  const html = STATE.team.map((member, i) => {
+    let kpis = [];
+    if (member.dept === 'Executive') kpis = indKpis['Executive'];
+    else if (member.dept === 'Growth/GTM') {
+      if (member.role.includes('Account') || member.role.includes('BDR') || member.role.includes('Sales')) kpis = indKpis['Growth/GTM']['Sales'];
+      else if (member.role.includes('Success') || member.role.includes('CS')) kpis = indKpis['Growth/GTM']['CS'];
+      else kpis = indKpis['Growth/GTM']['Marketing'];
+    } else if (member.dept === 'Product') kpis = indKpis['Product'];
+    else kpis = indKpis['Ops'];
+
+    const initials = member.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    return `<div class="ind-card" style="border-color:${member.color}44">
+      <div class="ind-hdr" style="background:linear-gradient(135deg,${member.color}12,transparent)">
+        <div class="ind-avatar" style="background:linear-gradient(135deg,${member.color}99,${member.color})">${initials}</div>
+        <div class="ind-name editable" contenteditable="false" data-field="name" data-teamidx="${i}">${member.name}</div>
+        <div class="ind-role editable" contenteditable="false" data-field="role" data-teamidx="${i}">${member.role}</div>
+        <div style="font-size:9px;margin-top:3px;color:var(--muted)">${member.dept}</div>
+      </div>
+      <div class="ind-body">
+        ${kpis.map(k => `<div class="ind-kpi-row">
+          <div class="ind-kpi-lbl">${k.l}</div>
+          <div class="ind-kpi-val" style="color:${member.color};font-size:10px">${k.v}</div>
+        </div>`).join('')}
+        <div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">
+          ${member.tiers.map(t => `<span style="background:${member.color}18;border:1px solid ${member.color}44;border-radius:4px;padding:1px 5px;font-size:8px;font-weight:700;color:${member.color}">${t}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('individualKpiCards').innerHTML = html;
+}
+
+// ════════════════════════════════════════════════
+// SETTINGS TAB
+// ════════════════════════════════════════════════
+function renderSettings() {
+  // Week themes
+  let wt = '';
+  STATE.weekThemes.forEach((w,i) => {
+    wt += `<div class="settings-row">
+      <span class="settings-label">Week ${i+1}</span>
+      <input class="settings-input" style="width:120px;margin-right:6px" id="wt-dates-${i}" value="${w.dates}" placeholder="Dates"/>
+      <input class="settings-input" id="wt-theme-${i}" value="${w.theme}" placeholder="Theme"/>
+    </div>`;
+  });
+  document.getElementById('weekThemeInputs').innerHTML = wt;
+
+  // Team members
+  let tm = '';
+  STATE.team.forEach((m,i) => {
+    tm += `<div class="team-member-card">
+      <div class="tm-label">Member ${i+1}</div>
+      <input class="tm-input" id="tm-name-${i}" value="${m.name}" placeholder="Name"/>
+      <input class="tm-input" id="tm-role-${i}" value="${m.role}" placeholder="Role"/>
+      <select class="tm-input" id="tm-dept-${i}">
+        ${['Executive','Growth/GTM','Product','Ops'].map(d => `<option${m.dept===d?' selected':''}>${d}</option>`).join('')}
+      </select>
+    </div>`;
+  });
+  document.getElementById('teamMemberInputs').innerHTML = tm;
+
+  // North star
+  renderNorthStarInputs();
+}
+
+function renderNorthStarInputs() {
+  let ns = '';
+  STATE.northStar.forEach((p,i) => {
+    ns += `<div class="settings-row" id="ns-row-${i}">
+      <input class="settings-input" style="flex:1" id="ns-text-${i}" value="${p.text}"/>
+      <label style="font-size:10px;color:var(--muted);margin-left:8px;display:flex;align-items:center;gap:4px;white-space:nowrap">
+        <input type="checkbox" id="ns-hot-${i}" ${p.hot?'checked':''}/> Hot
+      </label>
+      <button class="settings-btn danger" style="padding:4px 8px;font-size:10px;margin-left:6px" onclick="removeNorthStar(${i})">✕</button>
+    </div>`;
+  });
+  document.getElementById('northStarInputs').innerHTML = ns;
+}
+
+function addNorthStarPill() {
+  STATE.northStar.push({text:'New Goal', hot:false});
+  renderNorthStarInputs();
+}
+
+function removeNorthStar(i) {
+  STATE.northStar.splice(i,1);
+  renderNorthStarInputs();
+}
+
+function saveAllSettings() {
+  // Config
+  STATE.config.companyName = document.getElementById('cfg-companyName').value;
+  STATE.config.sprintStart = document.getElementById('cfg-sprintStart').value;
+  STATE.config.sprintEnd   = document.getElementById('cfg-sprintEnd').value;
+  STATE.config.arr         = document.getElementById('cfg-arr').value;
+  STATE.config.pipeline    = document.getElementById('cfg-pipeline').value;
+  STATE.config.funding     = document.getElementById('cfg-funding').value;
+  STATE.config.teamSize    = parseInt(document.getElementById('cfg-teamSize').value)||15;
+
+  // Week themes
+  STATE.weekThemes.forEach((w,i) => {
+    const d = document.getElementById(`wt-dates-${i}`);
+    const t = document.getElementById(`wt-theme-${i}`);
+    if (d) w.dates = d.value;
+    if (t) w.theme = t.value;
+  });
+
+  // Team
+  STATE.team.forEach((m,i) => {
+    const n = document.getElementById(`tm-name-${i}`);
+    const r = document.getElementById(`tm-role-${i}`);
+    const d = document.getElementById(`tm-dept-${i}`);
+    if (n) m.name = n.value;
+    if (r) m.role = r.value;
+    if (d) m.dept = d.value;
+  });
+
+  // North star
+  STATE.northStar.forEach((p,i) => {
+    const t = document.getElementById(`ns-text-${i}`);
+    const h = document.getElementById(`ns-hot-${i}`);
+    if (t) p.text = t.value;
+    if (h) p.hot = h.checked;
+  });
+
+  saveState();
+  showToast('All settings saved! Refreshing...');
+  setTimeout(() => { renderAll(); }, 500);
+}
+
+function resetToDefaults() {
+  if (!confirm('Reset all settings to defaults? This cannot be undone.')) return;
+  STATE = JSON.parse(JSON.stringify(DEFAULTS));
+  saveState();
+  renderAll();
+  renderSettings();
+  showToast('Reset to defaults.');
+}
+
+// ════════════════════════════════════════════════
+// NOTION EXPORT
+// ════════════════════════════════════════════════
+function exportToNotion() {
+  const cw = getCurrentWeek();
+  let md = `# NameCoach 2026 War Room\n\n`;
+  md += `**Sprint:** ${STATE.config.sprintStart} → ${STATE.config.sprintEnd}\n`;
+  md += `**Current Week:** ${cw} of 8\n`;
+  md += `**Days Remaining:** ${getDaysRemaining()}\n\n`;
+  md += `---\n\n## 🏢 Company KPIs\n\n`;
+  md += `| KPI | Current | Target | Deadline | Owner | Status |\n`;
+  md += `|-----|---------|--------|----------|-------|--------|\n`;
+  STATE.companyKpis.forEach(k => {
+    md += `| ${k.kpi} | ${k.current} | ${k.target} | ${k.deadline} | ${k.owner} | ${k.status} |\n`;
+  });
+  md += `\n---\n\n## 📅 8-Week Sprint Tasks\n\n`;
+  PODS.forEach(pod => {
+    md += `### ${pod.label} Pod\n\n`;
+    pod.depts.forEach(dept => {
+      md += `#### ${dept}\n\n`;
+      md += `| Task | Priority | Status | Metric |\n`;
+      md += `|------|----------|--------|--------|\n`;
+      STATE.tasks.filter(t => t.dept === dept).forEach(t => {
+        md += `| ${t.name} | ${t.priority.toUpperCase()} | ${t.status} | ${t.metric} |\n`;
+      });
+      md += `\n`;
+    });
+  });
+  md += `---\n\n## 👥 Team Members\n\n`;
+  md += `| Name | Role | Department | Commission Tiers |\n`;
+  md += `|------|------|------------|------------------|\n`;
+  STATE.team.forEach(m => {
+    md += `| ${m.name} | ${m.role} | ${m.dept} | ${m.tiers.join(', ')} |\n`;
+  });
+  md += `\n---\n\n*Generated by NameCoach War Room · ${new Date().toLocaleDateString()}*\n`;
+
+  document.getElementById('notionPreview').value = md;
+  navigator.clipboard.writeText(md).then(() => {
+    showToast('✅ Copied to clipboard! Paste directly into Notion.');
+  }).catch(() => {
+    showToast('Preview generated — copy from the text area below.');
+  });
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(STATE, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `namecoach_warroom_backup_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Backup downloaded!');
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      STATE = JSON.parse(e.target.result);
+      saveState();
+      renderAll();
+      renderSettings();
+      showToast('Backup imported successfully!');
+    } catch(err) {
+      showToast('Error: Invalid backup file.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ════════════════════════════════════════════════
+// TOGGLES
+// ════════════════════════════════════════════════
+function togglePod(hdr) {
+  const body = hdr.nextElementSibling;
+  const tog  = hdr.querySelector('.pod-toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  body.classList.toggle('collapsed', isOpen);
+  tog.classList.toggle('open', !isOpen);
+}
+
+function toggleSection(hdr) {
+  const body = hdr.nextElementSibling;
+  const tog  = hdr.querySelector('.s-toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  body.classList.toggle('collapsed', isOpen);
+  tog.classList.toggle('open', !isOpen);
+}
+
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════
+// RENDER ALL
+// ════════════════════════════════════════════════
+function renderAll() {
+  updateDynamicElements();
+  renderWeekBar();
+  renderNorthStar();
+  renderGantt();
+  renderCompanyKpis();
+  renderDeptKpis();
+  renderIndividualKpis();
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+loadState();
+renderAll();
+renderSettings();
+
+// Auto-refresh countdown every minute
+setInterval(() => {
+  updateDynamicElements();
+  renderWeekBar();
+}, 60000);
+</script>
+</body>
+</html>
