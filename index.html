@@ -366,6 +366,7 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
     <div class="topbar-divider"></div>
     <div class="topbar-stats">
       <div class="stat-item"><div class="stat-val" style="color:var(--nc-green)" id="stat-arr">$2.71M</div><div class="stat-lbl">Current ARR</div></div>
+      <div class="stat-item"><div class="stat-val" style="color:var(--blue)" id="stat-pipeline">$1.9M</div><div class="stat-lbl">Pipeline Target</div></div>
       <div class="stat-item"><div class="stat-val" style="color:var(--gold)" id="stat-funding">$500K–$1M</div><div class="stat-lbl">Funding Goal</div></div>
       <div class="stat-item"><div class="stat-val" style="color:var(--nc-purple-light)" id="stat-team">15</div><div class="stat-lbl">Team Members</div></div>
     </div>
@@ -918,7 +919,7 @@ function updateDynamicElements() {
   document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
   document.getElementById('sprintDates').textContent = formatDate(STATE.config.sprintStart) + ' – ' + formatDate(STATE.config.sprintEnd);
   document.getElementById('stat-arr').textContent = STATE.config.arr;
-  const pipelineEl = document.getElementById('stat-pipeline'); if (pipelineEl) pipelineEl.textContent = STATE.config.pipeline;
+  document.getElementById('stat-pipeline').textContent = STATE.config.pipeline;
   document.getElementById('stat-funding').textContent = STATE.config.funding;
   document.getElementById('stat-team').textContent = STATE.config.teamSize;
   const cwLabel = document.getElementById('currentWeekLabel');
