@@ -126,6 +126,50 @@ body{background:var(--bg);color:var(--text);font-family:'Poppins','Segoe UI',sys
 body.edit-mode .editable{background:rgba(118,47,196,.12);cursor:text;border:1px dashed rgba(118,47,196,.4);padding:1px 4px;}
 body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(--nc-purple-light);}
 
+/* ── TASK ROW MANAGEMENT ── */
+.task-del-btn{display:none;background:rgba(247,95,95,.12);border:1px solid rgba(247,95,95,.3);color:var(--red);border-radius:3px;font-size:9px;font-weight:700;padding:1px 6px;cursor:pointer;margin-left:5px;transition:all .15s;white-space:nowrap;line-height:1.6;}
+.task-del-btn:hover{background:rgba(247,95,95,.3);}
+body.edit-mode .task-del-btn{display:inline-flex;align-items:center;}
+.task-pri-sel{display:none;background:rgba(30,20,50,.9);border:1px solid rgba(118,47,196,.3);border-radius:3px;color:var(--text);font-family:'Poppins',sans-serif;font-size:9px;padding:1px 4px;margin-left:4px;cursor:pointer;}
+body.edit-mode .task-pri-sel{display:inline-block;}
+body.edit-mode .task-pri-tag{display:none;}
+.add-task-btn{display:none;background:rgba(118,47,196,.08);border:1px dashed rgba(118,47,196,.35);color:var(--nc-purple-light);border-radius:4px;font-size:9px;font-weight:700;padding:5px 14px;cursor:pointer;width:100%;text-align:left;transition:all .15s;font-family:'Poppins',sans-serif;margin-top:2px;}
+.add-task-btn:hover{background:rgba(118,47,196,.18);}
+body.edit-mode .add-task-btn{display:block;}
+.add-task-form-wrap{display:none;padding:8px;background:rgba(118,47,196,.06);border-top:1px solid rgba(118,47,196,.15);}
+.add-task-form-wrap.open{display:block;}
+.atf-row1{display:grid;grid-template-columns:1fr 1fr 90px 90px;gap:6px;margin-bottom:6px;}
+.atf-row2{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;margin-bottom:8px;align-items:end;}
+.atf-lbl{font-size:8px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;}
+.atf-inp{background:rgba(255,255,255,.05);border:1px solid rgba(118,47,196,.3);border-radius:4px;color:var(--text);font-family:'Poppins',sans-serif;font-size:10px;padding:4px 7px;width:100%;box-sizing:border-box;}
+.atf-inp:focus{outline:none;border-color:var(--nc-purple-light);background:rgba(118,47,196,.1);}
+.atf-sel{background:rgba(20,14,40,.95);border:1px solid rgba(118,47,196,.3);border-radius:4px;color:var(--text);font-family:'Poppins',sans-serif;font-size:10px;padding:4px 6px;width:100%;box-sizing:border-box;}
+.atf-wk-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:3px;color:var(--muted);font-size:8px;font-weight:700;padding:4px 2px;cursor:pointer;text-align:center;transition:all .12s;font-family:'Poppins',sans-serif;width:100%;}
+.atf-wk-btn.on{background:rgba(118,47,196,.3);border-color:var(--nc-purple-light);color:var(--nc-purple-light);}
+.atf-wk-btn.ms{background:rgba(245,166,35,.2);border-color:var(--gold);color:var(--gold);}
+.atf-actions{display:flex;gap:6px;justify-content:flex-end;}
+.atf-save{background:var(--nc-purple);border:none;border-radius:4px;color:#fff;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;padding:5px 14px;cursor:pointer;}
+.atf-save:hover{background:var(--nc-purple-light);}
+.atf-cancel{background:rgba(107,116,148,.12);border:1px solid rgba(107,116,148,.3);border-radius:4px;color:var(--muted);font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;padding:5px 10px;cursor:pointer;}
+/* week cell click-to-toggle in edit mode */
+body.edit-mode td.wc-editable{cursor:pointer;position:relative;}
+body.edit-mode td.wc-editable:hover::after{content:'click';position:absolute;bottom:1px;left:50%;transform:translateX(-50%);font-size:6px;color:var(--nc-purple-light);white-space:nowrap;}
+
+/* ── INLINE EDITABLE CELLS (KPI + COMMISSION) ── */
+.ie{outline:none;border-radius:3px;transition:background .15s;display:inline-block;min-width:20px;}
+body.edit-mode .ie{background:rgba(118,47,196,.1);cursor:text;border:1px dashed rgba(118,47,196,.35);padding:0 3px;}
+body.edit-mode .ie:focus{background:rgba(118,47,196,.2);border-color:var(--nc-purple-light);}
+.ie-status{display:none;}
+body.edit-mode .ie-status{display:inline-block;background:rgba(20,14,40,.95);border:1px solid rgba(118,47,196,.3);border-radius:3px;color:var(--text);font-family:'Poppins',sans-serif;font-size:9px;padding:1px 4px;cursor:pointer;}
+body.edit-mode .ie-status-badge{display:none;}
+/* delete row in KPI table */
+.kpi-del-btn{display:none;background:rgba(247,95,95,.1);border:1px solid rgba(247,95,95,.25);color:var(--red);border-radius:3px;font-size:9px;font-weight:700;padding:1px 6px;cursor:pointer;transition:all .15s;}
+.kpi-del-btn:hover{background:rgba(247,95,95,.28);}
+body.edit-mode .kpi-del-btn{display:inline-flex;align-items:center;}
+.kpi-add-row-btn{display:none;background:rgba(118,47,196,.08);border:1px dashed rgba(118,47,196,.35);color:var(--nc-purple-light);border-radius:4px;font-size:9px;font-weight:700;padding:5px 14px;cursor:pointer;width:100%;text-align:left;transition:all .15s;font-family:'Poppins',sans-serif;margin-top:4px;}
+.kpi-add-row-btn:hover{background:rgba(118,47,196,.18);}
+body.edit-mode .kpi-add-row-btn{display:block;}
+
 /* ── STATUS BADGE ── */
 .status-btn{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;cursor:pointer;border:none;font-family:'Poppins',sans-serif;transition:all .15s;white-space:nowrap;}
 .status-btn:hover{filter:brightness(1.15);}
@@ -521,7 +565,7 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(118,47,196,.15),transparent)">
           <div class="tier-icon">🤝</div><div class="tier-name" style="color:var(--nc-purple-light)">Referral Tier</div>
           <div class="tier-desc">Anyone who makes a warm intro or referral that results in a closed deal</div>
-          <div class="tier-rate" style="color:var(--nc-purple-light)">3%</div>
+          <div class="tier-rate ie" contenteditable="false" style="color:var(--nc-purple-light)">3%</div>
           <div class="tier-rate-lbl">of closed ACV · paid on close</div>
         </div>
         <div class="tier-body">
@@ -537,7 +581,7 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(79,142,247,.15),transparent)">
           <div class="tier-icon">💼</div><div class="tier-name" style="color:var(--blue)">Sales Tier</div>
           <div class="tier-desc">For those who own and manage the full sales process from discovery to close</div>
-          <div class="tier-rate" style="color:var(--blue)">10%</div>
+          <div class="tier-rate ie" contenteditable="false" style="color:var(--blue)">10%</div>
           <div class="tier-rate-lbl">of closed ACV · paid on close + accelerators</div>
         </div>
         <div class="tier-body">
@@ -553,7 +597,7 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(0,208,132,.15),transparent)">
           <div class="tier-icon">🎓</div><div class="tier-name" style="color:var(--nc-green)">Delivery / CS Tier</div>
           <div class="tier-desc">CS and delivery team members who manage implementation and ensure customer success</div>
-          <div class="tier-rate" style="color:var(--nc-green)">5%</div>
+          <div class="tier-rate ie" contenteditable="false" style="color:var(--nc-green)">5%</div>
           <div class="tier-rate-lbl">of ACV on accounts they onboard · paid quarterly</div>
         </div>
         <div class="tier-body">
@@ -569,7 +613,7 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(245,166,35,.15),transparent)">
           <div class="tier-icon">📈</div><div class="tier-name" style="color:var(--gold)">Upsell / Expansion Tier</div>
           <div class="tier-desc">For anyone who identifies and closes expansion revenue within existing accounts</div>
-          <div class="tier-rate" style="color:var(--gold)">7%</div>
+          <div class="tier-rate ie" contenteditable="false" style="color:var(--gold)">7%</div>
           <div class="tier-rate-lbl">of expansion ACV · paid on close</div>
         </div>
         <div class="tier-body">
@@ -589,19 +633,19 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
     <table class="deal-table">
       <thead><tr><th>Deal Size (ACV)</th><th>Referral</th><th>Sales</th><th>Upsell</th><th>Delivery</th><th>Spiff / Bonus</th><th>Sales Payout Example</th></tr></thead>
       <tbody>
-        <tr><td><div class="dsb" style="background:rgba(255,255,255,.06);color:var(--muted2)">$5K–$10K</div></td><td style="color:var(--nc-purple-light);font-weight:700">3%</td><td style="color:var(--blue);font-weight:700">8%</td><td style="color:var(--gold);font-weight:700">5%</td><td style="color:var(--nc-green);font-weight:700">4%</td><td style="color:var(--muted)">—</td><td style="color:var(--muted2);font-size:10px">$400–$800</td></tr>
-        <tr><td><div class="dsb" style="background:rgba(79,142,247,.1);color:var(--blue)">$10K–$50K</div></td><td style="color:var(--nc-purple-light);font-weight:700">3%</td><td style="color:var(--blue);font-weight:700">10%</td><td style="color:var(--gold);font-weight:700">7%</td><td style="color:var(--nc-green);font-weight:700">5%</td><td style="color:var(--gold);font-size:10px">$500 first deal in tier</td><td style="color:var(--muted2);font-size:10px">$1,000–$5,000</td></tr>
-        <tr><td><div class="dsb" style="background:rgba(0,208,132,.1);color:var(--nc-green)">$50K–$100K</div></td><td style="color:var(--nc-purple-light);font-weight:700">3.5%</td><td style="color:var(--blue);font-weight:700">11%</td><td style="color:var(--gold);font-weight:700">8%</td><td style="color:var(--nc-green);font-weight:700">6%</td><td style="color:var(--gold);font-size:10px">$1,000 spiff + team dinner</td><td style="color:var(--muted2);font-size:10px">$5,500–$11,000</td></tr>
-        <tr><td><div class="dsb" style="background:rgba(245,166,35,.12);color:var(--gold)">$100K–$250K</div></td><td style="color:var(--nc-purple-light);font-weight:700">4%</td><td style="color:var(--blue);font-weight:700">12%</td><td style="color:var(--gold);font-weight:700">9%</td><td style="color:var(--nc-green);font-weight:700">7%</td><td style="color:var(--gold);font-size:10px">$2,500 spiff + announcement</td><td style="color:var(--muted2);font-size:10px">$12,000–$30,000</td></tr>
-        <tr><td><div class="dsb" style="background:rgba(247,95,95,.1);color:var(--red)">$250K–$500K</div></td><td style="color:var(--nc-purple-light);font-weight:700">4%</td><td style="color:var(--blue);font-weight:700">12%</td><td style="color:var(--gold);font-weight:700">10%</td><td style="color:var(--nc-green);font-weight:700">7%</td><td style="color:var(--red);font-size:10px">$5,000 + President's Club</td><td style="color:var(--muted2);font-size:10px">$30,000–$60,000</td></tr>
-        <tr><td><div class="dsb" style="background:rgba(118,47,196,.15);color:var(--nc-purple-light)">$500K–$1M+</div></td><td style="color:var(--nc-purple-light);font-weight:700">5%</td><td style="color:var(--blue);font-weight:700">12%</td><td style="color:var(--gold);font-weight:700">10%</td><td style="color:var(--nc-green);font-weight:700">8%</td><td style="color:var(--nc-purple-light);font-size:10px">$10,000 + equity discussion</td><td style="color:var(--muted2);font-size:10px">$60,000–$120,000</td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(255,255,255,.06);color:var(--muted2)">$5K–$10K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">3%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">8%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">5%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">4%</span></td><td style="color:var(--muted)"><span class="ie" contenteditable="false">—</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$400–$800</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(79,142,247,.1);color:var(--blue)">$10K–$50K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">3%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">10%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">7%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">5%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false">$500 first deal in tier</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$1,000–$5,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(0,208,132,.1);color:var(--nc-green)">$50K–$100K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">3.5%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">11%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">8%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">6%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false">$1,000 spiff + team dinner</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$5,500–$11,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(245,166,35,.12);color:var(--gold)">$100K–$250K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">4%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">9%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">7%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false">$2,500 spiff + announcement</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$12,000–$30,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(247,95,95,.1);color:var(--red)">$250K–$500K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">4%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">10%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">7%</span></td><td style="color:var(--red);font-size:10px"><span class="ie" contenteditable="false">$5,000 + President's Club</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$30,000–$60,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(118,47,196,.15);color:var(--nc-purple-light)">$500K–$1M+</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">5%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">10%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">8%</span></td><td style="color:var(--nc-purple-light);font-size:10px"><span class="ie" contenteditable="false">$10,000 + equity discussion</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$60,000–$120,000</span></td></tr>
       </tbody>
     </table>
     <div class="comm-section-title">🎯 Team Bonuses</div>
     <div class="bonus-grid">
       <div class="bonus-card" style="border-color:rgba(0,208,132,.3)">
         <div class="bonus-card-hdr"><div class="bonus-icon">📅</div><div><div class="bonus-title" style="color:var(--nc-green)">Monthly Team Bonus</div><div class="bonus-freq">Paid first Friday of each month</div></div></div>
-        <div class="bonus-amount" style="color:var(--nc-green)">$500</div>
+        <div class="bonus-amount ie" contenteditable="false" style="color:var(--nc-green)">$500</div>
         <div class="bonus-amount-lbl">per person · if team hits monthly revenue target</div>
         <div class="bonus-rule"><strong>Trigger:</strong> Team closes ≥ $75K new ACV in the calendar month</div>
         <div class="bonus-rule"><strong>Why monthly?</strong> Monthly bonuses outperform quarterly for small teams — 23% more targets hit. Prevents sandbagging.</div>
@@ -609,7 +653,7 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
       </div>
       <div class="bonus-card" style="border-color:rgba(118,47,196,.3)">
         <div class="bonus-card-hdr"><div class="bonus-icon">📆</div><div><div class="bonus-title" style="color:var(--nc-purple-light)">Quarterly Performance Bonus</div><div class="bonus-freq">Paid end of each quarter</div></div></div>
-        <div class="bonus-amount" style="color:var(--nc-purple-light)">$1,500–$3,000</div>
+        <div class="bonus-amount ie" contenteditable="false" style="color:var(--nc-purple-light)">$1,500–$3,000</div>
         <div class="bonus-amount-lbl">per person · tiered by % of quarterly target hit</div>
         <div class="bonus-rule"><strong>75–89%:</strong> $1,500 · <strong>90–99%:</strong> $2,000 · <strong>100–119%:</strong> $2,500 · <strong>120%+:</strong> $3,000</div>
         <div class="bonus-rule"><strong>Quarterly target:</strong> $225K new ACV (Q1 2026)</div>
@@ -617,7 +661,7 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
       </div>
       <div class="bonus-card" style="border-color:rgba(245,166,35,.3)">
         <div class="bonus-card-hdr"><div class="bonus-icon">🏆</div><div><div class="bonus-title" style="color:var(--gold)">Fundraising Milestone Bonus</div><div class="bonus-freq">One-time · paid on close of round</div></div></div>
-        <div class="bonus-amount" style="color:var(--gold)">$1,000–$2,500</div>
+        <div class="bonus-amount ie" contenteditable="false" style="color:var(--gold)">$1,000–$2,500</div>
         <div class="bonus-amount-lbl">per person · if WeFunder or Bridge closes by Apr 17</div>
         <div class="bonus-rule"><strong>WeFunder $250K+:</strong> $1,000 · <strong>WeFunder $500K:</strong> $1,500</div>
         <div class="bonus-rule"><strong>Bridge signed:</strong> $2,000 · <strong>Both by Apr 17:</strong> $2,500</div>
@@ -628,14 +672,14 @@ body.edit-mode .editable:focus{background:rgba(118,47,196,.2);border-color:var(-
     <table class="spiff-table">
       <thead><tr><th>Spiff</th><th>Trigger</th><th>Reward</th><th>Eligible</th><th>Window</th></tr></thead>
       <tbody>
-        <tr><td><strong>🦄 First $50K+ Deal</strong></td><td>First deal over $50K ACV closed</td><td><span class="spiff-amt">$2,500</span> cash</td><td>Sales, BDR</td><td>Sprint-wide</td></tr>
-        <tr><td><strong>🚀 First $100K+ Deal</strong></td><td>First deal over $100K ACV closed</td><td><span class="spiff-amt">$5,000</span> + announcement</td><td>Sales</td><td>Sprint-wide</td></tr>
-        <tr><td><strong>⚡ Speed Close</strong></td><td>Deal closed within 14 days of first contact</td><td><span class="spiff-amt">$750</span> on top of commission</td><td>Sales, BDR</td><td>Ongoing</td></tr>
-        <tr><td><strong>🌱 PLG Convert</strong></td><td>Self-serve signup converts to paid ($5K+ ACV)</td><td><span class="spiff-amt">$500</span> per conversion</td><td>Product, Sales, CS</td><td>W5–W8</td></tr>
-        <tr><td><strong>🤝 Channel Partner Close</strong></td><td>First deal sourced through signed channel partner</td><td><span class="spiff-amt">$1,500</span> + team lunch</td><td>Sales</td><td>W4–W8</td></tr>
-        <tr><td><strong>📣 Referral Blitz</strong></td><td>Any employee submits 3+ qualified referrals in one week</td><td><span class="spiff-amt">$300</span> gift card</td><td>All 15 employees</td><td>W2–W4</td></tr>
-        <tr><td><strong>💚 Upsell Sprint</strong></td><td>CS closes 2+ upsells in a single month</td><td><span class="spiff-amt">$1,000</span> + President's Club point</td><td>CS Manager, CS Rep</td><td>Mar &amp; Apr</td></tr>
-        <tr><td><strong>🏢 Enterprise Logo</strong></td><td>Closes a Fortune 1000 / Workday ecosystem account</td><td><span class="spiff-amt">$3,000</span> + equity discussion</td><td>Sales, CS, Trevor</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>🦄 First $50K+ Deal</strong></td><td>First deal over $50K ACV closed</td><td><span class="spiff-amt ie" contenteditable="false">$2,500</span> cash</td><td>Sales, BDR</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>🚀 First $100K+ Deal</strong></td><td>First deal over $100K ACV closed</td><td><span class="spiff-amt ie" contenteditable="false">$5,000</span> + announcement</td><td>Sales</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>⚡ Speed Close</strong></td><td>Deal closed within 14 days of first contact</td><td><span class="spiff-amt ie" contenteditable="false">$750</span> on top of commission</td><td>Sales, BDR</td><td>Ongoing</td></tr>
+        <tr><td><strong>🌱 PLG Convert</strong></td><td>Self-serve signup converts to paid ($5K+ ACV)</td><td><span class="spiff-amt ie" contenteditable="false">$500</span> per conversion</td><td>Product, Sales, CS</td><td>W5–W8</td></tr>
+        <tr><td><strong>🤝 Channel Partner Close</strong></td><td>First deal sourced through signed channel partner</td><td><span class="spiff-amt ie" contenteditable="false">$1,500</span> + team lunch</td><td>Sales</td><td>W4–W8</td></tr>
+        <tr><td><strong>📣 Referral Blitz</strong></td><td>Any employee submits 3+ qualified referrals in one week</td><td><span class="spiff-amt ie" contenteditable="false">$300</span> gift card</td><td>All 15 employees</td><td>W2–W4</td></tr>
+        <tr><td><strong>💚 Upsell Sprint</strong></td><td>CS closes 2+ upsells in a single month</td><td><span class="spiff-amt ie" contenteditable="false">$1,000</span> + President's Club point</td><td>CS Manager, CS Rep</td><td>Mar &amp; Apr</td></tr>
+        <tr><td><strong>🏢 Enterprise Logo</strong></td><td>Closes a Fortune 1000 / Workday ecosystem account</td><td><span class="spiff-amt ie" contenteditable="false">$3,000</span> + equity discussion</td><td>Sales, CS, Trevor</td><td>Sprint-wide</td></tr>
       </tbody>
     </table>
     <div class="comm-section-title">🌱 PLG + SLG Hybrid Rules</div>
@@ -1055,6 +1099,21 @@ function renderGantt() {
               </tbody>
             </table>
           </div>
+          <div class="add-task-form-wrap" id="atf-${dept.replace(/[^a-z0-9]/gi,'_')}">
+            <div class="atf-row1">
+              <div><div class="atf-lbl">Task Name</div><input class="atf-inp" id="atf-name-${dept.replace(/[^a-z0-9]/gi,'_')}" placeholder="e.g. Launch Email Campaign"/></div>
+              <div><div class="atf-lbl">Success Metric</div><input class="atf-inp" id="atf-metric-${dept.replace(/[^a-z0-9]/gi,'_')}" placeholder="e.g. 500 opens by W4"/></div>
+              <div><div class="atf-lbl">Priority</div><select class="atf-sel" id="atf-pri-${dept.replace(/[^a-z0-9]/gi,'_')}"><option value="p1">P1</option><option value="p2">P2</option><option value="p3">P3</option></select></div>
+              <div><div class="atf-lbl">Owner</div><input class="atf-inp" id="atf-owner-${dept.replace(/[^a-z0-9]/gi,'_')}" placeholder="e.g. Sales Lead"/></div>
+            </div>
+            <div class="atf-lbl" style="margin-bottom:4px">Week Timeline (click to toggle: empty → bar → milestone → empty)</div>
+            <div class="atf-row2">${[1,2,3,4,5,6,7,8].map(w=>`<button class="atf-wk-btn" data-w="${w}" data-state="0" onclick="atfToggleWeek(this)">W${w}</button>`).join('')}</div>
+            <div class="atf-actions">
+              <button class="atf-cancel" onclick="closeAddTaskForm('${dept.replace(/[^a-z0-9]/gi,'_')}')">Cancel</button>
+              <button class="atf-save" onclick="saveNewTask('${dept}','${dept.replace(/[^a-z0-9]/gi,'_')}')">+ Add Task</button>
+            </div>
+          </div>
+          <button class="add-task-btn" onclick="openAddTaskForm('${dept.replace(/[^a-z0-9]/gi,'_')}')">+ Add Task to ${dept}</button>
         </div>
       </div>`;
     });
@@ -1084,7 +1143,6 @@ function renderTaskRow(task, cw) {
     } else if (v === 'S') {
       inner = `<div class="bar bar-solo"></div>`;
     } else if (v === 1) {
-      // determine bar type
       const prev = task.weeks[w-2];
       const next = task.weeks[w];
       const hasPrev = prev === 1 || prev === 'M';
@@ -1095,11 +1153,17 @@ function renderTaskRow(task, cw) {
       else if (hasNext) barCls = 'bar-s';
       inner = `<div class="bar ${barCls}"></div>`;
     }
-    cells += `<td class="wc ${tdCls}">${inner}</td>`;
+    cells += `<td class="wc wc-editable ${tdCls}" onclick="toggleWeekCell('${task.id}',${w},this)">${inner}</td>`;
   }
 
-  return `<tr>
-    <td><span class="t-name editable" contenteditable="false" data-field="name" data-id="${task.id}">${task.name}</span> <span class="tag ${task.priority}">${task.priority.toUpperCase()}</span></td>
+  const priOpts = ['p1','p2','p3'].map(p => `<option value="${p}"${task.priority===p?' selected':''}>${p.toUpperCase()}</option>`).join('');
+
+  return `<tr data-task-id="${task.id}">
+    <td><span class="t-name editable" contenteditable="false" data-field="name" data-id="${task.id}">${task.name}</span>
+      <span class="tag ${task.priority} task-pri-tag">${task.priority.toUpperCase()}</span>
+      <select class="task-pri-sel" onchange="changeTaskPriority('${task.id}',this.value)">${priOpts}</select>
+      <button class="task-del-btn" onclick="deleteTask('${task.id}')">✕ Remove</button>
+    </td>
     <td><span class="kpi-cell editable" contenteditable="false" data-field="metric" data-id="${task.id}">${task.metric}</span></td>
     <td><button class="status-btn ${s.cls}" onclick="cycleStatus('${task.id}', this)">${s.label}</button></td>
     ${cells}
@@ -1130,6 +1194,154 @@ function cycleStatus(id, btn) {
 }
 
 // ════════════════════════════════════════════════
+// TASK MANAGEMENT (Add / Delete / Edit Weeks)
+// ════════════════════════════════════════════════
+function deleteTask(id) {
+  if (!confirm('Remove this task?')) return;
+  STATE.tasks = STATE.tasks.filter(t => t.id !== id);
+  saveState();
+  renderGantt();
+  // re-apply edit mode to new DOM
+  document.querySelectorAll('.editable').forEach(el => { el.contentEditable = 'true'; });
+  document.querySelectorAll('.ie').forEach(el => { el.contentEditable = 'true'; });
+  showToast('Task removed.');
+}
+
+function changeTaskPriority(id, val) {
+  const task = STATE.tasks.find(t => t.id === id);
+  if (!task) return;
+  task.priority = val;
+  saveState();
+  // update tag in DOM without full re-render
+  const row = document.querySelector(`tr[data-task-id="${id}"]`);
+  if (row) {
+    const tag = row.querySelector('.task-pri-tag');
+    if (tag) { tag.className = `tag ${val} task-pri-tag`; tag.textContent = val.toUpperCase(); }
+  }
+  showToast('Priority updated.');
+}
+
+function toggleWeekCell(id, w, td) {
+  if (!editMode) return;
+  const task = STATE.tasks.find(t => t.id === id);
+  if (!task) return;
+  const idx = w - 1;
+  const cur = task.weeks[idx];
+  // cycle: 0 -> 1 (bar) -> M (milestone) -> 0
+  if (!cur || cur === 0) task.weeks[idx] = 1;
+  else if (cur === 1) task.weeks[idx] = 'M';
+  else task.weeks[idx] = 0;
+  saveState();
+  // re-render just this cell
+  const v = task.weeks[idx];
+  let inner = '';
+  if (v === 'M') inner = `<div class="milestone"></div>`;
+  else if (v === 1) {
+    const prev = task.weeks[idx-1]; const next = task.weeks[idx+1];
+    const hasPrev = prev===1||prev==='M'; const hasNext = next===1||next==='M';
+    let bc = 'bar-solo';
+    if (hasPrev&&hasNext) bc='bar-m'; else if (hasPrev) bc='bar-e'; else if (hasNext) bc='bar-s';
+    inner = `<div class="bar ${bc}"></div>`;
+  }
+  td.innerHTML = inner;
+  // also update adjacent cells for bar shape
+  const row = td.closest('tr');
+  if (row) {
+    const cells = row.querySelectorAll('td.wc-editable');
+    cells.forEach((cell, ci) => {
+      const wi = ci;
+      const vv = task.weeks[wi];
+      if (vv !== 1) return;
+      const pp = task.weeks[wi-1]; const nn = task.weeks[wi+1];
+      const hp = pp===1||pp==='M'; const hn = nn===1||nn==='M';
+      let bc2 = 'bar-solo';
+      if (hp&&hn) bc2='bar-m'; else if (hp) bc2='bar-e'; else if (hn) bc2='bar-s';
+      cell.innerHTML = `<div class="bar ${bc2}"></div>`;
+    });
+  }
+}
+
+function openAddTaskForm(deptKey) {
+  document.querySelectorAll('.add-task-form-wrap').forEach(f => f.classList.remove('open'));
+  const form = document.getElementById('atf-' + deptKey);
+  if (form) form.classList.add('open');
+}
+
+function closeAddTaskForm(deptKey) {
+  const form = document.getElementById('atf-' + deptKey);
+  if (form) form.classList.remove('open');
+}
+
+function atfToggleWeek(btn) {
+  const states = ['0','1','M'];
+  const labels = ['W'+btn.dataset.w, 'W'+btn.dataset.w+' \u2588', 'W'+btn.dataset.w+' \u25c6'];
+  const cur = states.indexOf(btn.dataset.state);
+  const next = (cur+1) % 3;
+  btn.dataset.state = states[next];
+  btn.textContent = labels[next];
+  btn.className = 'atf-wk-btn' + (states[next]==='1'?' on':states[next]==='M'?' ms':'');
+}
+
+function saveNewTask(dept, deptKey) {
+  const nameEl = document.getElementById('atf-name-'+deptKey);
+  const metricEl = document.getElementById('atf-metric-'+deptKey);
+  const priEl = document.getElementById('atf-pri-'+deptKey);
+  const ownerEl = document.getElementById('atf-owner-'+deptKey);
+  if (!nameEl || !nameEl.value.trim()) { showToast('Please enter a task name.'); return; }
+  const weeks = [0,0,0,0,0,0,0,0];
+  document.querySelectorAll(`#atf-${deptKey} .atf-wk-btn`).forEach(btn => {
+    const w = parseInt(btn.dataset.w)-1;
+    const s = btn.dataset.state;
+    weeks[w] = s==='M' ? 'M' : s==='1' ? 1 : 0;
+  });
+  const newTask = {
+    id: 'task_' + Date.now(),
+    dept: dept,
+    name: nameEl.value.trim(),
+    metric: metricEl ? metricEl.value.trim() : '',
+    priority: priEl ? priEl.value : 'p2',
+    owner: ownerEl ? ownerEl.value.trim() : '',
+    status: 'not-started',
+    weeks: weeks
+  };
+  STATE.tasks.push(newTask);
+  saveState();
+  closeAddTaskForm(deptKey);
+  renderGantt();
+  document.querySelectorAll('.editable').forEach(el => { el.contentEditable = 'true'; });
+  document.querySelectorAll('.ie').forEach(el => { el.contentEditable = 'true'; });
+  showToast('Task added: ' + newTask.name.substring(0,30));
+}
+
+// ════════════════════════════════════════════════
+// COMPANY KPI MANAGEMENT
+// ════════════════════════════════════════════════
+function deleteKpiRow(i) {
+  if (!confirm('Remove this KPI row?')) return;
+  STATE.companyKpis.splice(i, 1);
+  saveState();
+  renderCompanyKpis();
+  document.querySelectorAll('.ie').forEach(el => { el.contentEditable = 'true'; });
+  showToast('KPI row removed.');
+}
+
+function addCompanyKpiRow() {
+  STATE.companyKpis.push({kpi:'New KPI',cat:'General',current:'—',target:'—',deadline:'W8',owner:'Team',status:'not-started'});
+  saveState();
+  renderCompanyKpis();
+  document.querySelectorAll('.ie').forEach(el => { el.contentEditable = 'true'; });
+  showToast('New KPI row added — click to edit.');
+}
+
+function updateKpiStatus(i, val) {
+  if (STATE.companyKpis[i]) {
+    STATE.companyKpis[i].status = val;
+    saveState();
+    showToast('Status updated.');
+  }
+}
+
+// ════════════════════════════════════════════════
 // EDIT MODE
 // ════════════════════════════════════════════════
 let editMode = false;
@@ -1139,17 +1351,43 @@ function toggleEditMode() {
   document.body.classList.toggle('edit-mode', editMode);
   const btn = document.getElementById('editToggle');
   btn.classList.toggle('active', editMode);
-  btn.textContent = editMode ? '✅ Editing...' : '✏️ Edit Mode';
+  btn.textContent = editMode ? '\u2705 Editing...' : '\u270f\ufe0f Edit Mode';
 
+  // Task name/metric editable spans
   document.querySelectorAll('.editable').forEach(el => {
     el.contentEditable = editMode ? 'true' : 'false';
     if (!editMode) {
-      // save changes back to state
       const id = el.dataset.id;
       const field = el.dataset.field;
       if (id && field) {
         const task = STATE.tasks.find(t => t.id === id);
         if (task) task[field] = el.textContent.trim();
+      }
+    }
+  });
+
+  // Inline-editable cells (KPI + commission + dept KPI)
+  document.querySelectorAll('.ie').forEach(el => {
+    el.contentEditable = editMode ? 'true' : 'false';
+    if (!editMode) {
+      // Company KPI table
+      const ki = el.dataset.kpi; const kf = el.dataset.kf;
+      if (ki !== undefined && kf && STATE.companyKpis[ki]) {
+        STATE.companyKpis[ki][kf] = el.textContent.trim();
+      }
+      // Dept KPI cards
+      const dpod = el.dataset.dpod; const ddept = el.dataset.ddept;
+      const dmi = el.dataset.dmi; const dmf = el.dataset.dmf;
+      if (dpod && ddept !== undefined && dmi !== undefined && dmf) {
+        if (DEPT_KPIS[dpod] && DEPT_KPIS[dpod].depts[ddept] && DEPT_KPIS[dpod].depts[ddept].metrics[dmi]) {
+          DEPT_KPIS[dpod].depts[ddept].metrics[dmi][dmf] = el.textContent.trim();
+        }
+      }
+      // Commission inline editable
+      const cf = el.dataset.cf; const ci = el.dataset.ci;
+      if (cf && ci !== undefined && STATE.commission) {
+        if (!STATE.commission[cf]) STATE.commission[cf] = {};
+        STATE.commission[cf][ci] = el.textContent.trim();
       }
     }
   });
@@ -1184,24 +1422,36 @@ function renderCompanyKpis() {
     </div>`).join('');
 
   // Table
-  const statusMap = {
-    'not-started': '<span class="sb sb-r">Not Started</span>',
-    'in-progress':  '<span class="sb sb-y">In Progress</span>',
-    'on-track':     '<span class="sb sb-g">On Track</span>',
-    'at-risk':      '<span class="sb sb-y">At Risk</span>',
-    'done':         '<span class="sb sb-g">Done</span>',
-    'pending':      '<span class="sb sb-b">Pending</span>'
-  };
-  document.getElementById('companyKpiBody').innerHTML = STATE.companyKpis.map(k => `
-    <tr>
-      <td><strong>${k.kpi}</strong></td>
-      <td>${k.cat}</td>
-      <td>${k.current}</td>
-      <td>${k.target}</td>
-      <td>${k.deadline}</td>
-      <td>${k.owner}</td>
-      <td>${statusMap[k.status] || statusMap['not-started']}</td>
-    </tr>`).join('');
+  const statusCls = {'not-started':'sb-r','in-progress':'sb-y','on-track':'sb-g','at-risk':'sb-y','done':'sb-g','pending':'sb-b'};
+  const statusOpts = ['not-started','in-progress','on-track','at-risk','done','pending'];
+  document.getElementById('companyKpiBody').innerHTML = STATE.companyKpis.map((k,i) => {
+    const sc = statusCls[k.status]||'sb-r';
+    const sOpts = statusOpts.map(o=>`<option value="${o}"${k.status===o?' selected':''}>${o.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase())}</option>`).join('');
+    return `
+    <tr data-kpi-idx="${i}">
+      <td><strong class="ie" contenteditable="false" data-kpi="${i}" data-kf="kpi">${k.kpi}</strong></td>
+      <td><span class="ie" contenteditable="false" data-kpi="${i}" data-kf="cat">${k.cat}</span></td>
+      <td><span class="ie" contenteditable="false" data-kpi="${i}" data-kf="current">${k.current}</span></td>
+      <td><span class="ie" contenteditable="false" data-kpi="${i}" data-kf="target">${k.target}</span></td>
+      <td><span class="ie" contenteditable="false" data-kpi="${i}" data-kf="deadline">${k.deadline}</span></td>
+      <td><span class="ie" contenteditable="false" data-kpi="${i}" data-kf="owner">${k.owner}</span></td>
+      <td>
+        <span class="sb ${sc} ie-status-badge">${k.status.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase())}</span>
+        <select class="ie-status" onchange="updateKpiStatus(${i},this.value)">${sOpts}</select>
+      </td>
+      <td><button class="kpi-del-btn" onclick="deleteKpiRow(${i})">\u2715</button></td>
+    </tr>`;
+  }).join('');
+  // Add-row button below table
+  const addBtn = document.getElementById('companyKpiAddBtn');
+  if (!addBtn) {
+    const tbl = document.getElementById('companyKpiTable');
+    const btn = document.createElement('button');
+    btn.className = 'kpi-add-row-btn'; btn.id = 'companyKpiAddBtn';
+    btn.textContent = '+ Add KPI Row';
+    btn.onclick = addCompanyKpiRow;
+    tbl.parentNode.insertBefore(btn, tbl.nextSibling);
+  }
 }
 
 // ════════════════════════════════════════════════
@@ -1264,16 +1514,17 @@ function renderDeptKpis() {
     html += `<div style="margin-bottom:28px">
       <div class="kpi-section-title" style="color:${podColor}">${pod.icon} ${podName} Pod</div>
       <div class="dept-grid">`;
-    pod.depts.forEach(dept => {
+    pod.depts.forEach((dept,di) => {
+      const deptKey = podName + '_' + di;
       html += `<div class="dept-card" style="border-color:${dept.color}44">
         <div class="dept-card-hdr" style="background:linear-gradient(90deg,${dept.color}18,transparent)">
           <div class="dept-card-name" style="color:${dept.color}">${dept.name}</div>
         </div>
         <div class="dept-card-body">
-          ${dept.metrics.map(m => `<div class="dept-metric-row">
-            <div class="dkpi-name">${m.n}</div>
-            <div class="dkpi-target" style="color:${dept.color}">${m.t}</div>
-            <div class="dkpi-dl">${m.dl}</div>
+          ${dept.metrics.map((m,mi) => `<div class="dept-metric-row">
+            <div class="dkpi-name ie" contenteditable="false" data-dpod="${podName}" data-ddept="${di}" data-dmi="${mi}" data-dmf="n">${m.n}</div>
+            <div class="dkpi-target ie" contenteditable="false" data-dpod="${podName}" data-ddept="${di}" data-dmi="${mi}" data-dmf="t" style="color:${dept.color}">${m.t}</div>
+            <div class="dkpi-dl ie" contenteditable="false" data-dpod="${podName}" data-ddept="${di}" data-dmi="${mi}" data-dmf="dl">${m.dl}</div>
           </div>`).join('')}
         </div>
       </div>`;
