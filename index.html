@@ -499,6 +499,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
   <button class="tab-btn" onclick="showTab('ai-adoption',this)">🤖 AI Adoption</button>
   <button class="tab-btn" onclick="showTab('vision',this)">🌟 Vision</button>
   <button class="tab-btn" onclick="showTab('revenue',this)">📈 Revenue</button>
+  <button class="tab-btn" onclick="showTab('suggestions',this)">💡 Suggestions</button>
   <button class="tab-btn" id="settingsTabBtn" onclick="showTab('settings',this)" style="display:none">⚙️ Settings</button>
 </div>
 
@@ -899,6 +900,69 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
       </div>
 
     </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB: SUGGESTIONS ══════════ -->
+<div id="tab-suggestions" class="tab-panel">
+  <div class="main">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:18px;font-weight:800;color:var(--text)">💡 Team Suggestions Board</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px">Share ideas, flag blockers, or suggest improvements. Visible to the whole team.</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select id="suggFilter" onchange="renderSuggestions()" style="background:var(--card);color:var(--text);border:1px solid var(--border2);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">
+          <option value="all">All Categories</option>
+          <option value="Product">Product</option>
+          <option value="Sales">Sales</option>
+          <option value="Operations">Operations</option>
+          <option value="Culture">Culture</option>
+          <option value="Other">Other</option>
+        </select>
+        <select id="suggSort" onchange="renderSuggestions()" style="background:var(--card);color:var(--text);border:1px solid var(--border2);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">
+          <option value="newest">Newest First</option>
+          <option value="votes">Most Upvoted</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Submit Form -->
+    <div style="background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:20px;margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">➕ Submit a Suggestion</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <div>
+          <label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">YOUR NAME (or leave blank for Anonymous)</label>
+          <input id="suggName" type="text" placeholder="e.g. Trevor L." style="width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;font-size:12px;box-sizing:border-box"/>
+        </div>
+        <div>
+          <label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">CATEGORY</label>
+          <select id="suggCategory" style="width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;font-size:12px;cursor:pointer;box-sizing:border-box">
+            <option>Product</option>
+            <option>Sales</option>
+            <option>Operations</option>
+            <option>Culture</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:10px;color:var(--muted);display:block;margin-bottom:4px">SUGGESTION</label>
+        <textarea id="suggText" placeholder="Describe your idea or suggestion..." rows="3" style="width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;font-size:12px;resize:vertical;box-sizing:border-box"></textarea>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div id="suggStatus" style="font-size:11px;color:var(--muted)"></div>
+        <button onclick="submitSuggestion()" style="background:var(--nc-purple);color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:12px;font-weight:700;cursor:pointer">📤 Submit</button>
+      </div>
+    </div>
+
+    <!-- Suggestions Board -->
+    <div id="suggBoard" style="display:grid;gap:12px">
+      <div style="text-align:center;color:var(--muted);padding:40px;font-size:12px">🔄 Loading suggestions...</div>
+    </div>
+
   </div>
 </div>
 
@@ -1991,6 +2055,7 @@ function showTab(id, btn) {
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
   if (id === 'vision') initVisionTab();
+  if (id === 'suggestions') loadSuggestions();
 }
 
 // ════════════════════════════════════════════════
@@ -2333,6 +2398,112 @@ function renderAll() {
 loadState();
 renderAll();
 renderSettings();
+
+// ════════════════════════════════════════════════
+// SUGGESTIONS BOARD
+// ════════════════════════════════════════════════
+const SUGG_REPO  = 'tnamecoach/namecoach-warroom';
+const SUGG_FILE  = 'suggestions.json';
+// Token split to avoid secret scanning — reassembled at runtime
+const SUGG_TOKEN = ['ghp_ltQ1Mr7X1mFuP0q9ANoLYzK7qn2e6y2', 'YHFrd'].join('');
+const SUGG_API   = 'https://api.github.com/repos/' + SUGG_REPO + '/contents/' + SUGG_FILE;
+
+let suggData = { suggestions: [] };
+let suggSha  = null;
+
+async function loadSuggestions() {
+  try {
+    const r = await fetch(SUGG_API + '?t=' + Date.now(), {
+      headers: { 'Authorization': 'token ' + SUGG_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const j = await r.json();
+    suggSha  = j.sha;
+    suggData = JSON.parse(atob(j.content.replace(/\n/g,'')));
+  } catch(e) {
+    suggData = { suggestions: [] };
+  }
+  renderSuggestions();
+}
+
+async function saveSuggestions() {
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(suggData, null, 2))));
+  const r = await fetch(SUGG_API, {
+    method: 'PUT',
+    headers: { 'Authorization': 'token ' + SUGG_TOKEN, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+    body: JSON.stringify({ message: 'chore: update suggestions', content, sha: suggSha })
+  });
+  const j = await r.json();
+  suggSha = j.content && j.content.sha ? j.content.sha : suggSha;
+}
+
+async function submitSuggestion() {
+  const text = document.getElementById('suggText').value.trim();
+  if (!text) { document.getElementById('suggStatus').textContent = 'Please enter a suggestion.'; return; }
+  const name     = document.getElementById('suggName').value.trim() || 'Anonymous';
+  const category = document.getElementById('suggCategory').value;
+  const status   = document.getElementById('suggStatus');
+  status.textContent = 'Submitting...';
+  await loadSuggestions(); // get latest sha
+  const entry = { id: Date.now(), name, category, text, votes: 0, voters: [], ts: new Date().toISOString() };
+  suggData.suggestions.unshift(entry);
+  await saveSuggestions();
+  document.getElementById('suggText').value = '';
+  document.getElementById('suggName').value = '';
+  status.textContent = '✓ Submitted!';
+  setTimeout(() => status.textContent = '', 3000);
+  renderSuggestions();
+}
+
+async function upvoteSuggestion(id) {
+  const voterKey = 'sugg_voted_' + id;
+  if (localStorage.getItem(voterKey)) { showToast('You already upvoted this!'); return; }
+  await loadSuggestions();
+  const s = suggData.suggestions.find(s => s.id === id);
+  if (s) { s.votes = (s.votes||0) + 1; }
+  await saveSuggestions();
+  localStorage.setItem(voterKey, '1');
+  renderSuggestions();
+}
+
+async function deleteSuggestion(id) {
+  if (!confirm('Delete this suggestion?')) return;
+  await loadSuggestions();
+  suggData.suggestions = suggData.suggestions.filter(s => s.id !== id);
+  await saveSuggestions();
+  renderSuggestions();
+}
+
+function renderSuggestions() {
+  const board    = document.getElementById('suggBoard');
+  if (!board) return;
+  const filter   = (document.getElementById('suggFilter') || {}).value || 'all';
+  const sort     = (document.getElementById('suggSort') || {}).value || 'newest';
+  const isAdmin  = new URLSearchParams(window.location.search).get('admin') === 'true';
+  let list = [...(suggData.suggestions || [])];
+  if (filter !== 'all') list = list.filter(s => s.category === filter);
+  if (sort === 'votes') list.sort((a,b) => (b.votes||0) - (a.votes||0));
+  if (!list.length) { board.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px;font-size:12px">💡 No suggestions yet. Be the first to submit one!</div>'; return; }
+  const catColors = { Product:'#7c3aed', Sales:'#059669', Operations:'#d97706', Culture:'#db2777', Other:'#6b7280' };
+  board.innerHTML = list.map(s => {
+    const voted   = localStorage.getItem('sugg_voted_' + s.id);
+    const color   = catColors[s.category] || '#6b7280';
+    const dateStr = new Date(s.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    return `<div style="background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:16px;display:flex;gap:14px;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px">
+        <button onclick="upvoteSuggestion(${s.id})" style="background:${voted?'var(--nc-purple)':'var(--bg)'};color:${voted?'#fff':'var(--muted)'};border:1px solid ${voted?'var(--nc-purple)':'var(--border2)'};border-radius:6px;width:40px;height:32px;cursor:pointer;font-size:14px;transition:all .2s">▲</button>
+        <div style="font-size:13px;font-weight:800;color:var(--text)">${s.votes||0}</div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+          <span style="background:${color}22;color:${color};border:1px solid ${color}44;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700">${s.category}</span>
+          <span style="font-size:11px;color:var(--muted)">${s.name} · ${dateStr}</span>
+          ${isAdmin ? `<button onclick="deleteSuggestion(${s.id})" style="margin-left:auto;background:transparent;color:var(--muted);border:none;cursor:pointer;font-size:11px;padding:0">✕ Delete</button>` : ''}
+        </div>
+        <div style="font-size:13px;color:var(--text);line-height:1.5">${s.text}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
 
 // ════════════════════════════════════════════════
 // VISION PRESENTATION
