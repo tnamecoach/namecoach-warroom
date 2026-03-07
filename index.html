@@ -481,7 +481,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
   </div>
   <div class="topbar-right">
     <div class="save-indicator" id="saveIndicator">✓ Saved</div>
-    <button class="edit-toggle" id="editToggle" onclick="toggleEditMode()">✏️ Edit Mode</button>
+    <button class="edit-toggle" id="editToggle" onclick="toggleEditMode()" style="display:none">✏️ Edit Mode</button>
     <div class="countdown-badge">
       <div class="countdown-num" id="countdown">—</div>
       <div class="countdown-lbl">Days Left</div>
@@ -2580,9 +2580,11 @@ document.addEventListener('keydown', e => {
 // Admin access: Settings tab only visible with ?admin=true in URL
 (function() {
   const params = new URLSearchParams(window.location.search);
-  const btn = document.getElementById('settingsTabBtn');
-  if (params.get('admin') === 'true' && btn) {
-    btn.style.display = '';
+  if (params.get('admin') === 'true') {
+    const settingsBtn = document.getElementById('settingsTabBtn');
+    const editBtn     = document.getElementById('editToggle');
+    if (settingsBtn) settingsBtn.style.display = '';
+    if (editBtn)     editBtn.style.display     = '';
   }
 })();
 
