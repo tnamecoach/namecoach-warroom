@@ -499,6 +499,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
   <button class="tab-btn" onclick="showTab('commission',this)">💰 Commission</button>
   <button class="tab-btn" onclick="showTab('ai-adoption',this)">🤖 AI Adoption</button>
   <button class="tab-btn" onclick="showTab('vision',this)">🌟 Vision</button>
+  <button class="tab-btn" onclick="showTab('revenue',this)">📈 Revenue</button>
   <button class="tab-btn" id="settingsTabBtn" onclick="showTab('settings',this)" style="display:none">⚙️ Settings</button>
 </div>
 
@@ -900,6 +901,24 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
 
     </div>
   </div>
+</div>
+
+<!-- ══════════ TAB: REVENUE ══════════ -->
+<div id="tab-revenue" class="tab-panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px 8px;">
+    <div>
+      <div style="font-size:16px;font-weight:800;color:var(--text)">📈 Revenue Dashboard</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">Live data · <a href="https://custdash-9zpqwes6.manus.space" target="_blank" style="color:var(--nc-purple-light);text-decoration:none">Open in new tab ↗</a></div>
+    </div>
+    <button class="settings-btn secondary" onclick="document.getElementById('revenueDash').src=document.getElementById('revenueDash').src" style="font-size:11px;padding:5px 12px">↻ Refresh</button>
+  </div>
+  <iframe
+    id="revenueDash"
+    src="https://custdash-9zpqwes6.manus.space"
+    style="width:100%;height:calc(100vh - 120px);border:none;display:block;"
+    title="Revenue Dashboard"
+    loading="lazy"
+  ></iframe>
 </div>
 
 <!-- ══════════ TAB: VISION ══════════ -->
