@@ -498,6 +498,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
   <button class="tab-btn" onclick="showTab('individual-kpi',this)">👤 Individual KPIs</button>
   <button class="tab-btn" onclick="showTab('commission',this)">💰 Commission</button>
   <button class="tab-btn" onclick="showTab('ai-adoption',this)">🤖 AI Adoption</button>
+  <button class="tab-btn" onclick="showTab('vision',this)">🌟 Vision</button>
   <button class="tab-btn" id="settingsTabBtn" onclick="showTab('settings',this)" style="display:none">⚙️ Settings</button>
 </div>
 
@@ -898,6 +899,42 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
       </div>
 
     </div>
+  </div>
+</div>
+
+<!-- ══════════ TAB: VISION ══════════ -->
+<div id="tab-vision" class="tab-panel">
+  <div class="main">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:18px;font-weight:800;color:var(--text)">🌟 NameCoach 2026: The Voice AI Opportunity</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px">February 2026 · 14 slides · Confidential</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="settings-btn secondary" onclick="visionPrev()">← Prev</button>
+        <span id="visionCounter" style="font-size:11px;color:var(--muted);min-width:50px;text-align:center">1 / 14</span>
+        <button class="settings-btn secondary" onclick="visionNext()">Next →</button>
+        <button class="settings-btn" onclick="visionFullscreen()">⛶ Fullscreen</button>
+      </div>
+    </div>
+
+    <!-- Main slide display -->
+    <div id="visionSlideWrap" style="position:relative;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border2);cursor:pointer;" onclick="visionNext()">
+      <img id="visionSlideImg" src="" alt="Slide 1" style="width:100%;display:block;max-height:72vh;object-fit:contain;"/>
+      <!-- Prev/Next overlay arrows -->
+      <div onclick="event.stopPropagation();visionPrev()" style="position:absolute;left:0;top:0;bottom:0;width:60px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0">
+        <div style="background:rgba(0,0,0,.6);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff">‹</div>
+      </div>
+      <div onclick="event.stopPropagation();visionNext()" style="position:absolute;right:0;top:0;bottom:0;width:60px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .2s" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0">
+        <div style="background:rgba(0,0,0,.6);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff">›</div>
+      </div>
+      <!-- Slide counter badge -->
+      <div id="visionBadge" style="position:absolute;bottom:12px;right:14px;background:rgba(0,0,0,.65);border-radius:6px;padding:3px 9px;font-size:10px;color:rgba(255,255,255,.7);font-weight:600">1 / 14</div>
+    </div>
+
+    <!-- Thumbnail strip -->
+    <div id="visionThumbs" style="display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:thin;"></div>
   </div>
 </div>
 
@@ -2277,6 +2314,85 @@ function renderAll() {
 loadState();
 renderAll();
 renderSettings();
+
+// ════════════════════════════════════════════════
+// VISION PRESENTATION
+// ════════════════════════════════════════════════
+const VISION_SLIDES = [
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/KXSbQSSPUpAkzomm.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/gtzNSdYfTbCMznfA.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/pRoASaCKYfmZmgwq.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/PQENtrcknGaZXtOD.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/PVXXjWJXABIrPvKN.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/NioefrZFyTkNDDxN.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/kUWTmZodWzGpzYnD.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/fsHdijBOimGljTUM.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/LgMyGaQoDTjFRwqx.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/zaRHAHkVtrhszfjm.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/zPZGUlZnfFCQoeto.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/CsnmOBmTUEQbOgGf.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/APAEXoIOBhPFllbs.webp',
+  'https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/PRwdfCZliLEpQOuF.webp'
+];
+
+let visionCurrent = 0;
+
+function visionGoto(i) {
+  visionCurrent = Math.max(0, Math.min(VISION_SLIDES.length - 1, i));
+  const img = document.getElementById('visionSlideImg');
+  const counter = document.getElementById('visionCounter');
+  const badge = document.getElementById('visionBadge');
+  if (img) img.src = VISION_SLIDES[visionCurrent];
+  const label = (visionCurrent + 1) + ' / ' + VISION_SLIDES.length;
+  if (counter) counter.textContent = label;
+  if (badge) badge.textContent = label;
+  // Update thumbnail highlights
+  document.querySelectorAll('.vision-thumb').forEach((t, idx) => {
+    t.style.outline = idx === visionCurrent ? '2px solid var(--nc-purple)' : '2px solid transparent';
+    t.style.opacity = idx === visionCurrent ? '1' : '0.55';
+  });
+}
+
+function visionNext() { visionGoto(visionCurrent + 1); }
+function visionPrev() { visionGoto(visionCurrent - 1); }
+
+function visionFullscreen() {
+  const el = document.getElementById('visionSlideWrap');
+  if (el) {
+    if (document.fullscreenElement) { document.exitFullscreen(); }
+    else { el.requestFullscreen && el.requestFullscreen(); }
+  }
+}
+
+function initVisionTab() {
+  const thumbs = document.getElementById('visionThumbs');
+  if (!thumbs || thumbs.children.length > 0) return;
+  VISION_SLIDES.forEach((url, i) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.className = 'vision-thumb';
+    img.alt = 'Slide ' + (i+1);
+    img.style.cssText = 'height:60px;border-radius:6px;cursor:pointer;flex-shrink:0;transition:all .2s;outline:2px solid transparent;';
+    img.onclick = () => visionGoto(i);
+    thumbs.appendChild(img);
+  });
+  visionGoto(0);
+}
+
+// Keyboard navigation for Vision tab
+document.addEventListener('keydown', e => {
+  const panel = document.getElementById('tab-vision');
+  if (!panel || !panel.classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') visionNext();
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   visionPrev();
+});
+
+// Hook into showTab to init vision when first opened
+const _origShowTab = showTab;
+function showTab(id, btn) {
+  _origShowTab(id, btn);
+  if (id === 'vision') initVisionTab();
+}
 
 // Admin access: Settings tab only visible with ?admin=true in URL
 (function() {
