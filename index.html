@@ -380,6 +380,57 @@ body.edit-mode .kpi-add-row-btn{display:block;}
 .save-indicator{font-size:10px;color:var(--nc-green);display:none;align-items:center;gap:4px;}
 .save-indicator.show{display:flex;}
 
+/* ── REVENUE DASHBOARD LINK BUTTON ── */
+.rev-dash-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(0,208,132,.15),rgba(49,205,211,.1));border:1px solid rgba(0,208,132,.4);border-radius:8px;padding:7px 16px;font-size:11px;font-weight:700;color:var(--nc-green);cursor:pointer;text-decoration:none;transition:all .2s;font-family:'Poppins',sans-serif;white-space:nowrap;}
+.rev-dash-btn:hover{background:linear-gradient(135deg,rgba(0,208,132,.28),rgba(49,205,211,.2));box-shadow:0 0 16px rgba(0,208,132,.2);}
+.rev-dash-btn .rdb-dot{width:7px;height:7px;border-radius:50%;background:var(--nc-green);box-shadow:0 0 6px var(--nc-green);animation:pulse-green 1.5s infinite;}
+@keyframes pulse-green{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ── NORTH STAR CARD EDITING ── */
+.kc-value.ie,.kc-target-val.ie,.kc-trend.ie{display:block;}
+body.edit-mode .kc-value.ie{background:rgba(118,47,196,.12);border:1px dashed rgba(118,47,196,.4);border-radius:3px;padding:1px 5px;cursor:text;}
+body.edit-mode .kc-target-val.ie{background:rgba(118,47,196,.08);border:1px dashed rgba(118,47,196,.3);border-radius:3px;padding:0 4px;cursor:text;}
+body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rgba(118,47,196,.3);border-radius:3px;padding:0 4px;cursor:text;}
+
+/* ── AI ADOPTION TAB ── */
+.ai-hero{background:linear-gradient(135deg,rgba(118,47,196,.12),rgba(49,205,211,.07));border:1px solid rgba(118,47,196,.3);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.ai-hero-left{flex:1;}
+.ai-hero-title{font-size:18px;font-weight:800;margin-bottom:4px;}
+.ai-hero-sub{font-size:11px;color:var(--muted2);line-height:1.5;}
+.ai-progress-wrap{min-width:220px;}
+.ai-progress-lbl{font-size:10px;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between;}
+.ai-progress-bar-bg{background:rgba(255,255,255,.06);border-radius:6px;height:12px;overflow:hidden;}
+.ai-progress-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--nc-purple),var(--nc-teal));transition:width .5s ease;}
+.ai-week-tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;}
+.ai-week-tab{padding:5px 12px;font-size:10px;font-weight:600;border-radius:5px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all .15s;font-family:'Poppins',sans-serif;}
+.ai-week-tab.active{background:var(--nc-purple);color:#fff;border-color:var(--nc-purple);}
+.ai-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px;}
+.ai-table th{background:var(--surface2);padding:9px 12px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);border-bottom:1px solid var(--border);text-align:left;}
+.ai-table th:not(:first-child){text-align:center;}
+.ai-table td{padding:9px 12px;font-size:11px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;}
+.ai-table td:not(:first-child){text-align:center;}
+.ai-table tr:last-child td{border-bottom:none;}
+.ai-table tr:hover td{background:rgba(255,255,255,.02);}
+.ai-adopted{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;cursor:pointer;border:none;font-family:'Poppins',sans-serif;transition:all .15s;}
+.ai-adopted.yes{background:rgba(0,208,132,.15);color:var(--nc-green);border:1px solid rgba(0,208,132,.3);}
+.ai-adopted.no{background:rgba(107,116,148,.1);color:var(--muted);border:1px solid rgba(107,116,148,.25);}
+.ai-tasks-inp{background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:4px;color:var(--text);font-family:'Poppins',sans-serif;font-size:10px;padding:3px 7px;width:90px;text-align:center;}
+.ai-tasks-inp:focus{outline:none;border-color:var(--nc-purple-light);}
+.ai-notes-inp{background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:4px;color:var(--text);font-family:'Poppins',sans-serif;font-size:10px;padding:3px 7px;width:100%;}
+.ai-notes-inp:focus{outline:none;border-color:var(--nc-purple-light);}
+.ai-trend-chart{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;}
+.ai-trend-title{font-size:12px;font-weight:700;margin-bottom:12px;}
+.ai-chart-bars{display:flex;align-items:flex-end;gap:8px;height:80px;}
+.ai-chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.ai-chart-bar{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--nc-purple-light),var(--nc-purple));min-height:4px;transition:height .4s ease;}
+.ai-chart-bar.future{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.1);}
+.ai-chart-lbl{font-size:8px;color:var(--muted);text-align:center;}
+.ai-chart-pct{font-size:8px;color:var(--nc-purple-light);font-weight:700;}
+.ai-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.ai-summary-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.ai-summary-val{font-size:22px;font-weight:900;margin-bottom:3px;}
+.ai-summary-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;}
+
 /* ── FOOTER ── */
 .footer{background:var(--surface);border-top:1px solid var(--border);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted);}
 .footer strong{color:var(--text);}
@@ -417,6 +468,7 @@ body.edit-mode .kpi-add-row-btn{display:block;}
   </div>
   <div class="topbar-right">
     <div class="save-indicator" id="saveIndicator">✓ Saved</div>
+    <a class="rev-dash-btn" href="https://custdash-9zpqwes6.manus.space" target="_blank" rel="noopener"><span class="rdb-dot"></span>📊 Revenue Dashboard</a>
     <button class="edit-toggle" id="editToggle" onclick="toggleEditMode()">✏️ Edit Mode</button>
     <div class="countdown-badge">
       <div class="countdown-num" id="countdown">—</div>
@@ -432,6 +484,7 @@ body.edit-mode .kpi-add-row-btn{display:block;}
   <button class="tab-btn" onclick="showTab('dept-kpi',this)">📊 Department KPIs</button>
   <button class="tab-btn" onclick="showTab('individual-kpi',this)">👤 Individual KPIs</button>
   <button class="tab-btn" onclick="showTab('commission',this)">💰 Commission</button>
+  <button class="tab-btn" onclick="showTab('ai-adoption',this)">🤖 AI Adoption</button>
   <button class="tab-btn" onclick="showTab('settings',this)">⚙️ Settings</button>
 </div>
 
@@ -701,6 +754,52 @@ body.edit-mode .kpi-add-row-btn{display:block;}
   </div>
 </div>
 
+<!-- ══════════ TAB: AI ADOPTION ══════════ -->
+<div id="tab-ai-adoption" class="tab-panel">
+  <div class="main">
+    <div class="ai-hero">
+      <div class="ai-hero-left">
+        <div class="ai-hero-title">🤖 Team AI Adoption Tracker</div>
+        <div class="ai-hero-sub">Track weekly Manus usage across all 15 team members. Target: 100% adoption by W2. Log tasks run, tools used, and notes each week. Data persists in your browser.</div>
+      </div>
+      <div class="ai-progress-wrap">
+        <div class="ai-progress-lbl"><span>Team Adoption</span><span id="aiAdoptionPct" style="color:var(--nc-purple-light);font-weight:700">0%</span></div>
+        <div class="ai-progress-bar-bg"><div class="ai-progress-bar-fill" id="aiProgressFill" style="width:0%"></div></div>
+        <div style="font-size:9px;color:var(--muted);margin-top:5px">Target: 100% by W2 · <span id="aiAdoptedCount">0</span> of <span id="aiTotalCount">15</span> adopted</div>
+      </div>
+    </div>
+    <div class="ai-summary-grid" id="aiSummaryGrid"></div>
+    <div class="ai-trend-chart">
+      <div class="ai-trend-title">📈 Adoption Trend — 8-Week Sprint</div>
+      <div class="ai-chart-bars" id="aiChartBars"></div>
+    </div>
+    <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:13px;font-weight:700">🗓️ Weekly Usage Log</div>
+      <div class="ai-week-tabs" id="aiWeekTabs"></div>
+    </div>
+    <table class="ai-table">
+      <thead>
+        <tr>
+          <th style="width:160px">Team Member</th>
+          <th>Role</th>
+          <th>Adopted?</th>
+          <th>Tasks Run This Week</th>
+          <th>Primary Use Case</th>
+          <th>Notes / Blockers</th>
+        </tr>
+      </thead>
+      <tbody id="aiTableBody"></tbody>
+    </table>
+    <div style="display:flex;gap:10px;margin-bottom:24px">
+      <button class="settings-btn" onclick="saveAiData()">💾 Save This Week's Log</button>
+      <button class="settings-btn secondary" onclick="exportAiCsv()">⬇️ Export CSV</button>
+    </div>
+    <div class="research-box">
+      <strong>Note:</strong> Manus does not currently expose a public team usage API. This tracker uses manual weekly self-reporting. When Manus releases team analytics endpoints, this tab will auto-populate. In the meantime, each team member should log their tasks every Friday during the KPI review.
+    </div>
+  </div>
+</div>
+
 <!-- ══════════ TAB: SETTINGS ══════════ -->
 <div id="tab-settings" class="tab-panel">
   <div class="main">
@@ -883,6 +982,16 @@ const DEFAULTS = {
     {id:'lg2', dept:'Legal', section:'s-legal', name:'Channel Partner Agreements', priority:'p1', metric:'Standard partner agreement template; 2 partners signed', weeks:[0,1,1,1,'M',0,0,0], status:'not-started', owner:'Legal'},
     {id:'lg3', dept:'Legal', section:'s-legal', name:'Commission Plan Legal Review', priority:'p2', metric:'Commission structure reviewed; no labor law conflicts', weeks:[1,'M',0,0,0,0,0,0], status:'not-started', owner:'Legal'},
     {id:'lg4', dept:'Legal', section:'s-legal', name:'Bridge Round Docs', priority:'p2', metric:'Term sheet, SAFE/convertible note docs ready', weeks:[0,0,1,1,1,0,0,0], status:'not-started', owner:'Legal'}
+  ],
+  nsCards: [
+    {label:'Current ARR', value:'$2.71M', target:'$3.0M by Apr 17', trend:'↑ Growing — protect & expand', trendCls:'trend-up', color:'var(--nc-green)'},
+    {label:'New Pipeline (8-Week)', value:'$0', target:'$1.35M by W4', trend:'⚡ Build immediately — W1 priority', trendCls:'trend-warn', color:'var(--blue)'},
+    {label:'Fundraising Closed', value:'$0', target:'$500K–$1M by Apr 17', trend:'🚨 North Star — all hands on deck', trendCls:'trend-crit', color:'var(--gold)'},
+    {label:'Gross Churn Rate', value:'<5%', target:'<5% maintained through Apr 17', trend:'⚠️ Education segment at seasonal risk', trendCls:'trend-warn', color:'var(--red)'},
+    {label:'Working Capital Secured', value:'$0', target:'$750K–$1M LOC by W6', trend:'🚨 Apply W1 — 4–6 week process', trendCls:'trend-crit', color:'var(--nc-purple-light)'},
+    {label:'PLG Signups', value:'0', target:'50+ organic signups by W6', trend:'⚡ PLG flow must launch W5', trendCls:'trend-warn', color:'var(--nc-teal)'},
+    {label:'Team AI Tool Adoption', value:'0%', target:'100% by W2', trend:'🚨 Provision W1 — ops maturity signal', trendCls:'trend-crit', color:'var(--orange)'},
+    {label:'NPS Score', value:'—', target:'>50 by W6', trend:'⚡ Survey to go out W4', trendCls:'trend-warn', color:'var(--pink)'}
   ],
   companyKpis: [
     {kpi:'WeFunder Raise', cat:'Fundraising', current:'$0', target:'$500K closed', deadline:'Apr 17', owner:'Trevor', status:'not-started'},
@@ -1389,6 +1498,11 @@ function toggleEditMode() {
         if (!STATE.commission[cf]) STATE.commission[cf] = {};
         STATE.commission[cf][ci] = el.textContent.trim();
       }
+      // North Star cards
+      const nsc = el.dataset.nsc; const nscf = el.dataset.nscf;
+      if (nsc !== undefined && nscf && STATE.nsCards && STATE.nsCards[nsc]) {
+        STATE.nsCards[nsc][nscf] = el.textContent.trim();
+      }
     }
   });
 
@@ -1402,23 +1516,15 @@ function toggleEditMode() {
 // COMPANY KPI TAB
 // ════════════════════════════════════════════════
 function renderCompanyKpis() {
-  // Cards
-  const cards = [
-    {label:'Current ARR', value:STATE.config.arr, target:'Target: $3.0M by Apr 17', trend:'↑ Growing — protect & expand', trendCls:'trend-up', color:'var(--nc-green)'},
-    {label:'New Pipeline (8-Week)', value:'$0', target:'Target: $1.35M by W4', trend:'⚡ Build immediately — W1 priority', trendCls:'trend-warn', color:'var(--blue)'},
-    {label:'Fundraising Closed', value:'$0', target:'Target: '+STATE.config.funding+' by Apr 17', trend:'🚨 North Star — all hands on deck', trendCls:'trend-crit', color:'var(--gold)'},
-    {label:'Gross Churn Rate', value:'<5%', target:'Target: <5% maintained through Apr 17', trend:'⚠️ Education segment at seasonal risk', trendCls:'trend-warn', color:'var(--red)'},
-    {label:'Working Capital Secured', value:'$0', target:'Target: $750K–$1M LOC by W6', trend:'🚨 Apply W1 — 4–6 week process', trendCls:'trend-crit', color:'var(--nc-purple-light)'},
-    {label:'PLG Signups', value:'0', target:'Target: 50+ organic signups by W6', trend:'⚡ PLG flow must launch W5', trendCls:'trend-warn', color:'var(--nc-teal)'},
-    {label:'Team AI Tool Adoption', value:'0%', target:'Target: 100% by W2', trend:'🚨 Provision W1 — ops maturity signal', trendCls:'trend-crit', color:'var(--orange)'},
-    {label:'NPS Score', value:'—', target:'Target: >50 by W6', trend:'⚡ Survey to go out W4', trendCls:'trend-warn', color:'var(--pink)'}
-  ];
-  document.getElementById('companyKpiCards').innerHTML = cards.map(c => `
+  // Ensure nsCards exists in STATE (backward compat)
+  if (!STATE.nsCards) STATE.nsCards = JSON.parse(JSON.stringify(DEFAULTS.nsCards));
+  const cards = STATE.nsCards;
+  document.getElementById('companyKpiCards').innerHTML = cards.map((c,i) => `
     <div class="kpi-card" style="border-color:${c.color}33">
       <div class="kc-label">${c.label}</div>
-      <div class="kc-value" style="color:${c.color}">${c.value}</div>
-      <div class="kc-target">Target: <span style="color:${c.color}">${c.target.replace('Target: ','')}</span></div>
-      <div class="kc-trend ${c.trendCls}">${c.trend}</div>
+      <div class="kc-value ie" contenteditable="false" style="color:${c.color}" data-nsc="${i}" data-nscf="value">${c.value}</div>
+      <div class="kc-target">Target: <span class="kc-target-val ie" contenteditable="false" style="color:${c.color}" data-nsc="${i}" data-nscf="target">${c.target}</span></div>
+      <div class="kc-trend ${c.trendCls} ie" contenteditable="false" data-nsc="${i}" data-nscf="trend">${c.trend}</div>
     </div>`).join('');
 
   // Table
@@ -1801,6 +1907,155 @@ function showToast(msg) {
 }
 
 // ════════════════════════════════════════════════
+// AI ADOPTION TAB
+// ════════════════════════════════════════════════
+let aiCurrentWeek = 1;
+
+const AI_USE_CASES = ['Research & Analysis','Content Writing','Code / Automation','Data Processing','Reporting','Customer Outreach','Investor Materials','Other'];
+
+function getAiData() {
+  if (!STATE.aiAdoption) {
+    STATE.aiAdoption = {};
+    for (let w = 1; w <= 8; w++) {
+      STATE.aiAdoption['w'+w] = STATE.team.map(m => ({
+        name: m.name, role: m.role, adopted: false, tasks: 0, useCase: '', notes: ''
+      }));
+    }
+  }
+  return STATE.aiAdoption;
+}
+
+function renderAiAdoption() {
+  const data = getAiData();
+  const weekData = data['w'+aiCurrentWeek] || [];
+
+  // Sync names/roles from team if team updated
+  STATE.team.forEach((m, i) => {
+    if (weekData[i]) { weekData[i].name = m.name; weekData[i].role = m.role; }
+    else { weekData[i] = {name:m.name, role:m.role, adopted:false, tasks:0, useCase:'', notes:''}; }
+  });
+
+  // Week tabs
+  const themes = STATE.weekThemes || DEFAULTS.weekThemes;
+  document.getElementById('aiWeekTabs').innerHTML = themes.map((t,i) => {
+    const w = i+1;
+    return `<button class="ai-week-tab${w===aiCurrentWeek?' active':''}" onclick="switchAiWeek(${w})">W${w}</button>`;
+  }).join('');
+
+  // Summary cards — aggregate across all weeks
+  let totalAdopted = 0, totalTasks = 0, bestWeek = 0, bestWeekPct = 0;
+  for (let w = 1; w <= 8; w++) {
+    const wd = data['w'+w] || [];
+    const adopted = wd.filter(r => r.adopted).length;
+    const tasks = wd.reduce((s,r) => s + (parseInt(r.tasks)||0), 0);
+    totalTasks += tasks;
+    if (adopted > bestWeekPct) { bestWeekPct = adopted; bestWeek = w; }
+  }
+  totalAdopted = weekData.filter(r => r.adopted).length;
+  const adoptionPct = STATE.team.length ? Math.round(totalAdopted / STATE.team.length * 100) : 0;
+  document.getElementById('aiAdoptionPct').textContent = adoptionPct + '%';
+  document.getElementById('aiProgressFill').style.width = adoptionPct + '%';
+  document.getElementById('aiAdoptedCount').textContent = totalAdopted;
+  document.getElementById('aiTotalCount').textContent = STATE.team.length;
+
+  document.getElementById('aiSummaryGrid').innerHTML = [
+    {val: adoptionPct+'%', lbl:'Current Week Adoption', color:'var(--nc-purple-light)'},
+    {val: totalAdopted+'/'+STATE.team.length, lbl:'Members Adopted (W'+aiCurrentWeek+')', color:'var(--nc-green)'},
+    {val: totalTasks, lbl:'Total Tasks Run (All Weeks)', color:'var(--blue)'},
+    {val: 'W'+aiCurrentWeek, lbl:'Currently Viewing', color:'var(--gold)'}
+  ].map(s => `<div class="ai-summary-card"><div class="ai-summary-val" style="color:${s.color}">${s.val}</div><div class="ai-summary-lbl">${s.lbl}</div></div>`).join('');
+
+  // Trend chart
+  const maxPct = 100;
+  document.getElementById('aiChartBars').innerHTML = themes.map((t,i) => {
+    const w = i+1;
+    const wd = data['w'+w] || [];
+    const pct = STATE.team.length ? Math.round(wd.filter(r=>r.adopted).length / STATE.team.length * 100) : 0;
+    const isFuture = pct === 0 && w > aiCurrentWeek;
+    const barH = isFuture ? 4 : Math.max(4, Math.round(pct/100*72));
+    return `<div class="ai-chart-bar-wrap">
+      <div class="ai-chart-pct">${isFuture?'':pct+'%'}</div>
+      <div class="ai-chart-bar${isFuture?' future':''}" style="height:${barH}px"></div>
+      <div class="ai-chart-lbl">W${w}</div>
+    </div>`;
+  }).join('');
+
+  // Table
+  const useCaseOpts = AI_USE_CASES.map(u => `<option value="${u}">${u}</option>`).join('');
+  document.getElementById('aiTableBody').innerHTML = weekData.map((row, i) => {
+    const adopted = row.adopted;
+    return `<tr>
+      <td><strong>${row.name || 'Team Member '+(i+1)}</strong></td>
+      <td style="color:var(--muted);font-size:10px">${row.role || ''}</td>
+      <td><button class="ai-adopted ${adopted?'yes':'no'}" onclick="toggleAiAdopted(${i})">${adopted?'✅ Adopted':'○ Not Yet'}</button></td>
+      <td><input class="ai-tasks-inp" type="number" min="0" value="${row.tasks||0}" onchange="updateAiTasks(${i},this.value)" placeholder="0"/></td>
+      <td><select class="ai-tasks-inp" style="width:140px" onchange="updateAiUseCase(${i},this.value)">
+        <option value="">Select...</option>${useCaseOpts.replace(`value="${row.useCase}"`,`value="${row.useCase}" selected`)}
+      </select></td>
+      <td><input class="ai-notes-inp" type="text" value="${(row.notes||'').replace(/"/g,'&quot;')}" onchange="updateAiNotes(${i},this.value)" placeholder="Blockers, wins, use cases..."/></td>
+    </tr>`;
+  }).join('');
+}
+
+function switchAiWeek(w) {
+  aiCurrentWeek = w;
+  renderAiAdoption();
+}
+
+function toggleAiAdopted(i) {
+  const data = getAiData();
+  const row = data['w'+aiCurrentWeek][i];
+  row.adopted = !row.adopted;
+  saveState();
+  renderAiAdoption();
+}
+
+function updateAiTasks(i, val) {
+  const data = getAiData();
+  data['w'+aiCurrentWeek][i].tasks = parseInt(val)||0;
+}
+
+function updateAiUseCase(i, val) {
+  const data = getAiData();
+  data['w'+aiCurrentWeek][i].useCase = val;
+}
+
+function updateAiNotes(i, val) {
+  const data = getAiData();
+  data['w'+aiCurrentWeek][i].notes = val;
+}
+
+function saveAiData() {
+  // Sync all current input values before saving
+  const rows = document.querySelectorAll('#aiTableBody tr');
+  const data = getAiData();
+  rows.forEach((tr, i) => {
+    const inputs = tr.querySelectorAll('input, select');
+    if (inputs[0]) data['w'+aiCurrentWeek][i].tasks = parseInt(inputs[0].value)||0;
+    if (inputs[1]) data['w'+aiCurrentWeek][i].useCase = inputs[1].value;
+    if (inputs[2]) data['w'+aiCurrentWeek][i].notes = inputs[2].value;
+  });
+  saveState();
+  renderAiAdoption();
+  showToast('Week '+aiCurrentWeek+' AI usage log saved!');
+}
+
+function exportAiCsv() {
+  const data = getAiData();
+  let csv = 'Week,Name,Role,Adopted,Tasks Run,Use Case,Notes\n';
+  for (let w = 1; w <= 8; w++) {
+    (data['w'+w]||[]).forEach(r => {
+      csv += `W${w},"${r.name}","${r.role}",${r.adopted?'Yes':'No'},${r.tasks||0},"${r.useCase||''}","${(r.notes||'').replace(/"/g,'""')}"\n`;
+    });
+  }
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'namecoach_ai_adoption_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  showToast('CSV exported!');
+}
+
+// ════════════════════════════════════════════════
 // RENDER ALL
 // ════════════════════════════════════════════════
 function renderAll() {
@@ -1811,6 +2066,7 @@ function renderAll() {
   renderCompanyKpis();
   renderDeptKpis();
   renderIndividualKpis();
+  renderAiAdoption();
 }
 
 // ════════════════════════════════════════════════
