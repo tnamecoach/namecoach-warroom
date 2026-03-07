@@ -1056,10 +1056,25 @@ let STATE = {};
 
 function loadState() {
   try {
-    const saved = localStorage.getItem('nc_warroom_v3');
+    // v4 key — bump clears stale v3 cache and loads fresh defaults
+    const saved = localStorage.getItem('nc_warroom_v4');
     if (saved) {
       STATE = JSON.parse(saved);
+      // Forward-migrate: inject any new top-level keys missing from older saves
+      const d = DEFAULTS;
+      if (!STATE.tabVisibility) STATE.tabVisibility = JSON.parse(JSON.stringify(d.tabVisibility));
+      if (!STATE.nsCards)       STATE.nsCards       = JSON.parse(JSON.stringify(d.nsCards));
+      if (!STATE.aiAdoption)    STATE.aiAdoption    = null; // will be seeded by getAiData()
+      // Migrate team names if still using old placeholder names
+      const oldNames = ['Trevor','Sales Lead','BDR / SDR','CS Manager','CS Rep','Marketing Lead',
+        'Product Manager','Engineer 1','Engineer 2','Designer','Finance Lead','Ops Lead',
+        'Legal','Data / Analytics','Admin / EA'];
+      if (STATE.team && STATE.team[0] && oldNames.includes(STATE.team[0].name)) {
+        STATE.team = JSON.parse(JSON.stringify(d.team));
+      }
     } else {
+      // Also clear any old v3 data to avoid confusion
+      localStorage.removeItem('nc_warroom_v3');
       STATE = JSON.parse(JSON.stringify(DEFAULTS));
     }
   } catch(e) {
@@ -1068,7 +1083,7 @@ function loadState() {
 }
 
 function saveState() {
-  localStorage.setItem('nc_warroom_v3', JSON.stringify(STATE));
+  localStorage.setItem('nc_warroom_v4', JSON.stringify(STATE));
   const ind = document.getElementById('saveIndicator');
   if (ind) { ind.classList.add('show'); setTimeout(() => ind.classList.remove('show'), 2000); }
 }
