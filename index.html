@@ -380,6 +380,18 @@ body.edit-mode .kpi-add-row-btn{display:block;}
 .save-indicator{font-size:10px;color:var(--nc-green);display:none;align-items:center;gap:4px;}
 .save-indicator.show{display:flex;}
 
+/* ── TAB VISIBILITY TOGGLES ── */
+.tab-vis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px;}
+.tab-vis-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface3);border:1px solid var(--border2);border-radius:8px;}
+.tab-vis-label{font-size:11px;font-weight:600;color:var(--text);}
+.tab-vis-sub{font-size:9px;color:var(--muted);margin-top:1px;}
+.toggle-switch{position:relative;width:36px;height:20px;flex-shrink:0;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:rgba(107,116,148,.3);border-radius:20px;transition:.25s;}
+.toggle-slider:before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;}
+.toggle-switch input:checked + .toggle-slider{background:var(--nc-purple);}
+.toggle-switch input:checked + .toggle-slider:before{transform:translateX(16px);}
+
 /* ── REVENUE DASHBOARD LINK BUTTON ── */
 .rev-dash-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(0,208,132,.15),rgba(49,205,211,.1));border:1px solid rgba(0,208,132,.4);border-radius:8px;padding:7px 16px;font-size:11px;font-weight:700;color:var(--nc-green);cursor:pointer;text-decoration:none;transition:all .2s;font-family:'Poppins',sans-serif;white-space:nowrap;}
 .rev-dash-btn:hover{background:linear-gradient(135deg,rgba(0,208,132,.28),rgba(49,205,211,.2));box-shadow:0 0 16px rgba(0,208,132,.2);}
@@ -760,13 +772,20 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
     <div class="ai-hero">
       <div class="ai-hero-left">
         <div class="ai-hero-title">🤖 Team AI Adoption Tracker</div>
-        <div class="ai-hero-sub">Track weekly Manus usage across all 15 team members. Target: 100% adoption by W2. Log tasks run, tools used, and notes each week. Data persists in your browser.</div>
+        <div class="ai-hero-sub">Track weekly Manus usage across all 15 team members. Target: 100% adoption by W2. Pre-populated with real Manus team data (Feb 25–Mar 6). Log tasks run, use cases, and notes each week. Data persists in your browser.</div>
       </div>
       <div class="ai-progress-wrap">
         <div class="ai-progress-lbl"><span>Team Adoption</span><span id="aiAdoptionPct" style="color:var(--nc-purple-light);font-weight:700">0%</span></div>
         <div class="ai-progress-bar-bg"><div class="ai-progress-bar-fill" id="aiProgressFill" style="width:0%"></div></div>
         <div style="font-size:9px;color:var(--muted);margin-top:5px">Target: 100% by W2 · <span id="aiAdoptedCount">0</span> of <span id="aiTotalCount">15</span> adopted</div>
       </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 14px;background:rgba(0,208,132,.06);border:1px solid rgba(0,208,132,.2);border-radius:8px;font-size:11px">
+      <span style="color:var(--nc-green);font-weight:700">📊 Manus Team Plan</span>
+      <span style="color:var(--muted)">Total credits: <strong style="color:var(--text)">37,206</strong></span>
+      <span style="color:var(--muted)">Renewal: <strong style="color:var(--text)">Mar 25, 2026</strong></span>
+      <span style="color:var(--muted)">Period: <strong style="color:var(--text)">Feb 25 – Mar 6</strong></span>
+      <span style="color:var(--muted)">Active users: <strong style="color:var(--nc-green)">10 / 15</strong></span>
     </div>
     <div class="ai-summary-grid" id="aiSummaryGrid"></div>
     <div class="ai-trend-chart">
@@ -783,7 +802,8 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
           <th style="width:160px">Team Member</th>
           <th>Role</th>
           <th>Adopted?</th>
-          <th>Tasks Run This Week</th>
+          <th>Tasks Run</th>
+          <th>Credits Used</th>
           <th>Primary Use Case</th>
           <th>Notes / Blockers</th>
         </tr>
@@ -840,6 +860,13 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
         <div class="team-grid" id="teamMemberInputs"></div>
       </div>
 
+      <!-- Tab Visibility -->
+      <div class="settings-card full">
+        <div class="settings-title">🗂️ Tab Visibility</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:10px">Toggle tabs on or off. The War Room (Gantt) and Settings tabs are always visible.</div>
+        <div class="tab-vis-grid" id="tabVisGrid"></div>
+      </div>
+
       <!-- North Star Pills -->
       <div class="settings-card full">
         <div class="settings-title">⭐ North Star Goals</div>
@@ -888,6 +915,13 @@ const DEFAULTS = {
     funding: '$500K–$1M',
     teamSize: 15
   },
+  tabVisibility: {
+    'company-kpi': true,
+    'dept-kpi': true,
+    'individual-kpi': true,
+    'commission': true,
+    'ai-adoption': true
+  },
   weekThemes: [
     {dates:'Feb 23–28', theme:'Foundation'},
     {dates:'Mar 2–7',   theme:'Activation'},
@@ -908,21 +942,21 @@ const DEFAULTS = {
     {text:'🏢 PHX Office Signed & Open', hot:false}
   ],
   team: [
-    {name:'Trevor',      role:'CEO / Fundraising Lead',      dept:'Executive',  color:'#f5a623', tiers:['Fundraising']},
-    {name:'Sales Lead',  role:'Account Executive',           dept:'Growth/GTM', color:'#4f8ef7', tiers:['Sales','Referral']},
-    {name:'BDR / SDR',   role:'Business Development',        dept:'Growth/GTM', color:'#4f8ef7', tiers:['Sales','Referral']},
-    {name:'CS Manager',  role:'Customer Success Lead',       dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
-    {name:'CS Rep',      role:'Customer Success',            dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
-    {name:'Marketing Lead', role:'Marketing & Brand',        dept:'Growth/GTM', color:'#f75fa0', tiers:['Referral','Lead Bonus']},
-    {name:'Product Manager', role:'Product Lead',            dept:'Product',    color:'#9b5fe0', tiers:['Referral','PLG Bonus']},
-    {name:'Engineer 1',  role:'Senior Engineer',             dept:'Product',    color:'#762fc4', tiers:['Referral','PLG Bonus']},
-    {name:'Engineer 2',  role:'Full-Stack Engineer',         dept:'Product',    color:'#762fc4', tiers:['Referral','PLG Bonus']},
-    {name:'Designer',    role:'UX / Product Design',         dept:'Product',    color:'#9b5fe0', tiers:['Referral']},
-    {name:'Finance Lead', role:'Finance & FP&A',             dept:'Ops',        color:'#31cdd3', tiers:['Referral']},
-    {name:'Ops Lead',    role:'Operations',                  dept:'Ops',        color:'#f7874f', tiers:['Referral']},
-    {name:'Legal',       role:'Legal / Compliance',          dept:'Ops',        color:'#c8a020', tiers:['Referral']},
-    {name:'Data / Analytics', role:'Data & Reporting',       dept:'Ops',        color:'#f7874f', tiers:['Referral','PLG Bonus']},
-    {name:'Admin / EA',  role:'Executive Assistant',         dept:'Ops',        color:'#f7874f', tiers:['Referral']}
+    {name:'Trevor Legwinski', role:'CEO / Fundraising Lead',      dept:'Executive',  color:'#f5a623', tiers:['Fundraising']},
+    {name:'Fabricio Bellesa', role:'Senior Engineer',             dept:'Product',    color:'#762fc4', tiers:['Referral','PLG Bonus']},
+    {name:'lucasantoniassi',  role:'Full-Stack Engineer',         dept:'Product',    color:'#762fc4', tiers:['Referral','PLG Bonus']},
+    {name:'daniel',           role:'Engineer / Product',          dept:'Product',    color:'#9b5fe0', tiers:['Referral','PLG Bonus']},
+    {name:'Alvaro Menezes',   role:'Engineer / Product',          dept:'Product',    color:'#9b5fe0', tiers:['Referral','PLG Bonus']},
+    {name:'Renan Coradini',   role:'Account Executive',           dept:'Growth/GTM', color:'#4f8ef7', tiers:['Sales','Referral']},
+    {name:'Flavio Cruz',      role:'Business Development',        dept:'Growth/GTM', color:'#4f8ef7', tiers:['Sales','Referral']},
+    {name:'Jon Olsen',        role:'Customer Success Lead',       dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
+    {name:'Jon Lacivita',     role:'Customer Success',            dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
+    {name:'Lais Paschoa',     role:'Marketing & Brand',           dept:'Growth/GTM', color:'#f75fa0', tiers:['Referral','Lead Bonus']},
+    {name:'Team Member 11',   role:'Finance & FP&A',              dept:'Ops',        color:'#31cdd3', tiers:['Referral']},
+    {name:'Team Member 12',   role:'Operations',                  dept:'Ops',        color:'#f7874f', tiers:['Referral']},
+    {name:'Team Member 13',   role:'Legal / Compliance',          dept:'Ops',        color:'#c8a020', tiers:['Referral']},
+    {name:'Team Member 14',   role:'Data & Reporting',            dept:'Ops',        color:'#f7874f', tiers:['Referral','PLG Bonus']},
+    {name:'Team Member 15',   role:'Executive Assistant',         dept:'Ops',        color:'#f7874f', tiers:['Referral']}
   ],
   tasks: [
     // Trevor
@@ -1718,6 +1752,9 @@ function renderSettings() {
 
   // North star
   renderNorthStarInputs();
+
+  // Tab visibility
+  renderTabVisibility();
 }
 
 function renderNorthStarInputs() {
@@ -1907,19 +1944,94 @@ function showToast(msg) {
 }
 
 // ════════════════════════════════════════════════
+// TAB VISIBILITY
+// ════════════════════════════════════════════════
+const TAB_META = [
+  {id:'company-kpi',    label:'🏢 Company KPIs',    desc:'North Star cards + KPI table'},
+  {id:'dept-kpi',       label:'📊 Department KPIs', desc:'3-pod team KPI cards'},
+  {id:'individual-kpi', label:'👤 Individual KPIs', desc:'Per-person targets & commission'},
+  {id:'commission',     label:'💰 Commission',       desc:'Tier structure & deal table'},
+  {id:'ai-adoption',    label:'🤖 AI Adoption',     desc:'Manus weekly usage tracker'}
+];
+
+function renderTabVisibility() {
+  if (!STATE.tabVisibility) STATE.tabVisibility = JSON.parse(JSON.stringify(DEFAULTS.tabVisibility));
+  const grid = document.getElementById('tabVisGrid');
+  if (!grid) return;
+  grid.innerHTML = TAB_META.map(t => {
+    const on = STATE.tabVisibility[t.id] !== false;
+    return `<div class="tab-vis-row">
+      <div>
+        <div class="tab-vis-label">${t.label}</div>
+        <div class="tab-vis-sub">${t.desc}</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" ${on?'checked':''} onchange="toggleTabVisibility('${t.id}',this.checked)"/>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>`;
+  }).join('');
+}
+
+function toggleTabVisibility(tabId, visible) {
+  if (!STATE.tabVisibility) STATE.tabVisibility = JSON.parse(JSON.stringify(DEFAULTS.tabVisibility));
+  STATE.tabVisibility[tabId] = visible;
+  saveState();
+  applyTabVisibility();
+  showToast((visible ? '✅ ' : '🚫 ') + tabId.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase()) + ' tab ' + (visible?'shown':'hidden'));
+}
+
+function applyTabVisibility() {
+  if (!STATE.tabVisibility) return;
+  TAB_META.forEach(t => {
+    const btn = document.querySelector(`.tab-btn[onclick*="'${t.id}'"]`);
+    const panel = document.getElementById('tab-'+t.id);
+    const visible = STATE.tabVisibility[t.id] !== false;
+    if (btn) btn.style.display = visible ? '' : 'none';
+    // If the hidden tab is currently active, switch to War Room
+    if (!visible && panel && panel.classList.contains('active')) {
+      showTab('gantt', document.querySelector('.tab-btn[onclick*="\'gantt\'"]'));
+    }
+  });
+}
+
+// ════════════════════════════════════════════════
 // AI ADOPTION TAB
 // ════════════════════════════════════════════════
 let aiCurrentWeek = 1;
 
 const AI_USE_CASES = ['Research & Analysis','Content Writing','Code / Automation','Data Processing','Reporting','Customer Outreach','Investor Materials','Other'];
 
+// Real Manus usage data (Feb 25 – Mar 6, covering W1+W2)
+const MANUS_SEED_DATA = {
+  'Trevor Legwinski':  {tasks:14, credits:6189, useCase:'Investor Materials', notes:'Top user — 14 tasks, 6,189 credits'},
+  'Fabricio Bellesa':  {tasks:22, credits:3991, useCase:'Code / Automation',  notes:'Highest task count — 22 tasks'},
+  'lucasantoniassi':   {tasks:11, credits:1407, useCase:'Code / Automation',  notes:'11 tasks, 1,407 credits'},
+  'daniel':            {tasks:8,  credits:4249, useCase:'Code / Automation',  notes:'8 tasks, 4,249 credits'},
+  'Alvaro Menezes':    {tasks:4,  credits:1395, useCase:'Research & Analysis', notes:'4 tasks, 1,395 credits'},
+  'Renan Coradini':    {tasks:2,  credits:810,  useCase:'Customer Outreach',  notes:'2 tasks, 810 credits'},
+  'Flavio Cruz':       {tasks:4,  credits:215,  useCase:'Reporting',           notes:'4 tasks, 215 credits'},
+  'Jon Olsen':         {tasks:3,  credits:172,  useCase:'Customer Outreach',  notes:'3 tasks, 172 credits'},
+  'Jon Lacivita':      {tasks:1,  credits:149,  useCase:'Reporting',           notes:'1 task, 149 credits'},
+  'Lais Paschoa':      {tasks:1,  credits:23,   useCase:'Content Writing',     notes:'1 task, 23 credits'}
+};
+
 function getAiData() {
   if (!STATE.aiAdoption) {
     STATE.aiAdoption = {};
     for (let w = 1; w <= 8; w++) {
-      STATE.aiAdoption['w'+w] = STATE.team.map(m => ({
-        name: m.name, role: m.role, adopted: false, tasks: 0, useCase: '', notes: ''
-      }));
+      STATE.aiAdoption['w'+w] = STATE.team.map(m => {
+        // Pre-seed W1 and W2 with real Manus data
+        const seed = (w <= 2) ? MANUS_SEED_DATA[m.name] : null;
+        return {
+          name: m.name,
+          role: m.role,
+          adopted: seed ? true : false,
+          tasks: seed ? (w === 1 ? Math.ceil(seed.tasks/2) : Math.floor(seed.tasks/2)) : 0,
+          useCase: seed ? seed.useCase : '',
+          notes: seed ? (w === 1 ? 'W1: ' + seed.notes : 'W2: ' + seed.notes) : ''
+        };
+      });
     }
   }
   return STATE.aiAdoption;
@@ -1989,6 +2101,7 @@ function renderAiAdoption() {
       <td style="color:var(--muted);font-size:10px">${row.role || ''}</td>
       <td><button class="ai-adopted ${adopted?'yes':'no'}" onclick="toggleAiAdopted(${i})">${adopted?'✅ Adopted':'○ Not Yet'}</button></td>
       <td><input class="ai-tasks-inp" type="number" min="0" value="${row.tasks||0}" onchange="updateAiTasks(${i},this.value)" placeholder="0"/></td>
+      <td><input class="ai-tasks-inp" type="number" min="0" value="${row.credits||0}" onchange="updateAiCredits(${i},this.value)" placeholder="0"/></td>
       <td><select class="ai-tasks-inp" style="width:140px" onchange="updateAiUseCase(${i},this.value)">
         <option value="">Select...</option>${useCaseOpts.replace(`value="${row.useCase}"`,`value="${row.useCase}" selected`)}
       </select></td>
@@ -2020,6 +2133,11 @@ function updateAiUseCase(i, val) {
   data['w'+aiCurrentWeek][i].useCase = val;
 }
 
+function updateAiCredits(i, val) {
+  const data = getAiData();
+  data['w'+aiCurrentWeek][i].credits = parseInt(val)||0;
+}
+
 function updateAiNotes(i, val) {
   const data = getAiData();
   data['w'+aiCurrentWeek][i].notes = val;
@@ -2032,8 +2150,9 @@ function saveAiData() {
   rows.forEach((tr, i) => {
     const inputs = tr.querySelectorAll('input, select');
     if (inputs[0]) data['w'+aiCurrentWeek][i].tasks = parseInt(inputs[0].value)||0;
-    if (inputs[1]) data['w'+aiCurrentWeek][i].useCase = inputs[1].value;
-    if (inputs[2]) data['w'+aiCurrentWeek][i].notes = inputs[2].value;
+    if (inputs[1]) data['w'+aiCurrentWeek][i].credits = parseInt(inputs[1].value)||0;
+    if (inputs[2]) data['w'+aiCurrentWeek][i].useCase = inputs[2].value;
+    if (inputs[3]) data['w'+aiCurrentWeek][i].notes = inputs[3].value;
   });
   saveState();
   renderAiAdoption();
@@ -2067,6 +2186,7 @@ function renderAll() {
   renderDeptKpis();
   renderIndividualKpis();
   renderAiAdoption();
+  applyTabVisibility();
 }
 
 // ════════════════════════════════════════════════
