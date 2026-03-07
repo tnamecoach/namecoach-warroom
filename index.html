@@ -498,7 +498,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
   <button class="tab-btn" onclick="showTab('individual-kpi',this)">👤 Individual KPIs</button>
   <button class="tab-btn" onclick="showTab('commission',this)">💰 Commission</button>
   <button class="tab-btn" onclick="showTab('ai-adoption',this)">🤖 AI Adoption</button>
-  <button class="tab-btn" onclick="showTab('settings',this)">⚙️ Settings</button>
+  <button class="tab-btn" id="settingsTabBtn" onclick="showTab('settings',this)" style="display:none">⚙️ Settings</button>
 </div>
 
 <!-- ══════════ TAB: GANTT ══════════ -->
@@ -2277,6 +2277,15 @@ function renderAll() {
 loadState();
 renderAll();
 renderSettings();
+
+// Admin access: Settings tab only visible with ?admin=true in URL
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const btn = document.getElementById('settingsTabBtn');
+  if (params.get('admin') === 'true' && btn) {
+    btn.style.display = '';
+  }
+})();
 
 // Auto-refresh countdown every minute
 setInterval(() => {
