@@ -1972,6 +1972,7 @@ function showTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
+  if (id === 'vision') initVisionTab();
 }
 
 // ════════════════════════════════════════════════
@@ -2386,13 +2387,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') visionNext();
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   visionPrev();
 });
-
-// Hook into showTab to init vision when first opened
-const _origShowTab = showTab;
-function showTab(id, btn) {
-  _origShowTab(id, btn);
-  if (id === 'vision') initVisionTab();
-}
 
 // Admin access: Settings tab only visible with ?admin=true in URL
 (function() {
