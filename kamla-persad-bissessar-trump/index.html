@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamla Persad-Bissessar — Name Badge (Trump Edition)</title>
+
+  <meta property="og:title" content="Kamla Persad-Bissessar — Pronounced by Trump" />
+  <meta property="og:description" content="It's KAM, not KOM. Here's how to say it correctly — now in Trump's voice, courtesy of NameCoach." />
+  <meta property="og:url" content="https://glittering-empanada-e7f071.netlify.app/kamla-persad-bissessar" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="NameCoach" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Kamla Persad-Bissessar — Pronounced by Trump" />
+  <meta name="twitter:description" content="It's KAM, not KOM. Here's how to say it correctly — now in Trump's voice, courtesy of NameCoach." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand-50: #FFF8F0;
+      --brand-100: #FFE8CC;
+      --brand-200: #FFD199;
+      --brand-500: #C8102E;
+      --brand-600: #B30D28;
+      --brand-700: #8B0A1F;
+      --brand-800: #6B0818;
+      --bg: #faf9fc;
+      --card-bg: #ffffff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --trump-gold: #C9A84C;
+      --trump-red: #B22234;
+      --trump-blue: #3C3B6E;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1025;
+        --card-bg: #1e1e2e;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --border: #3d2f52;
+        --brand-50: #2a1f3a;
+        --brand-100: #3d2f52;
+        --brand-200: #4e3d66;
+        --brand-500: #e05a6a;
+        --brand-600: #e87a87;
+        --brand-700: #f0a0aa;
+        --brand-800: #f8c8cc;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* Trump banner */
+    .trump-banner {
+      background: linear-gradient(135deg, var(--trump-red) 0%, #8B0000 100%);
+      color: #fff;
+      border-radius: 0.75rem 0.75rem 0 0;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 440px;
+    }
+    .trump-banner .flag { font-size: 1rem; }
+
+    .nc-logo {
+      height: 22px;
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
+    @media (prefers-color-scheme: dark) {
+      .nc-logo { filter: brightness(0) invert(1); }
+    }
+    .nc-logo-text {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--brand-600);
+      margin-bottom: 1rem;
+    }
+
+    .badge-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0 0 1.25rem 1.25rem;
+      padding: 2.5rem 2rem;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 24px rgba(0,0,0,0.06);
+    }
+
+    .trump-quote {
+      background: var(--brand-50);
+      border-left: 3px solid var(--trump-gold);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      text-align: left;
+    }
+    .trump-quote strong {
+      color: var(--trump-red);
+      font-style: normal;
+    }
+
+    .badge-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-name {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    /* Phonetic display */
+    .phonetic-display {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.1rem;
+      margin-bottom: 0.25rem;
+      line-height: 1;
+    }
+    .name-part { display: inline-flex; align-items: center; gap: 0.05rem; }
+    .name-sep { width: 0.75rem; }
+    .syl-sep {
+      color: var(--text-secondary);
+      opacity: 0.35;
+      margin: 0 0.08rem;
+      font-size: 0.7rem;
+      user-select: none;
+    }
+    .syllable {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.02rem;
+      padding: 0.25rem 0.15rem;
+      border-radius: 0.4rem;
+      transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+    }
+    .phoneme {
+      position: relative;
+      padding: 0.1rem 0.12rem;
+      border-radius: 0.25rem;
+      cursor: default;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--brand-600);
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      letter-spacing: 0.02em;
+      transition: background 0.15s;
+    }
+    .stressed .phoneme {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .phoneme[data-ex] { cursor: help; }
+    .phoneme[data-ex]:hover { background: var(--brand-50); }
+
+    /* Tooltip */
+    .ph-tip {
+      position: absolute;
+      bottom: calc(100% + 0.4rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.65rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+      font-family: 'Inter', sans-serif;
+      animation: ttFade 0.15s ease-out;
+    }
+    @keyframes ttFade {
+      from { opacity: 0; transform: translateX(-50%) translateY(3px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    .ph-tip .tp { font-weight: 700; color: var(--brand-700); font-family: 'SF Mono','Fira Code','Consolas',monospace; font-size: 0.85rem; }
+    .ph-tip .te { color: var(--text-secondary); font-size: 0.75rem; }
+
+    .badge-ipa {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.75rem;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    /* Karaoke states */
+    .syllable.k-active {
+      background: #FFE8CC;
+      transform: scale(1.1);
+    }
+    .syllable.k-done {
+      opacity: 0.5;
+    }
+
+    /* Play button — Trump red/gold */
+    .play-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.85rem 2rem;
+      background: linear-gradient(135deg, var(--trump-red) 0%, #8B0000 100%);
+      color: #fff;
+      border: 2px solid var(--trump-gold);
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 2px 12px rgba(178,34,52,0.3);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .play-button:hover {
+      background: linear-gradient(135deg, #8B0000 0%, #6B0818 100%);
+      box-shadow: 0 4px 20px rgba(178,34,52,0.45);
+    }
+    .play-button:active { transform: scale(0.97); }
+    .play-button:disabled { opacity: 0.6; cursor: default; }
+    .play-button svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+    .play-button.playing {
+      background: linear-gradient(135deg, #8B0000 0%, #6B0818 100%);
+    }
+
+    .voice-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--brand-50);
+      border: 1px solid var(--trump-gold);
+      border-radius: 999px;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--trump-red);
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .footer { margin-top: 2rem; text-align: center; }
+    .footer-brand { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+    .footer-logo { height: 14px; opacity: 0.6; }
+    @media (prefers-color-scheme: dark) { .footer-logo { filter: brightness(0) invert(1); } }
+    .footer-cta {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--trump-red);
+      text-decoration: none;
+    }
+    .footer-cta:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .badge-card { padding: 2rem 1.25rem; }
+      .badge-name { font-size: 1.6rem; }
+      .phoneme { font-size: 0.95rem; }
+      .stressed .phoneme { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Trump-themed banner -->
+  <div class="trump-banner">
+    <span class="flag">🇺🇸</span>
+    Trump Edition &mdash; Correct Pronunciation
+    <span class="flag">🇹🇹</span>
+  </div>
+
+  <div class="badge-card">
+    <img src="https://cloud.name-coach.com/wp-content/uploads/2021/10/namecoach-logo.png" alt="NameCoach" class="nc-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <div class="nc-logo-text" style="display:none">NameCoach</div>
+
+    <!-- Trump quote -->
+    <div class="trump-quote">
+      <strong>"It's KAM, not KOM. We don't like kom."</strong><br>
+      — President Trump, addressing Trinidad PM Kamla Persad-Bissessar, March 2026
+    </div>
+
+    <h1 class="badge-name">Kamla Persad-Bissessar</h1>
+
+    <!-- Voice badge -->
+    <div class="voice-badge">
+      🎙️ AI Trump Voice &nbsp;·&nbsp; Powered by NameCoach
+    </div>
+
+    <div class="phonetic-display">
+      <span class="name-part">
+        <span class="syllable stressed" data-syl="0">
+          <span class="phoneme" data-ph="k">K</span><span class="phoneme" data-ph="ah" data-ex="father">AH</span><span class="phoneme" data-ph="m">M</span>
+        </span>
+        <span class="syl-sep">&middot;</span>
+        <span class="syllable" data-syl="1">
+          <span class="phoneme" data-ph="l">l</span><span class="phoneme" data-ph="ah" data-ex="father">ah</span>
+        </span>
+      </span>
+      <span class="name-sep"></span>
+      <span class="name-part">
+        <span class="syllable" data-syl="2">
+          <span class="phoneme" data-ph="p">p</span><span class="phoneme" data-ph="er" data-ex="butter">er</span>
+        </span>
+        <span class="syl-sep">&middot;</span>
+        <span class="syllable stressed" data-syl="3">
+          <span class="phoneme" data-ph="s">S</span><span class="phoneme" data-ph="ah" data-ex="father">AH</span><span class="phoneme" data-ph="d">D</span>
+        </span>
+      </span>
+      <span class="name-sep"></span>
+      <span class="name-part">
+        <span class="syllable" data-syl="4">
+          <span class="phoneme" data-ph="b">b</span><span class="phoneme" data-ph="ih" data-ex="pit">ih</span>
+        </span>
+        <span class="syl-sep">&middot;</span>
+        <span class="syllable stressed" data-syl="5">
+          <span class="phoneme" data-ph="s">S</span><span class="phoneme" data-ph="eh" data-ex="let">EH</span><span class="phoneme" data-ph="s">S</span>
+        </span>
+        <span class="syl-sep">&middot;</span>
+        <span class="syllable" data-syl="6">
+          <span class="phoneme" data-ph="s">s</span><span class="phoneme" data-ph="ahr" data-ex="farm">ahr</span>
+        </span>
+      </span>
+    </div>
+    <p class="badge-ipa">ˈkɑm.lɑ pɚ.ˈsɑd bɪ.ˈsɛs.sɑɹ</p>
+
+    <button class="play-button" id="playBtn" data-audio="https://files.manuscdn.com/user_upload_by_module/session_file/310519663385839131/IKdTTgHFzKmyjunp.mp3">
+      <svg id="playIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/>
+      </svg>
+      <span id="playLabel">🎙️ Hear it in Trump's Voice</span>
+    </button>
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">
+      Powered by
+      <img src="https://cloud.name-coach.com/wp-content/uploads/2021/10/namecoach-logo.png" alt="NameCoach" class="footer-logo" onerror="this.outerHTML='<strong>NameCoach</strong>'">
+    </div>
+    <a href="https://name-coach.com" class="footer-cta" target="_blank" rel="noopener">Create your own name badge</a>
+  </div>
+
+  <script>
+  (function(){
+    var btn=document.getElementById('playBtn');
+    var label=document.getElementById('playLabel');
+    var icon=document.getElementById('playIcon');
+    var audio=null, playing=false, rafId=null;
+
+    var syls=document.querySelectorAll('.syllable');
+    var sc=syls.length;
+    var weights=[], tw=0;
+    for(var i=0;i<sc;i++){
+      var w=syls[i].classList.contains('stressed')?1.4:1.0;
+      weights.push(w); tw+=w;
+    }
+
+    function resetK(){
+      for(var i=0;i<sc;i++) syls[i].classList.remove('k-active','k-done');
+      if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+    }
+
+    function tickK(){
+      if(!audio||!playing){return;}
+      var t=audio.currentTime, d=audio.duration;
+      if(!d||isNaN(d)){rafId=requestAnimationFrame(tickK);return;}
+      var lead=0.08;
+      var startPad=d*0.01, endPad=d*0.03;
+      var active=d-startPad-endPad, elapsed=Math.max(0,t-startPad+lead);
+      var cum=0, idx=-1;
+      for(var i=0;i<sc;i++){
+        var sd=(weights[i]/tw)*active;
+        if(elapsed>=cum&&elapsed<cum+sd) idx=i;
+        cum+=sd;
+      }
+      if(idx===-1&&elapsed>=cum) idx=sc-1;
+      for(var i=0;i<sc;i++){
+        if(i===idx){syls[i].classList.add('k-active');syls[i].classList.remove('k-done');}
+        else if(i<idx){syls[i].classList.remove('k-active');syls[i].classList.add('k-done');}
+        else{syls[i].classList.remove('k-active','k-done');}
+      }
+      rafId=requestAnimationFrame(tickK);
+    }
+
+    /* Tooltips */
+    var tip=null;
+    function showTip(el){
+      if(tip)tip.remove();
+      var ph=el.getAttribute('data-ph'), ex=el.getAttribute('data-ex');
+      if(!ex)return;
+      var d=document.createElement('div');
+      d.className='ph-tip';
+      d.innerHTML='<span class="tp">'+ph+'</span> <span class="te">as in \u201c'+ex+'\u201d</span>';
+      el.appendChild(d);
+      tip=d;
+    }
+    function hideTip(){if(tip){tip.remove();tip=null;}}
+
+    document.querySelectorAll('.phoneme[data-ex]').forEach(function(el){
+      el.addEventListener('mouseenter',function(){showTip(el);});
+      el.addEventListener('mouseleave',hideTip);
+      el.addEventListener('touchstart',function(e){e.preventDefault();showTip(el);},{passive:false});
+    });
+    document.addEventListener('touchstart',function(e){
+      if(!e.target.closest('.phoneme[data-ex]'))hideTip();
+    });
+
+    /* Play / pause */
+    var playSvg='<polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/>';
+    var pauseSvg='<rect x="6" y="4" width="4" height="16" fill="currentColor" stroke="none"/><rect x="14" y="4" width="4" height="16" fill="currentColor" stroke="none"/>';
+
+    btn.addEventListener('click',function(){
+      if(!audio){
+        audio=new Audio(btn.dataset.audio);
+        audio.addEventListener('ended',function(){
+          playing=false;
+          btn.classList.remove('playing');
+          label.textContent='🔁 Play again';
+          icon.innerHTML=playSvg;
+          setTimeout(resetK,300);
+        });
+        audio.addEventListener('error',function(){
+          label.textContent='Audio unavailable';
+          btn.disabled=true;
+        });
+      }
+      if(playing){
+        audio.pause();playing=false;
+        btn.classList.remove('playing');
+        label.innerHTML='🎙️ Hear it in Trump\'s Voice';
+        icon.innerHTML=playSvg;
+        resetK();
+      }else{
+        audio.currentTime=0;resetK();
+        audio.play().then(function(){
+          playing=true;
+          btn.classList.add('playing');
+          label.textContent='Playing...';
+          icon.innerHTML=pauseSvg;
+          rafId=requestAnimationFrame(tickK);
+        }).catch(function(){label.textContent='Tap to play';});
+      }
+    });
+  })();
+  </script>
+
+</body>
+</html>
