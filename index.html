@@ -633,7 +633,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(118,47,196,.15),transparent)">
           <div class="tier-icon">🤝</div><div class="tier-name" style="color:var(--nc-purple-light)">Referral Tier</div>
           <div class="tier-desc">Anyone who makes a warm intro or referral that results in a closed deal</div>
-          <div class="tier-rate ie" contenteditable="false" style="color:var(--nc-purple-light)">3%</div>
+          <div class="tier-rate ie" contenteditable="false" data-cf="tierRates" data-ci="referral" style="color:var(--nc-purple-light)">3%</div>
           <div class="tier-rate-lbl">of closed ACV · paid on close</div>
         </div>
         <div class="tier-body">
@@ -649,7 +649,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(79,142,247,.15),transparent)">
           <div class="tier-icon">💼</div><div class="tier-name" style="color:var(--blue)">Sales Tier</div>
           <div class="tier-desc">For those who own and manage the full sales process from discovery to close</div>
-          <div class="tier-rate ie" contenteditable="false" style="color:var(--blue)">10%</div>
+          <div class="tier-rate ie" contenteditable="false" data-cf="tierRates" data-ci="sales" style="color:var(--blue)">10%</div>
           <div class="tier-rate-lbl">of closed ACV · paid on close + accelerators</div>
         </div>
         <div class="tier-body">
@@ -665,7 +665,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(0,208,132,.15),transparent)">
           <div class="tier-icon">🎓</div><div class="tier-name" style="color:var(--nc-green)">Delivery / CS Tier</div>
           <div class="tier-desc">CS and delivery team members who manage implementation and ensure customer success</div>
-          <div class="tier-rate ie" contenteditable="false" style="color:var(--nc-green)">5%</div>
+          <div class="tier-rate ie" contenteditable="false" data-cf="tierRates" data-ci="delivery" style="color:var(--nc-green)">5%</div>
           <div class="tier-rate-lbl">of ACV on accounts they onboard · paid quarterly</div>
         </div>
         <div class="tier-body">
@@ -681,7 +681,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
         <div class="tier-hdr" style="background:linear-gradient(135deg,rgba(245,166,35,.15),transparent)">
           <div class="tier-icon">📈</div><div class="tier-name" style="color:var(--gold)">Upsell / Expansion Tier</div>
           <div class="tier-desc">For anyone who identifies and closes expansion revenue within existing accounts</div>
-          <div class="tier-rate ie" contenteditable="false" style="color:var(--gold)">7%</div>
+          <div class="tier-rate ie" contenteditable="false" data-cf="tierRates" data-ci="upsell" style="color:var(--gold)">7%</div>
           <div class="tier-rate-lbl">of expansion ACV · paid on close</div>
         </div>
         <div class="tier-body">
@@ -701,19 +701,19 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
     <table class="deal-table">
       <thead><tr><th>Deal Size (ACV)</th><th>Referral</th><th>Sales</th><th>Upsell</th><th>Delivery</th><th>Spiff / Bonus</th><th>Sales Payout Example</th></tr></thead>
       <tbody>
-        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(255,255,255,.06);color:var(--muted2)">$5K–$10K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">3%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">8%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">5%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">4%</span></td><td style="color:var(--muted)"><span class="ie" contenteditable="false">—</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$400–$800</span></td></tr>
-        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(79,142,247,.1);color:var(--blue)">$10K–$50K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">3%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">10%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">7%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">5%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false">$500 first deal in tier</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$1,000–$5,000</span></td></tr>
-        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(0,208,132,.1);color:var(--nc-green)">$50K–$100K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">3.5%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">11%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">8%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">6%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false">$1,000 spiff + team dinner</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$5,500–$11,000</span></td></tr>
-        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(245,166,35,.12);color:var(--gold)">$100K–$250K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">4%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">9%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">7%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false">$2,500 spiff + announcement</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$12,000–$30,000</span></td></tr>
-        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(247,95,95,.1);color:var(--red)">$250K–$500K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">4%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">10%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">7%</span></td><td style="color:var(--red);font-size:10px"><span class="ie" contenteditable="false">$5,000 + President's Club</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$30,000–$60,000</span></td></tr>
-        <tr><td><div class="dsb ie" contenteditable="false" style="background:rgba(118,47,196,.15);color:var(--nc-purple-light)">$500K–$1M+</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false">5%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false">10%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false">8%</span></td><td style="color:var(--nc-purple-light);font-size:10px"><span class="ie" contenteditable="false">$10,000 + equity discussion</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false">$60,000–$120,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" data-cf="dealTable" data-ci="0_range" style="background:rgba(255,255,255,.06);color:var(--muted2)">$5K–$10K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="0_ref">3%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="0_sales">8%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="0_del">5%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="0_ups">4%</span></td><td style="color:var(--muted)"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="0_spiff">—</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="0_example">$400–$800</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" data-cf="dealTable" data-ci="1_range" style="background:rgba(79,142,247,.1);color:var(--blue)">$10K–$50K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="1_ref">3%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="1_sales">10%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="1_del">7%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="1_ups">5%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="1_spiff">$500 first deal in tier</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="1_example">$1,000–$5,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" data-cf="dealTable" data-ci="2_range" style="background:rgba(0,208,132,.1);color:var(--nc-green)">$50K–$100K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="2_ref">3.5%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="2_sales">11%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="2_del">8%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="2_ups">6%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="2_spiff">$1,000 spiff + team dinner</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="2_example">$5,500–$11,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" data-cf="dealTable" data-ci="3_range" style="background:rgba(245,166,35,.12);color:var(--gold)">$100K–$250K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="3_ref">4%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="3_sales">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="3_del">9%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="3_ups">7%</span></td><td style="color:var(--gold);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="3_spiff">$2,500 spiff + announcement</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="3_example">$12,000–$30,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" data-cf="dealTable" data-ci="4_range" style="background:rgba(247,95,95,.1);color:var(--red)">$250K–$500K</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="4_ref">4%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="4_sales">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="4_del">10%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="4_ups">7%</span></td><td style="color:var(--red);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="4_spiff">$5,000 + President's Club</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="4_example">$30,000–$60,000</span></td></tr>
+        <tr><td><div class="dsb ie" contenteditable="false" data-cf="dealTable" data-ci="5_range" style="background:rgba(118,47,196,.15);color:var(--nc-purple-light)">$500K–$1M+</div></td><td style="color:var(--nc-purple-light);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="5_ref">5%</span></td><td style="color:var(--blue);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="5_sales">12%</span></td><td style="color:var(--gold);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="5_del">10%</span></td><td style="color:var(--nc-green);font-weight:700"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="5_ups">8%</span></td><td style="color:var(--nc-purple-light);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="5_spiff">$10,000 + equity discussion</span></td><td style="color:var(--muted2);font-size:10px"><span class="ie" contenteditable="false" data-cf="dealTable" data-ci="5_example">$60,000–$120,000</span></td></tr>
       </tbody>
     </table>
     <div class="comm-section-title">🎯 Team Bonuses</div>
     <div class="bonus-grid">
       <div class="bonus-card" style="border-color:rgba(0,208,132,.3)">
         <div class="bonus-card-hdr"><div class="bonus-icon">📅</div><div><div class="bonus-title" style="color:var(--nc-green)">Monthly Team Bonus</div><div class="bonus-freq">Paid first Friday of each month</div></div></div>
-        <div class="bonus-amount ie" contenteditable="false" style="color:var(--nc-green)">$500</div>
+        <div class="bonus-amount ie" contenteditable="false" data-cf="bonuses" data-ci="monthly" style="color:var(--nc-green)">$500</div>
         <div class="bonus-amount-lbl">per person · if team hits monthly revenue target</div>
         <div class="bonus-rule"><strong>Trigger:</strong> Team closes ≥ $75K new ACV in the calendar month</div>
         <div class="bonus-rule"><strong>Why monthly?</strong> Monthly bonuses outperform quarterly for small teams — 23% more targets hit. Prevents sandbagging.</div>
@@ -721,7 +721,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
       </div>
       <div class="bonus-card" style="border-color:rgba(118,47,196,.3)">
         <div class="bonus-card-hdr"><div class="bonus-icon">📆</div><div><div class="bonus-title" style="color:var(--nc-purple-light)">Quarterly Performance Bonus</div><div class="bonus-freq">Paid end of each quarter</div></div></div>
-        <div class="bonus-amount ie" contenteditable="false" style="color:var(--nc-purple-light)">$1,500–$3,000</div>
+        <div class="bonus-amount ie" contenteditable="false" data-cf="bonuses" data-ci="quarterly" style="color:var(--nc-purple-light)">$1,500–$3,000</div>
         <div class="bonus-amount-lbl">per person · tiered by % of quarterly target hit</div>
         <div class="bonus-rule"><strong>75–89%:</strong> $1,500 · <strong>90–99%:</strong> $2,000 · <strong>100–119%:</strong> $2,500 · <strong>120%+:</strong> $3,000</div>
         <div class="bonus-rule"><strong>Quarterly target:</strong> $225K new ACV (Q1 2026)</div>
@@ -729,7 +729,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
       </div>
       <div class="bonus-card" style="border-color:rgba(245,166,35,.3)">
         <div class="bonus-card-hdr"><div class="bonus-icon">🏆</div><div><div class="bonus-title" style="color:var(--gold)">Fundraising Milestone Bonus</div><div class="bonus-freq">One-time · paid on close of round</div></div></div>
-        <div class="bonus-amount ie" contenteditable="false" style="color:var(--gold)">$1,000–$2,500</div>
+        <div class="bonus-amount ie" contenteditable="false" data-cf="bonuses" data-ci="fundraising" style="color:var(--gold)">$1,000–$2,500</div>
         <div class="bonus-amount-lbl">per person · if WeFunder or Bridge closes by Apr 17</div>
         <div class="bonus-rule"><strong>WeFunder $250K+:</strong> $1,000 · <strong>WeFunder $500K:</strong> $1,500</div>
         <div class="bonus-rule"><strong>Bridge signed:</strong> $2,000 · <strong>Both by Apr 17:</strong> $2,500</div>
@@ -740,14 +740,14 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
     <table class="spiff-table">
       <thead><tr><th>Spiff</th><th>Trigger</th><th>Reward</th><th>Eligible</th><th>Window</th></tr></thead>
       <tbody>
-        <tr><td><strong>🦄 First $50K+ Deal</strong></td><td>First deal over $50K ACV closed</td><td><span class="spiff-amt ie" contenteditable="false">$2,500</span> cash</td><td>Sales, BDR</td><td>Sprint-wide</td></tr>
-        <tr><td><strong>🚀 First $100K+ Deal</strong></td><td>First deal over $100K ACV closed</td><td><span class="spiff-amt ie" contenteditable="false">$5,000</span> + announcement</td><td>Sales</td><td>Sprint-wide</td></tr>
-        <tr><td><strong>⚡ Speed Close</strong></td><td>Deal closed within 14 days of first contact</td><td><span class="spiff-amt ie" contenteditable="false">$750</span> on top of commission</td><td>Sales, BDR</td><td>Ongoing</td></tr>
-        <tr><td><strong>🌱 PLG Convert</strong></td><td>Self-serve signup converts to paid ($5K+ ACV)</td><td><span class="spiff-amt ie" contenteditable="false">$500</span> per conversion</td><td>Product, Sales, CS</td><td>W5–W8</td></tr>
-        <tr><td><strong>🤝 Channel Partner Close</strong></td><td>First deal sourced through signed channel partner</td><td><span class="spiff-amt ie" contenteditable="false">$1,500</span> + team lunch</td><td>Sales</td><td>W4–W8</td></tr>
-        <tr><td><strong>📣 Referral Blitz</strong></td><td>Any employee submits 3+ qualified referrals in one week</td><td><span class="spiff-amt ie" contenteditable="false">$300</span> gift card</td><td>All 15 employees</td><td>W2–W4</td></tr>
-        <tr><td><strong>💚 Upsell Sprint</strong></td><td>CS closes 2+ upsells in a single month</td><td><span class="spiff-amt ie" contenteditable="false">$1,000</span> + President's Club point</td><td>CS Manager, CS Rep</td><td>Mar &amp; Apr</td></tr>
-        <tr><td><strong>🏢 Enterprise Logo</strong></td><td>Closes a Fortune 1000 / Workday ecosystem account</td><td><span class="spiff-amt ie" contenteditable="false">$3,000</span> + equity discussion</td><td>Sales, CS, Trevor</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>🦄 First $50K+ Deal</strong></td><td>First deal over $50K ACV closed</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="0">$2,500</span> cash</td><td>Sales, BDR</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>🚀 First $100K+ Deal</strong></td><td>First deal over $100K ACV closed</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="1">$5,000</span> + announcement</td><td>Sales</td><td>Sprint-wide</td></tr>
+        <tr><td><strong>⚡ Speed Close</strong></td><td>Deal closed within 14 days of first contact</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="2">$750</span> on top of commission</td><td>Sales, BDR</td><td>Ongoing</td></tr>
+        <tr><td><strong>🌱 PLG Convert</strong></td><td>Self-serve signup converts to paid ($5K+ ACV)</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="3">$500</span> per conversion</td><td>Product, Sales, CS</td><td>W5–W8</td></tr>
+        <tr><td><strong>🤝 Channel Partner Close</strong></td><td>First deal sourced through signed channel partner</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="4">$1,500</span> + team lunch</td><td>Sales</td><td>W4–W8</td></tr>
+        <tr><td><strong>📣 Referral Blitz</strong></td><td>Any employee submits 3+ qualified referrals in one week</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="5">$300</span> gift card</td><td>All 15 employees</td><td>W2–W4</td></tr>
+        <tr><td><strong>💚 Upsell Sprint</strong></td><td>CS closes 2+ upsells in a single month</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="6">$1,000</span> + President's Club point</td><td>CS Manager, CS Rep</td><td>Mar &amp; Apr</td></tr>
+        <tr><td><strong>🏢 Enterprise Logo</strong></td><td>Closes a Fortune 1000 / Workday ecosystem account</td><td><span class="spiff-amt ie" contenteditable="false" data-cf="spiffs" data-ci="7">$3,000</span> + equity discussion</td><td>Sales, CS, Trevor</td><td>Sprint-wide</td></tr>
       </tbody>
     </table>
     <div class="comm-section-title">🌱 PLG + SLG Hybrid Rules</div>
@@ -1081,9 +1081,9 @@ const DEFAULTS = {
     {name:'Lais Paschoa',     role:'Marketing & Brand',           dept:'Growth/GTM', color:'#f75fa0', tiers:['Referral','Lead Bonus']},
     {name:'Team Member 11',   role:'Finance & FP&A',              dept:'Ops',        color:'#31cdd3', tiers:['Referral']},
     {name:'Team Member 12',   role:'Operations',                  dept:'Ops',        color:'#f7874f', tiers:['Referral']},
-    {name:'Team Member 13',   role:'Legal / Compliance',          dept:'Ops',        color:'#c8a020', tiers:['Referral']},
-    {name:'Team Member 14',   role:'Data & Reporting',            dept:'Ops',        color:'#f7874f', tiers:['Referral','PLG Bonus']},
-    {name:'Team Member 15',   role:'Executive Assistant',         dept:'Ops',        color:'#f7874f', tiers:['Referral']}
+    {name:'Kylie Leckliter',  role:'Marketing & Content',         dept:'Growth/GTM', color:'#f75fa0', tiers:['Referral','Lead Bonus']},
+    {name:'Errin Henderson',   role:'Customer Success',            dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
+    {name:'Praveen Shanbhag',  role:'Engineering',                 dept:'Product',    color:'#9b5fe0', tiers:['Referral','PLG Bonus']}
   ],
   tasks: [
     // Trevor
@@ -1173,7 +1173,30 @@ const DEFAULTS = {
     {kpi:'NPS Score', cat:'CS', current:'Unknown', target:'>50', deadline:'W6', owner:'CS', status:'pending'},
     {kpi:'Commission Plan Live', cat:'Finance / Ops', current:'None', target:'All-employee plan signed', deadline:'W2 (Mar 7)', owner:'Finance', status:'not-started'},
     {kpi:'Advisors Signed', cat:'Trevor', current:'0', target:'2+ domain advisors', deadline:'W3', owner:'Trevor', status:'not-started'}
-  ]
+  ],
+  commission: {
+    tierRates: {referral:'3%', sales:'10%', delivery:'5%', upsell:'7%'},
+    dealTable: [
+      {range:'$5K–$10K',  ref:'3%',   sales:'8%',  del:'5%',  ups:'4%',  spiff:'—',                        example:'$400–$800'},
+      {range:'$10K–$50K', ref:'3%',   sales:'10%', del:'7%',  ups:'5%',  spiff:'$500 first deal in tier', example:'$1,000–$5,000'},
+      {range:'$50K–$100K',ref:'3.5%', sales:'11%', del:'8%',  ups:'6%',  spiff:'$1,000 spiff + team dinner', example:'$5,500–$11,000'},
+      {range:'$100K–$250K',ref:'4%',  sales:'12%', del:'9%',  ups:'7%',  spiff:'$2,500 spiff + announcement', example:'$12,000–$30,000'},
+      {range:'$250K–$500K',ref:'4%',  sales:'12%', del:'10%', ups:'7%',  spiff:'$5,000 + President\'s Club', example:'$30,000–$60,000'},
+      {range:'$500K–$1M+', ref:'5%',  sales:'12%', del:'10%', ups:'8%',  spiff:'$10,000 + equity discussion', example:'$60,000–$120,000'}
+    ],
+    bonuses: {monthly:'$500', quarterly:'$1,500–$3,000', fundraising:'$1,000–$2,500'},
+    spiffs: [
+      {name:'First $50K+ Deal',   amt:'$2,500'},
+      {name:'First $100K+ Deal',  amt:'$5,000'},
+      {name:'Speed Close',        amt:'$750'},
+      {name:'PLG Convert',        amt:'$500'},
+      {name:'Channel Partner Close', amt:'$1,500'},
+      {name:'Referral Blitz',     amt:'$300'},
+      {name:'Upsell Sprint',      amt:'$1,000'},
+      {name:'Enterprise Logo',    amt:'$3,000'}
+    ]
+  },
+  deptKpis: null
 };
 
 // ════════════════════════════════════════════════
@@ -1183,27 +1206,44 @@ let STATE = {};
 
 function loadState() {
   try {
-    // v5 key — bump clears stale v4 cache, resets AI adoption with new Mar 13 data
-    const saved = localStorage.getItem('nc_warroom_v5');
+    // v6 key — clears stale v5 cache, re-seeds AI adoption with Mar 13 data + new team members
+    const saved = localStorage.getItem('nc_warroom_v6');
     if (saved) {
       STATE = JSON.parse(saved);
       // Forward-migrate: inject any new top-level keys missing from older saves
       const d = DEFAULTS;
       if (!STATE.tabVisibility) STATE.tabVisibility = JSON.parse(JSON.stringify(d.tabVisibility));
       if (!STATE.nsCards)       STATE.nsCards       = JSON.parse(JSON.stringify(d.nsCards));
-      // Always reset aiAdoption so new seed data (Mar 13) is used
-      STATE.aiAdoption = null;
+      if (!STATE.commission)    STATE.commission    = JSON.parse(JSON.stringify(d.commission));
+      if (!STATE.deptKpis)      STATE.deptKpis      = JSON.parse(JSON.stringify(d.deptKpis));
       // Migrate team names if still using old placeholder names
       const oldNames = ['Trevor','Sales Lead','BDR / SDR','CS Manager','CS Rep','Marketing Lead',
         'Product Manager','Engineer 1','Engineer 2','Designer','Finance Lead','Ops Lead',
         'Legal','Data / Analytics','Admin / EA'];
       if (STATE.team && STATE.team[0] && oldNames.includes(STATE.team[0].name)) {
         STATE.team = JSON.parse(JSON.stringify(d.team));
+        STATE.aiAdoption = null; // re-seed AI data with new team
+      }
+      // Migrate Team Member 13/14/15 -> Kylie/Errin/Praveen if still placeholder names
+      if (STATE.team && STATE.team.length >= 15) {
+        const placeholders = ['Team Member 13','Team Member 14','Team Member 15'];
+        const newMembers = [
+          {name:'Kylie Leckliter', role:'Marketing & Content', dept:'Growth/GTM', color:'#f75fa0', tiers:['Referral','Lead Bonus']},
+          {name:'Errin Henderson',  role:'Customer Success',    dept:'Growth/GTM', color:'#00d084', tiers:['Upsell','Delivery','Referral']},
+          {name:'Praveen Shanbhag', role:'Engineering',         dept:'Product',    color:'#9b5fe0', tiers:['Referral','PLG Bonus']}
+        ];
+        let migrated = false;
+        placeholders.forEach((ph, idx) => {
+          const ti = STATE.team.findIndex(m => m.name === ph);
+          if (ti !== -1) { STATE.team[ti] = Object.assign({}, STATE.team[ti], newMembers[idx]); migrated = true; }
+        });
+        if (migrated) STATE.aiAdoption = null; // re-seed AI data with updated names
       }
     } else {
-      // Clear old v3/v4 data
+      // Clear old v3/v4/v5 data
       localStorage.removeItem('nc_warroom_v3');
       localStorage.removeItem('nc_warroom_v4');
+      localStorage.removeItem('nc_warroom_v5');
       STATE = JSON.parse(JSON.stringify(DEFAULTS));
     }
   } catch(e) {
@@ -1212,7 +1252,7 @@ function loadState() {
 }
 
 function saveState() {
-  localStorage.setItem('nc_warroom_v5', JSON.stringify(STATE));
+  localStorage.setItem('nc_warroom_v6', JSON.stringify(STATE));
   const ind = document.getElementById('saveIndicator');
   if (ind) { ind.classList.add('show'); setTimeout(() => ind.classList.remove('show'), 2000); }
 }
@@ -1662,19 +1702,39 @@ function toggleEditMode() {
       if (ki !== undefined && kf && STATE.companyKpis[ki]) {
         STATE.companyKpis[ki][kf] = el.textContent.trim();
       }
-      // Dept KPI cards
+      // Dept KPI cards — save to both DEPT_KPIS constant (for current session) and STATE.deptKpis (for persistence)
       const dpod = el.dataset.dpod; const ddept = el.dataset.ddept;
       const dmi = el.dataset.dmi; const dmf = el.dataset.dmf;
       if (dpod && ddept !== undefined && dmi !== undefined && dmf) {
         if (DEPT_KPIS[dpod] && DEPT_KPIS[dpod].depts[ddept] && DEPT_KPIS[dpod].depts[ddept].metrics[dmi]) {
           DEPT_KPIS[dpod].depts[ddept].metrics[dmi][dmf] = el.textContent.trim();
         }
+        if (!STATE.deptKpis) STATE.deptKpis = JSON.parse(JSON.stringify(DEPT_KPIS));
+        if (STATE.deptKpis[dpod] && STATE.deptKpis[dpod].depts[ddept] && STATE.deptKpis[dpod].depts[ddept].metrics[dmi]) {
+          STATE.deptKpis[dpod].depts[ddept].metrics[dmi][dmf] = el.textContent.trim();
+        }
       }
       // Commission inline editable
       const cf = el.dataset.cf; const ci = el.dataset.ci;
-      if (cf && ci !== undefined && STATE.commission) {
-        if (!STATE.commission[cf]) STATE.commission[cf] = {};
-        STATE.commission[cf][ci] = el.textContent.trim();
+      if (cf && ci !== undefined) {
+        if (!STATE.commission) STATE.commission = JSON.parse(JSON.stringify(DEFAULTS.commission));
+        if (cf === 'spiffs') {
+          // spiffs is an array; ci is the numeric index; save the amt field
+          const idx = parseInt(ci);
+          if (STATE.commission.spiffs && STATE.commission.spiffs[idx]) {
+            STATE.commission.spiffs[idx].amt = el.textContent.trim();
+          }
+        } else if (cf === 'dealTable') {
+          // dealTable is an array; ci is 'rowIdx_fieldName' format
+          const parts = ci.split('_'); const rowIdx = parseInt(parts[0]); const field = parts[1];
+          if (!STATE.commission.dealTable) STATE.commission.dealTable = JSON.parse(JSON.stringify(DEFAULTS.commission.dealTable));
+          if (STATE.commission.dealTable[rowIdx]) {
+            STATE.commission.dealTable[rowIdx][field] = el.textContent.trim();
+          }
+        } else {
+          if (!STATE.commission[cf]) STATE.commission[cf] = {};
+          STATE.commission[cf][ci] = el.textContent.trim();
+        }
       }
       // North Star cards
       const nsc = el.dataset.nsc; const nscf = el.dataset.nscf;
@@ -1792,8 +1852,14 @@ const DEPT_KPIS = {
 };
 
 function renderDeptKpis() {
+  // Use STATE.deptKpis if persisted (edits survive refresh), otherwise fall back to DEPT_KPIS constant
+  const deptData = STATE.deptKpis || DEPT_KPIS;
+  // Sync STATE.deptKpis from DEPT_KPIS if not yet initialized
+  if (!STATE.deptKpis) {
+    STATE.deptKpis = JSON.parse(JSON.stringify(DEPT_KPIS));
+  }
   let html = '';
-  Object.entries(DEPT_KPIS).forEach(([podName, pod]) => {
+  Object.entries(deptData).forEach(([podName, pod]) => {
     const podColor = pod.color;
     html += `<div style="margin-bottom:28px">
       <div class="kpi-section-title" style="color:${podColor}">${pod.icon} ${podName} Pod</div>
@@ -2177,7 +2243,7 @@ function getAiData() {
         return {
           name: m.name,
           role: m.role,
-          adopted: seed ? true : false,
+          adopted: seed && ((w === 1 ? seed.w1tasks : w === 2 ? seed.w2tasks : 0) > 0) ? true : false,
           tasks:   seed ? (w === 1 ? seed.w1tasks   : seed.w2tasks)   : 0,
           credits: seed ? (w === 1 ? seed.w1credits : seed.w2credits) : 0,
           useCase: seed ? seed.useCase : '',
@@ -2386,6 +2452,43 @@ function exportAiCsv() {
 // ════════════════════════════════════════════════
 // RENDER ALL
 // ════════════════════════════════════════════════
+function renderCommission() {
+  // Populate commission tab from STATE.commission (persisted edits survive refresh)
+  if (!STATE.commission) return;
+  const c = STATE.commission;
+  // Tier rates
+  if (c.tierRates) {
+    document.querySelectorAll('[data-cf="tierRates"]').forEach(el => {
+      const key = el.dataset.ci;
+      if (c.tierRates[key]) el.textContent = c.tierRates[key];
+    });
+  }
+  // Bonuses
+  if (c.bonuses) {
+    document.querySelectorAll('[data-cf="bonuses"]').forEach(el => {
+      const key = el.dataset.ci;
+      if (c.bonuses[key]) el.textContent = c.bonuses[key];
+    });
+  }
+  // Spiffs
+  if (c.spiffs) {
+    document.querySelectorAll('[data-cf="spiffs"]').forEach(el => {
+      const idx = parseInt(el.dataset.ci);
+      if (c.spiffs[idx] && c.spiffs[idx].amt) el.textContent = c.spiffs[idx].amt;
+    });
+  }
+  // Deal table
+  if (c.dealTable) {
+    document.querySelectorAll('[data-cf="dealTable"]').forEach(el => {
+      const ci = el.dataset.ci;
+      if (!ci) return;
+      const parts = ci.split('_'); const rowIdx = parseInt(parts[0]); const field = parts[1];
+      if (c.dealTable[rowIdx] && c.dealTable[rowIdx][field] !== undefined) {
+        el.textContent = c.dealTable[rowIdx][field];
+      }
+    });
+  }
+}
 function renderAll() {
   updateDynamicElements();
   renderWeekBar();
@@ -2395,6 +2498,7 @@ function renderAll() {
   renderDeptKpis();
   renderIndividualKpis();
   renderAiAdoption();
+  renderCommission();
   applyTabVisibility();
 }
 
