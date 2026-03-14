@@ -2512,20 +2512,15 @@ renderSettings();
 // ════════════════════════════════════════════════
 // SUGGESTIONS BOARD
 // ════════════════════════════════════════════════
-const SUGG_REPO  = 'tnamecoach/namecoach-warroom';
-const SUGG_FILE  = 'suggestions.json';
-// Token split to avoid secret scanning — reassembled at runtime
-const SUGG_TOKEN = '';
-const SUGG_API   = 'https://api.github.com/repos/' + SUGG_REPO + '/contents/' + SUGG_FILE;
+// Suggestions API routed through Netlify serverless function (token stored server-side)
+const SUGG_API = '/.netlify/functions/suggestions';
 
 let suggData = { suggestions: [] };
 let suggSha  = null;
 
 async function loadSuggestions() {
   try {
-    const r = await fetch(SUGG_API + '?t=' + Date.now(), {
-      headers: { 'Authorization': 'token ' + SUGG_TOKEN, 'Accept': 'application/vnd.github.v3+json' }
-    });
+    const r = await fetch(SUGG_API + '?t=' + Date.now());
     const j = await r.json();
     suggSha  = j.sha;
     suggData = JSON.parse(atob(j.content.replace(/\n/g,'')));
@@ -2539,7 +2534,7 @@ async function saveSuggestions() {
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(suggData, null, 2))));
   const r = await fetch(SUGG_API, {
     method: 'PUT',
-    headers: { 'Authorization': 'token ' + SUGG_TOKEN, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: 'chore: update suggestions', content, sha: suggSha })
   });
   const j = await r.json();
