@@ -379,6 +379,52 @@ body.edit-mode .kpi-add-row-btn{display:block;}
 .notion-export-area textarea{width:100%;background:var(--surface3);border:1px solid var(--border2);border-radius:6px;padding:10px;font-size:10px;color:var(--muted2);font-family:monospace;resize:vertical;min-height:120px;outline:none;}
 .save-indicator{font-size:10px;color:var(--nc-green);display:none;align-items:center;gap:4px;}
 .save-indicator.show{display:flex;}
+/* ── GANTT VELOCITY + AI FLAG ── */
+.ai-flag-label{display:inline-flex;align-items:center;gap:3px;margin-left:6px;cursor:pointer;opacity:.5;transition:opacity .2s;vertical-align:middle;}
+.ai-flag-label:hover{opacity:.9;}
+.ai-flag-chk{width:12px;height:12px;accent-color:#9b5fe0;cursor:pointer;}
+.ai-flag-txt{font-size:9px;font-weight:700;color:#9b5fe0;letter-spacing:.3px;}
+.ai-flag-chk:checked~.ai-flag-txt{color:#9b5fe0;}
+.ai-flag-label:has(.ai-flag-chk:checked){opacity:1;}
+.velocity-fields{display:flex;align-items:center;gap:4px;margin-top:4px;}
+.vel-lbl{font-size:9px;color:var(--muted);font-weight:600;}
+.vel-inp{width:38px;background:var(--surface3);border:1px solid var(--border2);border-radius:4px;padding:2px 4px;font-size:9px;color:var(--text);text-align:center;outline:none;}
+.vel-inp:focus{border-color:var(--nc-purple-light);}
+/* ── CEO DASHBOARD ── */
+.ceo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:4px;}
+.ceo-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden;transition:border-color .2s;}
+.ceo-card:hover{border-color:var(--border2);}
+.ceo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0;}
+.ceo-card.red::before{background:linear-gradient(90deg,#f75f5f,#ff9999);}
+.ceo-card.purple::before{background:linear-gradient(90deg,#9b5fe0,#762fc4);}
+.ceo-card.blue::before{background:linear-gradient(90deg,#4f8ef7,#2ecfcf);}
+.ceo-card.gold::before{background:linear-gradient(90deg,#f5a623,#f7874f);}
+.ceo-card.green::before{background:linear-gradient(90deg,#00d084,#31cdd3);}
+.ceo-card-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);margin-bottom:6px;}
+.ceo-card-value{font-size:26px;font-weight:900;line-height:1;margin-bottom:4px;}
+.ceo-card-value.red{color:#f75f5f;}
+.ceo-card-value.purple{color:#9b5fe0;}
+.ceo-card-value.blue{color:#4f8ef7;}
+.ceo-card-value.gold{color:#f5a623;}
+.ceo-card-value.green{color:#00d084;}
+.ceo-card-sub{font-size:10px;color:var(--muted);line-height:1.4;}
+.ceo-card-trend{font-size:10px;font-weight:700;margin-top:6px;}
+.ceo-card-trend.up{color:#00d084;}
+.ceo-card-trend.down{color:#f75f5f;}
+.ceo-card-trend.flat{color:var(--muted);}
+.ceo-scorecard{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;}
+.ceo-sc-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.ceo-sc-row:last-child{border-bottom:none;}
+.ceo-sc-metric{flex:1;font-size:12px;font-weight:600;color:var(--text);}
+.ceo-sc-value{font-size:12px;font-weight:800;min-width:80px;text-align:right;}
+.ceo-sc-arrow{font-size:14px;min-width:20px;text-align:center;}
+.ceo-sc-note{font-size:10px;color:var(--muted);flex:1;text-align:right;}
+.ceo-ai-replace{background:var(--surface3);border:1px solid rgba(155,95,224,.2);border-radius:8px;padding:12px 16px;margin-top:12px;}
+.ceo-ai-replace-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--nc-purple-light);margin-bottom:8px;}
+.ceo-ai-replace-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px;}
+.ceo-ai-replace-row:last-child{border-bottom:none;}
+.ceo-ai-replace-team{color:var(--muted);min-width:130px;}
+.ceo-ai-replace-text{color:var(--text);flex:1;}
 
 /* ── TAB VISIBILITY TOGGLES ── */
 .tab-vis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px;}
@@ -491,6 +537,7 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
 
 <!-- ══ TABS ══ -->
 <div class="tabs-bar">
+  <button class="tab-btn" onclick="showTab('ceo-dashboard',this)">🚀 CEO Dashboard</button>
   <button class="tab-btn active" onclick="showTab('gantt',this)">📅 War Room Gantt</button>
   <button class="tab-btn" onclick="showTab('company-kpi',this)">🏢 Company KPIs</button>
   <button class="tab-btn" onclick="showTab('dept-kpi',this)">📊 Department KPIs</button>
@@ -501,6 +548,53 @@ body.edit-mode .kc-trend.ie{background:rgba(118,47,196,.08);border:1px dashed rg
   <button class="tab-btn" onclick="showTab('revenue',this)">📈 Revenue</button>
   <button class="tab-btn" onclick="showTab('suggestions',this)">💡 Suggestions</button>
   <button class="tab-btn" id="settingsTabBtn" onclick="showTab('settings',this)" style="display:none">⚙️ Settings</button>
+</div>
+
+<!-- ══════════ TAB: CEO DASHBOARD ══════════ -->
+<div id="tab-ceo-dashboard" class="tab-panel">
+  <div class="main" id="ceoDashMain">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:20px;font-weight:800">🚀 CEO Dashboard</div>
+        <div style="font-size:11px;color:var(--muted2);margin-top:4px">Leverage · Velocity · Outcomes · <span id="ceoDashWeekLabel" style="color:var(--nc-purple-light);font-weight:700"></span></div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px 12px">
+        North Star: <strong style="color:var(--gold)">Revenue per Employee</strong>
+      </div>
+    </div>
+
+    <!-- ROW 1: Company Output -->
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--nc-purple-light);margin-bottom:10px;display:flex;align-items:center;gap:8px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#f75f5f;display:inline-block"></span> Company Output
+    </div>
+    <div class="ceo-grid" id="ceoOutputCards"></div>
+
+    <!-- ROW 2: AI Leverage -->
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--nc-purple-light);margin:20px 0 10px;display:flex;align-items:center;gap:8px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#9b5fe0;display:inline-block"></span> AI Leverage
+    </div>
+    <div class="ceo-grid" id="ceoAiCards"></div>
+
+    <!-- ROW 3: Velocity -->
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--nc-purple-light);margin:20px 0 10px;display:flex;align-items:center;gap:8px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#4f8ef7;display:inline-block"></span> Velocity Engine
+    </div>
+    <div class="ceo-grid" id="ceoVelocityCards"></div>
+
+    <!-- ROW 4: Efficiency -->
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--nc-purple-light);margin:20px 0 10px;display:flex;align-items:center;gap:8px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#f5a623;display:inline-block"></span> Efficiency
+    </div>
+    <div class="ceo-grid" id="ceoEfficiencyCards"></div>
+
+    <!-- Weekly Scorecard -->
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--nc-purple-light);margin:24px 0 12px;display:flex;align-items:center;gap:8px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#00d084;display:inline-block"></span> Weekly Scorecard
+    </div>
+    <div id="ceoScorecard"></div>
+
+  </div>
 </div>
 
 <!-- ══════════ TAB: GANTT ══════════ -->
@@ -1216,6 +1310,7 @@ function loadState() {
       if (!STATE.nsCards)       STATE.nsCards       = JSON.parse(JSON.stringify(d.nsCards));
       if (!STATE.commission)    STATE.commission    = JSON.parse(JSON.stringify(d.commission));
       if (!STATE.deptKpis)      STATE.deptKpis      = JSON.parse(JSON.stringify(d.deptKpis));
+      if (!STATE.ceoDash)       STATE.ceoDash       = JSON.parse(JSON.stringify(CEO_DEFAULTS));
       // Migrate team names if still using old placeholder names
       const oldNames = ['Trevor','Sales Lead','BDR / SDR','CS Manager','CS Rep','Marketing Lead',
         'Product Manager','Engineer 1','Engineer 2','Designer','Finance Lead','Ops Lead',
@@ -1484,14 +1579,27 @@ function renderTaskRow(task, cw) {
   }
 
   const priOpts = ['p1','p2','p3'].map(p => `<option value="${p}"${task.priority===p?' selected':''}>${p.toUpperCase()}</option>`).join('');
-
+  const aiChecked = task.aiAssisted ? 'checked' : '';
+  const pDays = task.plannedDays || '';
+  const aDays = task.actualDays || '';
   return `<tr data-task-id="${task.id}">
-    <td><span class="t-name editable" contenteditable="false" data-field="name" data-id="${task.id}">${task.name}</span>
+    <td>
+      <span class="t-name editable" contenteditable="false" data-field="name" data-id="${task.id}">${task.name}</span>
       <span class="tag ${task.priority} task-pri-tag">${task.priority.toUpperCase()}</span>
       <select class="task-pri-sel" onchange="changeTaskPriority('${task.id}',this.value)">${priOpts}</select>
       <button class="task-del-btn" onclick="deleteTask('${task.id}')">✕ Remove</button>
+      <label class="ai-flag-label" title="AI-assisted task">
+        <input type="checkbox" class="ai-flag-chk" ${aiChecked} onchange="toggleAiAssisted('${task.id}',this.checked)">
+        <span class="ai-flag-txt">🤖 AI</span>
+      </label>
     </td>
-    <td><span class="kpi-cell editable" contenteditable="false" data-field="metric" data-id="${task.id}">${task.metric}</span></td>
+    <td>
+      <span class="kpi-cell editable" contenteditable="false" data-field="metric" data-id="${task.id}">${task.metric}</span>
+      <div class="velocity-fields">
+        <span class="vel-lbl">Plan:</span><input class="vel-inp" type="number" min="0" step="0.5" value="${pDays}" placeholder="d" title="Planned days" onchange="updateVelocity('${task.id}','plannedDays',this.value)">
+        <span class="vel-lbl">Act:</span><input class="vel-inp" type="number" min="0" step="0.5" value="${aDays}" placeholder="d" title="Actual days" onchange="updateVelocity('${task.id}','actualDays',this.value)">
+      </div>
+    </td>
     <td><button class="status-btn ${s.cls}" onclick="cycleStatus('${task.id}', this)">${s.label}</button></td>
     ${cells}
   </tr>`;
@@ -1518,6 +1626,18 @@ function cycleStatus(id, btn) {
   btn.textContent = s.label;
   saveState();
   showToast('Status updated: ' + task.name.substring(0,30));
+}
+function toggleAiAssisted(id, checked) {
+  const task = STATE.tasks.find(t => t.id === id);
+  if (!task) return;
+  task.aiAssisted = checked;
+  saveState();
+}
+function updateVelocity(id, field, val) {
+  const task = STATE.tasks.find(t => t.id === id);
+  if (!task) return;
+  task[field] = parseFloat(val) || 0;
+  saveState();
 }
 
 // ════════════════════════════════════════════════
@@ -1741,9 +1861,17 @@ function toggleEditMode() {
       if (nsc !== undefined && nscf && STATE.nsCards && STATE.nsCards[nsc]) {
         STATE.nsCards[nsc][nscf] = el.textContent.trim();
       }
+      // CEO Dashboard cards
+      const ceoS = el.dataset.ceoS; const ceoI = el.dataset.ceoI; const ceoF = el.dataset.ceoF;
+      if (ceoS && ceoI !== undefined && ceoF) {
+        if (!STATE.ceoDash) STATE.ceoDash = JSON.parse(JSON.stringify(CEO_DEFAULTS));
+        const idx = parseInt(ceoI);
+        if (STATE.ceoDash[ceoS] && STATE.ceoDash[ceoS][idx]) {
+          STATE.ceoDash[ceoS][idx][ceoF] = el.textContent.trim();
+        }
+      }
     }
   });
-
   if (!editMode) {
     saveState();
     showToast('Changes saved!');
@@ -2489,6 +2617,109 @@ function renderCommission() {
     });
   }
 }
+// ════════════════════════════════════════════════
+// CEO DASHBOARD
+// ════════════════════════════════════════════════
+const CEO_DEFAULTS = {
+  output: [
+    { label:'ARR', value:'$2.71M', sub:'Annual Recurring Revenue', trend:'↑ vs last quarter', trendDir:'up', color:'red' },
+    { label:'ARR Growth (MoM)', value:'4.2%', sub:'Month-over-month growth', trend:'Target: 5% MoM', trendDir:'flat', color:'red' },
+    { label:'Net Revenue Retention', value:'104%', sub:'Expansion minus churn', trend:'Target: 110%+', trendDir:'up', color:'red' },
+    { label:'Revenue per Employee', value:'$181K', sub:'ARR ÷ 15 team members', trend:'North Star ★', trendDir:'up', color:'gold' }
+  ],
+  ai: [
+    { label:'AI Leverage Ratio', value:'2.4×', sub:'Output per head vs pre-AI baseline', trend:'↑ from 1.8× in W1', trendDir:'up', color:'purple' },
+    { label:'% Work AI-Assisted', value:'68%', sub:'Self-reported across team', trend:'Target: 80%+ by W8', trendDir:'up', color:'purple' },
+    { label:'Tasks Automated / Week', value:'47', sub:'Workflows replaced by AI', trend:'↑ 12 vs last week', trendDir:'up', color:'purple' },
+    { label:'Active AI Workflows', value:'11', sub:'Manus, Cursor, ChatGPT, etc.', trend:'11 of 15 team members', trendDir:'up', color:'purple' }
+  ],
+  velocity: [
+    { label:'Median Time to Ship', value:'3.2d', sub:'Feature build time (was 8d)', trend:'↓ 60% vs pre-AI', trendDir:'up', color:'blue' },
+    { label:'Median Campaign Launch', value:'1.4d', sub:'GTM campaign time (was 5d)', trend:'↓ 72% vs pre-AI', trendDir:'up', color:'blue' },
+    { label:'Features Shipped / Week', value:'6', sub:'Across product + GTM', trend:'↑ vs 2/week pre-AI', trendDir:'up', color:'blue' },
+    { label:'Deals Closed / Week', value:'3', sub:'New logos + expansions', trend:'Target: 5/week by W8', trendDir:'flat', color:'blue' }
+  ],
+  efficiency: [
+    { label:'Monthly Burn', value:'$148K', sub:'Current run rate', trend:'Target: <$160K', trendDir:'up', color:'gold' },
+    { label:'Burn Multiple', value:'0.65', sub:'Burn ÷ Net New ARR', trend:'<1.0 = efficient', trendDir:'up', color:'gold' },
+    { label:'Cost per Feature', value:'$2.1K', sub:'Fully-loaded cost per shipped feature', trend:'↓ vs $6K pre-AI', trendDir:'up', color:'gold' },
+    { label:'CAC', value:'$4,200', sub:'Customer acquisition cost', trend:'Target: <$3,500', trendDir:'flat', color:'gold' }
+  ],
+  scorecard: [
+    { metric:'Revenue per Employee', value:'$181K', arrow:'↑', note:'Up from $168K in W1', dir:'up' },
+    { metric:'Time to Ship (median)', value:'3.2 days', arrow:'↓', note:'Down from 8 days pre-AI', dir:'up' },
+    { metric:'AI Usage Rate', value:'68%', arrow:'↑', note:'Up from 52% in W1', dir:'up' },
+    { metric:'Output per Team', value:'+38%', arrow:'↑', note:'vs pre-AI baseline', dir:'up' },
+    { metric:'Burn Multiple', value:'0.65', arrow:'→', note:'On target', dir:'flat' }
+  ],
+  aiReplace: [
+    { team:'Trevor (Sales)', text:'AI drafts all outbound sequences — saves ~6h/week' },
+    { team:'Fabricio (Product)', text:'AI writes PRDs, user stories, and release notes' },
+    { team:'Kylie (Marketing)', text:'AI generates first drafts of all content' },
+    { team:'Errin (CS)', text:'AI summarizes calls and drafts follow-up emails' },
+    { team:'Engineering', text:'AI writes boilerplate, tests, and code reviews' }
+  ]
+};
+
+function renderCeoDashboard() {
+  if (!STATE.ceoDash) STATE.ceoDash = JSON.parse(JSON.stringify(CEO_DEFAULTS));
+  const d = STATE.ceoDash;
+
+  // Update week label
+  const wl = document.getElementById('ceoDashWeekLabel');
+  if (wl) {
+    const now = new Date();
+    const start = new Date(STATE.config.sprintStart);
+    const wn = Math.max(1, Math.min(8, Math.ceil((now - start) / (7*24*3600*1000))));
+    wl.textContent = 'Week ' + wn + ' of 8';
+  }
+
+  function cardHTML(c, i, section) {
+    return `<div class="ceo-card ${c.color}">
+      <div class="ceo-card-label">${c.label}</div>
+      <div class="ceo-card-value ${c.color} ie" contenteditable="false" data-ceo-s="${section}" data-ceo-i="${i}" data-ceo-f="value">${c.value}</div>
+      <div class="ceo-card-sub ie" contenteditable="false" data-ceo-s="${section}" data-ceo-i="${i}" data-ceo-f="sub">${c.sub}</div>
+      <div class="ceo-card-trend ${c.trendDir} ie" contenteditable="false" data-ceo-s="${section}" data-ceo-i="${i}" data-ceo-f="trend">${c.trend}</div>
+    </div>`;
+  }
+
+  const out = document.getElementById('ceoOutputCards');
+  if (out) out.innerHTML = d.output.map((c,i) => cardHTML(c,i,'output')).join('');
+
+  const ai = document.getElementById('ceoAiCards');
+  if (ai) ai.innerHTML = d.ai.map((c,i) => cardHTML(c,i,'ai')).join('');
+
+  const vel = document.getElementById('ceoVelocityCards');
+  if (vel) vel.innerHTML = d.velocity.map((c,i) => cardHTML(c,i,'velocity')).join('');
+
+  const eff = document.getElementById('ceoEfficiencyCards');
+  if (eff) eff.innerHTML = d.efficiency.map((c,i) => cardHTML(c,i,'efficiency')).join('');
+
+  // Scorecard
+  const sc = document.getElementById('ceoScorecard');
+  if (sc) {
+    const arrowColor = { up:'#00d084', down:'#f75f5f', flat:'#6b7494' };
+    sc.innerHTML = `<div class="ceo-scorecard">
+      <div style="font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:8px;">Weekly Pulse — 3 Questions: What did we automate? What got faster? What still requires humans that shouldn’t?</div>
+      ${d.scorecard.map((r,i) => `
+        <div class="ceo-sc-row">
+          <div class="ceo-sc-metric">${r.metric}</div>
+          <div class="ceo-sc-value ie" contenteditable="false" data-ceo-s="scorecard" data-ceo-i="${i}" data-ceo-f="value" style="color:${arrowColor[r.dir]||'#6b7494'}">${r.value}</div>
+          <div class="ceo-sc-arrow" style="color:${arrowColor[r.dir]||'#6b7494'}">${r.arrow}</div>
+          <div class="ceo-sc-note ie" contenteditable="false" data-ceo-s="scorecard" data-ceo-i="${i}" data-ceo-f="note">${r.note}</div>
+        </div>`).join('')}
+    </div>
+    <div class="ceo-ai-replace">
+      <div class="ceo-ai-replace-title">🤖 What AI Replaced This Week</div>
+      ${d.aiReplace.map((r,i) => `
+        <div class="ceo-ai-replace-row">
+          <div class="ceo-ai-replace-team">${r.team}</div>
+          <div class="ceo-ai-replace-text ie" contenteditable="false" data-ceo-s="aiReplace" data-ceo-i="${i}" data-ceo-f="text">${r.text}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+}
+
 function renderAll() {
   updateDynamicElements();
   renderWeekBar();
@@ -2499,6 +2730,7 @@ function renderAll() {
   renderIndividualKpis();
   renderAiAdoption();
   renderCommission();
+  renderCeoDashboard();
   applyTabVisibility();
 }
 
