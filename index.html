@@ -386,10 +386,7 @@ body.edit-mode .kpi-add-row-btn{display:block;}
 .ai-flag-txt{font-size:9px;font-weight:700;color:#9b5fe0;letter-spacing:.3px;}
 .ai-flag-chk:checked~.ai-flag-txt{color:#9b5fe0;}
 .ai-flag-label:has(.ai-flag-chk:checked){opacity:1;}
-.velocity-fields{display:flex;align-items:center;gap:4px;margin-top:4px;}
-.vel-lbl{font-size:9px;color:var(--muted);font-weight:600;}
-.vel-inp{width:38px;background:var(--surface3);border:1px solid var(--border2);border-radius:4px;padding:2px 4px;font-size:9px;color:var(--text);text-align:center;outline:none;}
-.vel-inp:focus{border-color:var(--nc-purple-light);}
+
 /* ── COMPLETED TASKS DRAWER ── */
 #completedDrawer{margin:20px 32px 8px;}
 .completed-empty{font-size:11px;color:var(--muted);padding:12px 16px;background:var(--surface2);border:1px dashed var(--border);border-radius:8px;text-align:center;}
@@ -1701,8 +1698,7 @@ function renderTaskRow(task, cw) {
 
   const priOpts = ['p1','p2','p3'].map(p => `<option value="${p}"${task.priority===p?' selected':''}>${p.toUpperCase()}</option>`).join('');
   const aiChecked = task.aiAssisted ? 'checked' : '';
-  const pDays = task.plannedDays || '';
-  const aDays = task.actualDays || '';
+
   return `<tr data-task-id="${task.id}">
     <td>
       <span class="t-name editable" contenteditable="false" data-field="name" data-id="${task.id}">${task.name}</span>
@@ -1716,10 +1712,7 @@ function renderTaskRow(task, cw) {
     </td>
     <td>
       <span class="kpi-cell editable" contenteditable="false" data-field="metric" data-id="${task.id}">${task.metric}</span>
-      <div class="velocity-fields">
-        <span class="vel-lbl">Plan:</span><input class="vel-inp" type="number" min="0" step="0.5" value="${pDays}" placeholder="d" title="Planned days" onchange="updateVelocity('${task.id}','plannedDays',this.value)">
-        <span class="vel-lbl">Act:</span><input class="vel-inp" type="number" min="0" step="0.5" value="${aDays}" placeholder="d" title="Actual days" onchange="updateVelocity('${task.id}','actualDays',this.value)">
-      </div>
+
     </td>
     <td><button class="status-btn ${s.cls}" onclick="cycleStatus('${task.id}', this)">${s.label}</button></td>
     ${cells}
@@ -1770,12 +1763,7 @@ function toggleAiAssisted(id, checked) {
   task.aiAssisted = checked;
   saveState();
 }
-function updateVelocity(id, field, val) {
-  const task = STATE.tasks.find(t => t.id === id);
-  if (!task) return;
-  task[field] = parseFloat(val) || 0;
-  saveState();
-}
+
 
 // ════════════════════════════════════════════════
 // TASK MANAGEMENT (Add / Delete / Edit Weeks)
