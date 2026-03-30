@@ -390,6 +390,37 @@ body.edit-mode .kpi-add-row-btn{display:block;}
 .vel-lbl{font-size:9px;color:var(--muted);font-weight:600;}
 .vel-inp{width:38px;background:var(--surface3);border:1px solid var(--border2);border-radius:4px;padding:2px 4px;font-size:9px;color:var(--text);text-align:center;outline:none;}
 .vel-inp:focus{border-color:var(--nc-purple-light);}
+/* ── COMPLETED TASKS DRAWER ── */
+#completedDrawer{margin:20px 32px 8px;}
+.completed-empty{font-size:11px;color:var(--muted);padding:12px 16px;background:var(--surface2);border:1px dashed var(--border);border-radius:8px;text-align:center;}
+.completed-header{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 20px;cursor:pointer;user-select:none;transition:border-color .2s;position:relative;overflow:hidden;}
+.completed-header:hover{border-color:var(--nc-green);}
+.completed-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.completed-icon{font-size:16px;}
+.completed-badge{background:var(--nc-green);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;letter-spacing:.3px;}
+.completed-pct{font-size:11px;color:var(--nc-green);font-weight:600;}
+.completed-progress-wrap{width:120px;height:4px;background:var(--surface3);border-radius:4px;overflow:hidden;flex-shrink:0;}
+.completed-progress-bar{height:100%;background:linear-gradient(90deg,var(--nc-green),#00f0a0);border-radius:4px;transition:width .5s ease;}
+.completed-chevron{font-size:10px;color:var(--muted);margin-left:4px;}
+.completed-body{background:var(--surface2);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;overflow:hidden;}
+.completed-table{width:100%;border-collapse:collapse;font-size:11px;}
+.completed-table thead tr{background:var(--surface3);}
+.completed-table th{padding:8px 12px;text-align:left;font-size:9px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);}
+.cd-row{border-bottom:1px solid var(--border);transition:background .15s;}
+.cd-row:last-child{border-bottom:none;}
+.cd-row:hover{background:var(--surface3);}
+.cd-name{padding:10px 12px;font-weight:600;color:var(--text);max-width:220px;}
+.cd-dept{padding:10px 12px;}
+.cd-dept-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--surface3);color:var(--muted2);text-transform:uppercase;letter-spacing:.3px;}
+.cd-dept-badge.gtm-cls{background:rgba(79,142,247,.15);color:#4f8ef7;}
+.cd-dept-badge.product-cls{background:rgba(118,47,196,.15);color:#9b5fe0;}
+.cd-metric{padding:10px 12px;color:var(--muted);max-width:200px;}
+.cd-vel{padding:10px 12px;color:var(--nc-green);font-size:10px;font-weight:600;white-space:nowrap;}
+.cd-date{padding:10px 12px;color:var(--muted);font-size:10px;white-space:nowrap;}
+.cd-actions{padding:10px 12px;}
+.cd-restore-btn{background:none;border:1px solid var(--border2);border-radius:5px;padding:3px 10px;font-size:9px;color:var(--muted2);cursor:pointer;transition:all .2s;font-family:inherit;}
+.cd-restore-btn:hover{border-color:var(--nc-purple-light);color:var(--nc-purple-light);background:rgba(118,47,196,.08);}
+.cd-ai-tag{display:inline-block;font-size:8px;font-weight:700;color:#9b5fe0;background:rgba(155,95,224,.12);border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:middle;}
 /* ── CEO DASHBOARD ── */
 .ceo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:4px;}
 .ceo-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden;transition:border-color .2s;}
@@ -1310,7 +1341,13 @@ function loadState() {
       if (!STATE.nsCards)       STATE.nsCards       = JSON.parse(JSON.stringify(d.nsCards));
       if (!STATE.commission)    STATE.commission    = JSON.parse(JSON.stringify(d.commission));
       if (!STATE.deptKpis)      STATE.deptKpis      = JSON.parse(JSON.stringify(d.deptKpis));
-      if (!STATE.ceoDash)       STATE.ceoDash       = JSON.parse(JSON.stringify(CEO_DEFAULTS));
+      // Always refresh AI section and scorecard from latest seed data (these are live metrics)
+      if (!STATE.ceoDash) STATE.ceoDash = JSON.parse(JSON.stringify(CEO_DEFAULTS));
+      STATE.ceoDash.ai        = JSON.parse(JSON.stringify(CEO_DEFAULTS.ai));
+      STATE.ceoDash.scorecard = JSON.parse(JSON.stringify(CEO_DEFAULTS.scorecard));
+      STATE.ceoDash.aiReplace = JSON.parse(JSON.stringify(CEO_DEFAULTS.aiReplace));
+      // Always re-seed AI adoption from latest MANUS_SEED_DATA (Mar 30 update)
+      STATE.aiAdoption = null;
       // Migrate team names if still using old placeholder names
       const oldNames = ['Trevor','Sales Lead','BDR / SDR','CS Manager','CS Rep','Marketing Lead',
         'Product Manager','Engineer 1','Engineer 2','Designer','Finance Lead','Ops Lead',
@@ -1486,7 +1523,7 @@ function renderGantt() {
 
     pod.depts.forEach(dept => {
       const meta = DEPT_META[dept];
-      const tasks = STATE.tasks.filter(t => t.dept === dept);
+      const tasks = STATE.tasks.filter(t => t.dept === dept && t.status !== 'done');
       if (!tasks.length) return;
 
       html += `<div class="section ${meta.cls}">
@@ -1543,7 +1580,91 @@ function renderGantt() {
     html += `</div></div>`;
   });
 
-  container.innerHTML = html;
+   container.innerHTML = html;
+
+  // Render completed tasks drawer
+  renderCompletedDrawer();
+}
+
+function renderCompletedDrawer() {
+  const done = STATE.tasks.filter(t => t.status === 'done');
+  let drawer = document.getElementById('completedDrawer');
+  if (!drawer) {
+    drawer = document.createElement('div');
+    drawer.id = 'completedDrawer';
+    const ganttSections = document.getElementById('ganttSections');
+    ganttSections.parentNode.insertBefore(drawer, ganttSections.nextSibling);
+  }
+  const total = STATE.tasks.length;
+  const doneCount = done.length;
+  const pct = total ? Math.round((doneCount / total) * 100) : 0;
+  if (!doneCount) {
+    drawer.innerHTML = `<div class="completed-empty">No completed tasks yet — mark a task as <strong>Done</strong> to see it here.</div>`;
+    return;
+  }
+  const isOpen = drawer.dataset.open !== 'false';
+  const rows = done.map(task => {
+    const dept = task.dept || '';
+    const meta = DEPT_META[dept] || { label: dept, cls: '' };
+    const completedAt = task.completedAt ? new Date(task.completedAt).toLocaleDateString('en-US', {month:'short', day:'numeric'}) : '';
+    const pDays = task.plannedDays ? `${task.plannedDays}d planned` : '';
+    const aDays = task.actualDays ? `${task.actualDays}d actual` : '';
+    const velNote = (pDays && aDays) ? `${pDays} → ${aDays}` : (pDays || aDays || '');
+    const aiTag = task.aiAssisted ? `<span class="cd-ai-tag">🤖 AI</span>` : '';
+    return `<tr class="cd-row">
+      <td class="cd-name">${task.name}${aiTag}</td>
+      <td class="cd-dept"><span class="cd-dept-badge ${meta.cls}">${meta.label}</span></td>
+      <td class="cd-metric">${task.metric || ''}</td>
+      <td class="cd-vel">${velNote}</td>
+      <td class="cd-date">${completedAt}</td>
+      <td class="cd-actions">
+        <button class="cd-restore-btn" onclick="restoreTask('${task.id}')" title="Move back to active">↩ Restore</button>
+      </td>
+    </tr>`;
+  }).join('');
+  drawer.innerHTML = `
+    <div class="completed-header" onclick="toggleCompletedDrawer()">
+      <div class="completed-title">
+        <span class="completed-icon">✅</span>
+        Completed Tasks
+        <span class="completed-badge">${doneCount}</span>
+        <span class="completed-pct">${pct}% of sprint done</span>
+      </div>
+      <div class="completed-progress-wrap">
+        <div class="completed-progress-bar" style="width:${pct}%"></div>
+      </div>
+      <div class="completed-chevron">${isOpen ? '▼' : '▶'}</div>
+    </div>
+    <div class="completed-body" style="display:${isOpen ? 'block' : 'none'}">
+      <table class="completed-table">
+        <thead><tr>
+          <th>Task</th><th>Department</th><th>Success Metric</th><th>Velocity</th><th>Completed</th><th></th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  drawer.dataset.open = isOpen ? 'true' : 'false';
+}
+
+function toggleCompletedDrawer() {
+  const drawer = document.getElementById('completedDrawer');
+  if (!drawer) return;
+  const body = drawer.querySelector('.completed-body');
+  const chevron = drawer.querySelector('.completed-chevron');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  chevron.textContent = isOpen ? '▶' : '▼';
+  drawer.dataset.open = isOpen ? 'false' : 'true';
+}
+
+function restoreTask(id) {
+  const task = STATE.tasks.find(t => t.id === id);
+  if (!task) return;
+  task.status = 'not-started';
+  delete task.completedAt;
+  saveState();
+  renderGantt();
+  showToast('Task restored to active: ' + task.name.substring(0, 30));
 }
 
 function renderTaskRow(task, cw) {
@@ -1621,11 +1742,27 @@ function cycleStatus(id, btn) {
   if (!task) return;
   const idx = STATUS_CYCLE.indexOf(task.status);
   task.status = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
-  const s = STATUS_MAP[task.status];
-  btn.className = `status-btn ${s.cls}`;
-  btn.textContent = s.label;
+  // Stamp completion time and hide from active Gantt
+  if (task.status === 'done') {
+    task.completedAt = new Date().toISOString();
+    // Remove the row from DOM immediately for a snappy feel
+    const row = btn.closest('tr');
+    if (row) {
+      row.style.transition = 'opacity .35s, transform .35s';
+      row.style.opacity = '0';
+      row.style.transform = 'translateX(20px)';
+      setTimeout(() => { renderGantt(); }, 380);
+    } else {
+      renderGantt();
+    }
+  } else {
+    delete task.completedAt;
+    const s = STATUS_MAP[task.status];
+    btn.className = `status-btn ${s.cls}`;
+    btn.textContent = s.label;
+  }
   saveState();
-  showToast('Status updated: ' + task.name.substring(0,30));
+  showToast((task.status === 'done' ? '✅ Completed: ' : 'Status updated: ') + task.name.substring(0,30));
 }
 function toggleAiAssisted(id, checked) {
   const task = STATE.tasks.find(t => t.id === id);
@@ -2345,20 +2482,21 @@ const AI_USE_CASES = ['Research & Analysis','Content Writing','Code / Automation
 // Real Manus usage data (Feb 25 – Mar 6, covering W1+W2)
 // W1 = Feb 23-28, W2 = Mar 2-7; split ~50/50 by week
 // Updated: Feb 25 – Mar 13, 2026 | Total credits: 15,238
+// Last updated: Mar 30, 2026 — from Manus Team usage dashboard (Mar 2 – Mar 30)
 const MANUS_SEED_DATA = {
-  'Trevor Legwinski':  {tasks:19, credits:12127, w1tasks:7,  w1credits:3095, w2tasks:12, w2credits:9032, useCase:'Investor Materials', notes:'Top user — 19 tasks, 12,127 credits'},
-  'Fabricio Bellesa':  {tasks:30, credits:10961, w1tasks:11, w1credits:1996, w2tasks:19, w2credits:8965, useCase:'Code / Automation',  notes:'Highest task count — 30 tasks, 10,961 credits'},
-  'daniel':            {tasks:14, credits:5871,  w1tasks:4,  w1credits:2125, w2tasks:10, w2credits:3746, useCase:'Code / Automation',  notes:'14 tasks, 5,871 credits'},
-  'Renan Coradini':    {tasks:5,  credits:3829,  w1tasks:1,  w1credits:405,  w2tasks:4,  w2credits:3424, useCase:'Customer Outreach',  notes:'5 tasks, 3,829 credits'},
-  'Jon Lacivita':      {tasks:4,  credits:2381,  w1tasks:1,  w1credits:149,  w2tasks:3,  w2credits:2232, useCase:'Reporting',           notes:'4 tasks, 2,381 credits'},
-  'lucasantoniassi':   {tasks:14, credits:1542,  w1tasks:6,  w1credits:704,  w2tasks:8,  w2credits:838,  useCase:'Code / Automation',  notes:'14 tasks, 1,542 credits'},
-  'Alvaro Menezes':    {tasks:6,  credits:1480,  w1tasks:2,  w1credits:698,  w2tasks:4,  w2credits:782,  useCase:'Research & Analysis', notes:'6 tasks, 1,480 credits'},
-  'Flavio Cruz':       {tasks:5,  credits:1010,  w1tasks:2,  w1credits:108,  w2tasks:3,  w2credits:902,  useCase:'Reporting',           notes:'5 tasks, 1,010 credits'},
-  'Kylie Leckliter':   {tasks:1,  credits:536,   w1tasks:0,  w1credits:0,    w2tasks:1,  w2credits:536,  useCase:'Content Writing',     notes:'1 task, 536 credits — new this week'},
-  'Lais Paschoa':      {tasks:3,  credits:511,   w1tasks:1,  w1credits:23,   w2tasks:2,  w2credits:488,  useCase:'Content Writing',     notes:'3 tasks, 511 credits'},
-  'Jon Olsen':         {tasks:6,  credits:321,   w1tasks:2,  w1credits:115,  w2tasks:4,  w2credits:206,  useCase:'Customer Outreach',  notes:'6 tasks, 321 credits'},
-  'Errin Henderson':   {tasks:0,  credits:0,     w1tasks:0,  w1credits:0,    w2tasks:0,  w2credits:0,    useCase:'',                    notes:'Not yet adopted'},
-  'Praveen Shanbhag':  {tasks:0,  credits:0,     w1tasks:0,  w1credits:0,    w2tasks:0,  w2credits:0,    useCase:'',                    notes:'Not yet adopted'}
+  'Trevor Legwinski':  {tasks:19, credits:112410, w1tasks:7,  w1credits:3095, w2tasks:12, w2credits:109315, useCase:'Investor Materials & War Room', notes:'Top credit user — 19 tasks, 112,410 credits (Mar 2–30)'},
+  'Flavio Cruz':       {tasks:25, credits:13271,  w1tasks:2,  w1credits:108,  w2tasks:23, w2credits:13163,  useCase:'Business Development & Outreach', notes:'25 tasks, 13,271 credits'},
+  'Fabricio Bellesa':  {tasks:35, credits:12368,  w1tasks:11, w1credits:1996, w2tasks:24, w2credits:10372,  useCase:'Code / Automation',  notes:'Highest task count — 35 tasks, 12,368 credits'},
+  'daniel':            {tasks:27, credits:9091,   w1tasks:4,  w1credits:2125, w2tasks:23, w2credits:6966,   useCase:'Code / Automation',  notes:'27 tasks, 9,091 credits'},
+  'Renan Coradini':    {tasks:22, credits:7570,   w1tasks:1,  w1credits:405,  w2tasks:21, w2credits:7165,   useCase:'Customer Outreach',  notes:'22 tasks, 7,570 credits'},
+  'Errin Henderson':   {tasks:5,  credits:7280,   w1tasks:0,  w1credits:0,    w2tasks:5,  w2credits:7280,   useCase:'Customer Success',   notes:'5 tasks, 7,280 credits — active this period'},
+  'Jon Lacivita':      {tasks:10, credits:4872,   w1tasks:1,  w1credits:149,  w2tasks:9,  w2credits:4723,   useCase:'Reporting & CS',     notes:'10 tasks, 4,872 credits'},
+  'lucasantoniassi':   {tasks:16, credits:1682,   w1tasks:6,  w1credits:704,  w2tasks:10, w2credits:978,    useCase:'Code / Automation',  notes:'16 tasks, 1,682 credits'},
+  'Alvaro Menezes':    {tasks:10, credits:1631,   w1tasks:2,  w1credits:698,  w2tasks:8,  w2credits:933,    useCase:'Research & Analysis', notes:'10 tasks, 1,631 credits'},
+  'Jon Olsen':         {tasks:8,  credits:660,    w1tasks:2,  w1credits:115,  w2tasks:6,  w2credits:545,    useCase:'Customer Outreach',  notes:'8 tasks, 660 credits'},
+  'Kylie Leckliter':   {tasks:1,  credits:536,    w1tasks:0,  w1credits:0,    w2tasks:1,  w2credits:536,    useCase:'Content Writing',    notes:'1 task, 536 credits'},
+  'Lais Paschoa':      {tasks:3,  credits:511,    w1tasks:1,  w1credits:23,   w2tasks:2,  w2credits:488,    useCase:'Content Writing',    notes:'3 tasks, 511 credits'},
+  'Praveen Shanbhag':  {tasks:2,  credits:59,     w1tasks:0,  w1credits:0,    w2tasks:2,  w2credits:59,     useCase:'Engineering',        notes:'2 tasks, 59 credits — early adopter'}
 };
 
 function getAiData() {
@@ -2620,6 +2758,7 @@ function renderCommission() {
 // ════════════════════════════════════════════════
 // CEO DASHBOARD
 // ════════════════════════════════════════════════
+// CEO Dashboard defaults — updated Mar 30, 2026 with live Manus usage data
 const CEO_DEFAULTS = {
   output: [
     { label:'ARR', value:'$2.71M', sub:'Annual Recurring Revenue', trend:'↑ vs last quarter', trendDir:'up', color:'red' },
@@ -2628,10 +2767,10 @@ const CEO_DEFAULTS = {
     { label:'Revenue per Employee', value:'$181K', sub:'ARR ÷ 15 team members', trend:'North Star ★', trendDir:'up', color:'gold' }
   ],
   ai: [
-    { label:'AI Leverage Ratio', value:'2.4×', sub:'Output per head vs pre-AI baseline', trend:'↑ from 1.8× in W1', trendDir:'up', color:'purple' },
-    { label:'% Work AI-Assisted', value:'68%', sub:'Self-reported across team', trend:'Target: 80%+ by W8', trendDir:'up', color:'purple' },
-    { label:'Tasks Automated / Week', value:'47', sub:'Workflows replaced by AI', trend:'↑ 12 vs last week', trendDir:'up', color:'purple' },
-    { label:'Active AI Workflows', value:'11', sub:'Manus, Cursor, ChatGPT, etc.', trend:'11 of 15 team members', trendDir:'up', color:'purple' }
+    { label:'AI Leverage Ratio', value:'3.1×', sub:'Output per head vs pre-AI baseline', trend:'↑ from 2.4× last week', trendDir:'up', color:'purple' },
+    { label:'Total Manus Credits Used', value:'171,941', sub:'Mar 2–30 across 13 users', trend:'41,022 credits remaining', trendDir:'up', color:'purple' },
+    { label:'Total AI Tasks Completed', value:'183', sub:'Manus tasks across all team members', trend:'Avg 14 tasks/person', trendDir:'up', color:'purple' },
+    { label:'Active AI Users', value:'13 / 13', sub:'100% team adoption on Manus', trend:'All 13 members active Mar 2–30', trendDir:'up', color:'purple' }
   ],
   velocity: [
     { label:'Median Time to Ship', value:'3.2d', sub:'Feature build time (was 8d)', trend:'↓ 60% vs pre-AI', trendDir:'up', color:'blue' },
@@ -2646,18 +2785,18 @@ const CEO_DEFAULTS = {
     { label:'CAC', value:'$4,200', sub:'Customer acquisition cost', trend:'Target: <$3,500', trendDir:'flat', color:'gold' }
   ],
   scorecard: [
-    { metric:'Revenue per Employee', value:'$181K', arrow:'↑', note:'Up from $168K in W1', dir:'up' },
-    { metric:'Time to Ship (median)', value:'3.2 days', arrow:'↓', note:'Down from 8 days pre-AI', dir:'up' },
-    { metric:'AI Usage Rate', value:'68%', arrow:'↑', note:'Up from 52% in W1', dir:'up' },
-    { metric:'Output per Team', value:'+38%', arrow:'↑', note:'vs pre-AI baseline', dir:'up' },
+    { metric:'Total Manus Credits Used', value:'171,941', arrow:'↑', note:'Mar 2–30 — renewal Apr 25, 2026', dir:'up' },
+    { metric:'Active AI Users', value:'13 / 13', arrow:'↑', note:'100% team adoption this period', dir:'up' },
+    { metric:'Top User (Credits)', value:'Trevor — 112,410', arrow:'★', note:'Investor materials & War Room build', dir:'up' },
+    { metric:'Top User (Tasks)', value:'Fabricio — 35 tasks', arrow:'★', note:'Code, automation & product', dir:'up' },
     { metric:'Burn Multiple', value:'0.65', arrow:'→', note:'On target', dir:'flat' }
   ],
   aiReplace: [
-    { team:'Trevor (Sales)', text:'AI drafts all outbound sequences — saves ~6h/week' },
-    { team:'Fabricio (Product)', text:'AI writes PRDs, user stories, and release notes' },
-    { team:'Kylie (Marketing)', text:'AI generates first drafts of all content' },
-    { team:'Errin (CS)', text:'AI summarizes calls and drafts follow-up emails' },
-    { team:'Engineering', text:'AI writes boilerplate, tests, and code reviews' }
+    { team:'Trevor (CEO)', text:'112,410 credits — investor materials, War Room, research & outreach' },
+    { team:'Flavio Cruz (BizDev)', text:'13,271 credits — 25 tasks on BD outreach and pipeline research' },
+    { team:'Fabricio Bellesa (Eng)', text:'12,368 credits — 35 tasks on code, automation & product build' },
+    { team:'daniel (Eng)', text:'9,091 credits — 27 tasks on code and automation' },
+    { team:'Renan Coradini (AE)', text:'7,570 credits — 22 tasks on customer outreach & deals' }
   ]
 };
 
